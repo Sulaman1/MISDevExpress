@@ -1,0 +1,428 @@
+﻿@model DAL.Models.Domain.MasterSetup.CommunityInstitution
+@using Microsoft.AspNetCore.Authorization
+@using Constant.Constants
+@inject IAuthorizationService AuthorizationService
+@{
+     ViewData["Title"] = "Detail";
+    ViewBag.pageTitle = "BLEP";
+    ViewBag.Title = "Community Institute";
+    ViewBag.pTitle = "Community Institute";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <!-- DataTables -->
+    <style>
+        input {
+            color: black;
+        }
+
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+
+        #link {
+            color: #FFFFFF;
+        }
+
+        .main-footer.main-footer {
+            margin: 0;
+        }
+        .page-title-box {
+            padding: 0;
+        }
+          label{
+            margin-top:5px;
+        }
+        .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+        /* CSS link color */
+    </style>    
+}
+
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<section class="content-header">
+    <h4 class="text-center">Modality for Registration of Community Institutions in BLEP</h4>
+</section>
+<section class="content mt-0">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">            
+            <h4 class="card-title">
+                <b>Resolution of Community Institute Registration for BLEP Project Activates</b>
+            </h4>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <form asp-action="SchoolInfo">
+                <div class="row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="CommunityInstitutionId" />
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="CICode" class="control-label"></label>
+                        <input asp-for="CICode" class="form-control" disabled="disabled" />                        
+                    </div>
+                     <div class="col-md-3">
+                        <label asp-for="VillageId" class="control-label"></label>
+                        <input asp-for="VillageId" class="form-control" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="UnionCouncil.Tehsil.District" class="control-label"></label>
+                        <input asp-for="UnionCouncil.Tehsil.District.Name" class="form-control" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="UnionCouncil.Tehsil" class="control-label"></label>
+                        <input asp-for="UnionCouncil.Tehsil.TehsilName" class="form-control" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="UnionCouncil" class="control-label"></label>
+                        <input asp-for="UnionCouncil.UnionCouncilName" class="form-control" disabled="disabled" />                        
+                    </div>                   
+                    <div class="col-md-4">
+                        <label asp-for="TotalHousehold" class="control-label"></label>
+                        <input asp-for="TotalHousehold" class="form-control" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="HHParticipated" class="control-label"></label>
+                        <input asp-for="HHParticipated" class="form-control" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-4">
+                        <label asp-for="CIAccount" class="control-label"></label>
+                        <input asp-for="CIAccount" class="form-control" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="Latitude" class="control-label"></label>
+                        <input asp-for="Latitude" class="form-control" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="Longitute" class="control-label"></label>
+                        <input asp-for="Longitute" class="form-control" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="OfficerName" class="control-label"></label>
+                        <input asp-for="OfficerName" class="form-control" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="OnDate" class="control-label"></label>
+                        <input asp-for="OnDate" class="form-control" disabled="disabled" />                        
+                    </div> 
+                        @{
+                        if (Model.SeletionFormAttachment != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="form-group" style="margin-bottom:0.5rem">
+                                    <label class="control-label">Uploaded Seletion Form</label>
+                                </div>
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.SeletionFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Seletion Form</div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @{
+                        if (Model.VillageProfileAttachment != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="form-group" style="margin-bottom:0.5rem">
+                                    <label class="control-label">Uploaded Village Profile</label>
+                                </div>
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.VillageProfileAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Village Profile</div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    @{
+                        if (Model.TOPAttachment != null)
+                        {
+                            <div class="col-md-4">
+                                <div class="form-group" style="margin-bottom:0.5rem">
+                                    <label class="control-label">Uploaded Term of Partnership</label>
+                                </div>
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.TOPAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View Term of Partnership</div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </form>
+        </div><!-- /.card-body -->
+    </div>
+    <h6><b>List of Community Institute Members </b>
+    @{
+        if (!Model.IsSubmittedForReview)
+        {
+            <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@Model.CommunityInstitutionId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
+        }
+    }        
+    </h6>
+    <div id="dynamicContentContainer"></div>
+    @{
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
+            if(Model.IsSubmittedForReview == true && Model.IsReviewed == false)
+            {
+                <div>
+                    <button id="btnverifyprofile" class="btn btn-sm btn-info" onclick="submitprofile(@Model.CommunityInstitutionId)">Submit for Approval</button>
+                    <button id="btnrejectprofile" class="btn btn-sm btn-danger" onclick="rejectprofile(@Model.CommunityInstitutionId)">Reject</button>
+                </div>
+            } 
+        }              
+    }
+    @{
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
+            if(Model.IsVerified == false && Model.IsReviewed == true)
+            {
+                <div>
+                    <button id="btnverifyprofile" class="btn btn-sm btn-info" onclick="submitforapprovalprofile(@Model.CommunityInstitutionId)">Approved</button>
+                    <button id="btnrejectprofile" class="btn btn-sm btn-danger" onclick="rejectforapprovalprofile(@Model.CommunityInstitutionId)">Reject</button>
+                </div>
+            } 
+        }              
+    }
+</section>
+<div class="container">
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Latitude,",",@Model.Longitute,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+@section Scripts {    
+      <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+$(document).ready(function() {
+    $.get('@Url.Action("_Index","CommunityInstituteMembers", new { id=Model.CommunityInstitutionId })', function(content) {
+        $("#dynamicContentContainer").html(content);
+        notificationme('Fetch Record Successfully!');
+        /* $("#divLoading").hide();*/
+    });
+});
+
+function submitprofile(Id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit Profile for Review',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CommunityInstitutions/CISubmitForApprovalRequest",
+                        data: { id: Id, val: 1 },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifyprofile').prop('disabled', true);
+                                    $('#btnrejectprofile').prop('disabled', true);                                                                   
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function rejectprofile(Id) {
+            var Description = "";
+            Swal.fire({
+                title: "Are you sure?",
+                html: "<h6>You Want to Reject Profile for Verifiation</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                type: "warning",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!",
+                preConfirm: () => {
+                    Description = document.getElementById('description').value;
+                    if (Description == "") {
+                        Swal.showValidationMessage(
+                            `Invalid Reason!`
+                        )
+                    }
+                }
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CommunityInstitutions/CISubmitForApprovalRequest",
+                        data: { id: Id, val: 0, description: Description },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifyprofile').prop('disabled', true);
+                                    $('#btnrejectprofile').prop('disabled', true);                                                                      
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function submitforapprovalprofile(Id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit Profile for Approval',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CommunityInstitutions/CIApprovalRequest",
+                        data: { id: Id, val: 1 },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifyprofile').prop('disabled', true);
+                                    $('#btnrejectprofile').prop('disabled', true);                                                                   
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function rejectforapprovalprofile(Id) {
+    var Description = "";
+            Swal.fire({
+                title: "Are you sure?",                
+                html: "<h6>You Want to Reject Profile for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                type: "warning",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!",
+                preConfirm: () => {
+                    Description = document.getElementById('description').value;
+                    if (Description == "") {
+                        Swal.showValidationMessage(
+                            `Invalid Reason!`
+                        )
+                    }
+                }
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CommunityInstitutions/CIApprovalRequest",
+                        data: { id: Id, val: 0, description : Description},
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifyprofile').prop('disabled', true);
+                                    $('#btnrejectprofile').prop('disabled', true);                                                                      
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+function createModal(url) {
+    $("#pdfFile").attr("src", url);
+}
+</script>
+}

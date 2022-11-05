@@ -1,0 +1,317 @@
+﻿@model DAL.Models.Domain.Training.MemberTraining
+
+@{
+     ViewData["Title"] = "Detail";
+    ViewBag.pageTitle = "BLEP";
+    ViewBag.Title = "Training";
+    ViewBag.pTitle = "Training";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+<style>
+    label{
+            margin-top:5px;
+        }
+           .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+<section class="content mt-0">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">            
+            <h4 class="card-title">
+                <b>Community Institutions/Common Interest Group Capacity Building in BLEP</b>
+            </h4>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <form asp-action="SchoolInfo">
+                <div class="row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="MemberTrainingId" />
+                    <div class="col-md-3">
+                        <label asp-for="UnionCouncil.Tehsil.District" class="control-label"></label>
+                        <input asp-for="UnionCouncil.Tehsil.District.Name" class="form-control" style="background-color:lightcyan" disabled="disabled" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="UnionCouncil.Tehsil" class="control-label"></label>
+                        <input asp-for="UnionCouncil.Tehsil.TehsilName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="UnionCouncil" class="control-label"></label>
+                        <input asp-for="UnionCouncil.UnionCouncilName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>                     
+                    <div class="col-md-3">
+                        <label asp-for="TrainingType.TrainingHead.TrainingHeadName" class="control-label"></label>
+                        <input asp-for="TrainingType.TrainingHead.TrainingHeadName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="TrainingType.TrainingTypeName" class="control-label"></label>
+                        <input asp-for="TrainingType.TrainingTypeName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>                   
+                     <div class="col-md-6">
+                        <label asp-for="TrainingName" class="control-label"></label>
+                        <input asp-for="TrainingName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Employee.EmployeeName" class="control-label"></label>
+                        <input asp-for="Employee.EmployeeName" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="TrainingOn" class="control-label"></label>
+                        <input asp-for="TrainingOn" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="TotalDays" class="control-label"></label>
+                        <input asp-for="TotalDays" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                    </div> 
+                    <div class="col-md-3">
+                        <label asp-for="TotalMember" class="control-label"></label>
+                        <input asp-for="TotalMember" class="form-control" style="background-color:lightcyan" disabled="disabled" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="AttendanceAttachment" class="control-label">Uploaded Attendance</label>
+                        @{
+                            if(Model.AttendanceAttachment == null)
+                            {
+                                <input value="Not Uploaded" class="form-control" style="background-color:lightcyan" disabled="disabled" />                        
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.AttendanceAttachment')" class="btn btn-outline-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                </div>
+                            }
+                        }                        
+                    </div>
+                   
+                    <div class="col-md-3">
+                        <label asp-for="ReportAttachment" class="control-label">Uploaded Report</label>
+                        @{
+                            if(Model.ReportAttachment == null)
+                            {
+                                <div class="form-group"><span>Not Uploaded</span></div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.ReportAttachment')" class="btn btn-outline-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                </div>
+                            }
+                        }                        
+                    </div>        
+                    <div class="col-md-3">
+                        <label asp-for="SessionPlanAttachment" class="control-label">Session Plan</label>
+                        @{
+                            if (Model.SessionPlanAttachment == null)
+                            {
+                                <div class="form-group"><span>Not Uploaded</span></div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.SessionPlanAttachment')" class="btn btn-outline-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                </div>
+                            }
+                        }                        
+                    </div> 
+                                      
+                   
+    </div>
+    <div class="row">
+        @{
+            if(Model.PictureAttachment1 != null)
+            {
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Picture-1</h4>               
+                            <div class="">
+                                <img src="@Model.PictureAttachment1" class="img-fluid"  alt="Responsive image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }       
+          @{
+            if(Model.PictureAttachment2 != null)
+            {
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Picture-2</h4>               
+                            <div class="">
+                                <img src="@Model.PictureAttachment2" class="img-fluid"  alt="Responsive image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }     
+        @{
+            if(Model.PictureAttachment3 != null)
+            {
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Picture-3</h4>               
+                            <div class="">
+                                <img src="@Model.PictureAttachment3" class="img-fluid"  alt="Responsive image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }     
+        @{
+            if(Model.PictureAttachment4 != null)
+            {
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Picture-4</h4>               
+                            <div class="">
+                                <img src="@Model.PictureAttachment4" class="img-fluid"  alt="Responsive image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }     
+        </div>
+    </form>
+        </div><!-- /.card-body -->
+    </div>
+    <h6><b>List of Trained Banificaries </b>
+    @{
+        if (!Model.IsSubmitted)
+        {
+                <a asp-action="TrackMember" asp-controller="MemberTrainingDetails" asp-route-id="@Model.MemberTrainingId"> <i class="bx bxs-user"></i> <span key="t-invoices"> Add Beneficiaries</span></a>
+        }
+    }        
+    </h6>
+    <div id="dynamicContentContainer"></div>
+   @* @{
+        if(Model.IsSubmitted == false)
+        {
+            <div>
+                <button id="btnsubmitprofile" class="btn btn-sm btn-info" onclick="submitprofile(@Model.MemberTrainingId)">Submit for Approval</button>
+            </div>
+        }
+        else
+        {
+            <div>
+            <button class="btn btn-sm btn-info" disabled="disabled">Submit for Approval</button>
+            </div>
+        }
+    }*@
+</section>
+<div class="container">
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+@section Scripts {    
+      <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+$(document).ready(function() {
+    $.get('@Url.Action("_Index","MemberTrainingDetails", new { id=Model.MemberTrainingId })', function(content) {
+        $("#dynamicContentContainer").html(content);
+        notificationme('Fetch Record Successfully!');
+        /* $("#divLoading").hide();*/
+    });
+});
+
+function submitprofile(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit Profile for Approval',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/CommunityInstitutions/CISubmitRequest",
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnsubmitprofile').prop('disabled', true);
+                                    $.get('@Url.Action("_Index","CommunityInstituteMembers", new { id=Model.MemberTrainingId })', function(content) {
+                                    $("#dynamicContentContainer").html(content);
+                                    });
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+         function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+</script>
+}

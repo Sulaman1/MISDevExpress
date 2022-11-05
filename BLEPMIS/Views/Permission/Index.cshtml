@@ -1,0 +1,209 @@
+﻿@model DAL.Models.PermissionViewModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+@{ ViewData["Title"] = "Index";
+                ViewBag.pageTitle = "Role";
+                ViewBag.Title = "Permission";
+                ViewBag.pTitle = "Permission";
+                Layout = "~/Views/_Shared/_Layout.cshtml"; }
+
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+@if (true)
+{<!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" /> <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Permissions</p>
+                    </a>
+                    <a class="nav-link" role="tab" asp-action="Index" asp-controller="Roles" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Roles</p>
+                    </a>
+                    <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Support</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of Permissions</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <form asp-controller="permission" method="post" asp-action="Update" class="d-inline">
+                                        <input asp-for="@Model.RoleId" type="hidden" />
+                                        <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Type
+                                                    </th>
+                                                    <th>
+                                                        Permission
+                                                    </th>
+                                                    <th>
+                                                        Status
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                                                {
+                                        <tr>
+                                            <td>
+                                                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                                                @Model.RoleClaims[i].Type
+                                            </td>
+                                            <td>
+                                                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                                @Model.RoleClaims[i].Value
+                                            </td>
+                                            <td>
+                                                <div class="form-check m-1">
+                                                    <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" />
+                                                </div>
+                                            </td>
+                                        </tr>}
+                                            </tbody>
+                                        </table>
+
+                                        <div class="col-sm-12" style="padding: 20px 20px 0px 0px">
+                                            <button type="submit" id="save" class="btn btn-success">
+                                                <i class="fa fa-check"></i>
+                                                Save
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">Support</h4>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where does it come from?</h5>
+                                        <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Why do we use it?</h5>
+                                        <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">What is Lorem Ipsum?</h5>
+                                        <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    }
+    else
+    {
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+@section Scripts {
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var message = '@ViewBag.Message';
+            if (message != "") {
+                notificationme(message);
+            }
+        });
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+    </script>
+}

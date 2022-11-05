@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewBag.Title = "Intermediate Result Framework";
+    ViewBag.pTitle = "Intermediate Result Framework";
+    ViewBag.pageTitle = "Dashboard";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+    double CIEstablished = @ViewBag.CIEstablished;
+}
+
+<style>
+    .card-body{
+        padding: .8rem;        
+    }
+</style>
+<div class="row">
+    
+    <div class="col-xl-12">        
+        <div class="row">
+             <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Number of Business Development</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">85.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Individual Supported through LIPs</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">4,500</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Number of Community Based Trainings</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">468.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Establishment of Community Based Platforms</p>
+                                <h4 class="mb-3">@CIEstablished</h4>
+                                <span class="badge badge-soft-info font-size-14"> @Math.Round(((@CIEstablished/850)*100),2)% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">850.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Establishment of Enterprise Clusters/Groups</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">5,100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Providing Technical and Vocational Skills</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">12,750</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+         @*   <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Technical Resource Trained</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">60.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Local Facilitator Trained</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">100.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+
+    @*    <div class="row">
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Individual Supported through LIPs</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">60.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Individual Businesses Supported through IPs</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Enterprise Supported through EDPs</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">15.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Implementation Plan for Citizens' Engagement</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">60.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">Local Female Facilitator Trained</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted font-weight-medium font-size-14">No of Refugees trained</p>
+                                <h4 class="mb-3">0.0</h4>
+                                <span class="badge badge-soft-info font-size-14"> 0.0% </span> <span class="ml-2 text-truncate text-muted font-weight-bold">Achieved</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="badge badge-pill badge-soft-success font-size-14">15.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    </div>
+    </div>
+
+

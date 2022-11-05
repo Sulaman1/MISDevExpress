@@ -1,0 +1,74 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.MemberTrainingDetail>
+
+@{
+    if(Model.Count() > 0){
+        <div style="margin:5px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.MISCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Designation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.MemberName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.FatherName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.CNIC)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.CellNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.ProfilePicture)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.MISCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.Designation.DesignationName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.Member.MemberName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.Member.FatherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.Member.CNIC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CommunityInstituteMember.Member.CellNo)
+                            </td>
+                            <td>
+                                @if (item.CommunityInstituteMember.Member.ProfilePicture != null)
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.CommunityInstituteMember.Member.ProfilePicture))">
+                                }
+                                else
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/BLEP.png">
+                                }
+                            </td>
+                            <td>
+                                <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingDetailId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

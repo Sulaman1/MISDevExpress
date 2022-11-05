@@ -1,0 +1,104 @@
+﻿@model DAL.Models.Domain.MasterSetup.Member
+
+@{
+    ViewData["Title"] = "Edit Member";
+    ViewBag.pageTitle = "Community Institute";
+    ViewBag.Title = "Member";
+    ViewBag.pTitle = "Member";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+            };
+}
+<h5>Edit Community Institute Member</h5>
+<hr />
+<form asp-action="Edit" enctype="multipart/form-data">
+<div class="row">    
+        <div class="col-md-4">                
+                 <div class="form-group">                     
+                     <input type="hidden" asp-for="BeneficiaryTypeId" />                                          
+                     <input type="hidden" asp-for="CNIC" />
+                     <input type="hidden" asp-for="MemberId" />                     
+                     <input type="hidden" id="CIId" name="CIId" value="@ViewBag.CIId" />
+                     <input type="hidden" id="CIMId" name="CIMId" value="@ViewBag.CIMId" />
+                     <input type="hidden" asp-for="IsRefugee" />
+                     <input type="hidden" asp-for="ProfilePicture" />                     
+                    <label class="control-label">Community Institution</label>
+                    <select disabled="disabled" class ="form-control" asp-items="ViewBag.CommunityInstitutionId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MemberName" class="control-label"></label>
+                    <input tabindex="1" asp-for="MemberName" class="form-control" />
+                    <span asp-validation-for="MemberName" class="text-danger"></span>
+                </div>                 
+                <div class="form-group">
+                    <label asp-for="CellNo" class="control-label"></label>
+                    <input tabindex="3" asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                    <span asp-validation-for="CellNo" class="text-danger"></span>
+                </div>  
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select tabindex="5" asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                 <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input tabindex="7" disabled="disabled" class="form-check-input" asp-for="IsRefugee" /> @Html.DisplayNameFor(model => model.IsRefugee)
+                    </label>
+                </div>
+            </div>   
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>                           
+                  <div class="form-group">
+                    <label asp-for="CNIC" class="control-label"></label>
+                    <input readonly="readonly" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '99999-9999999-9'" />
+                    <span asp-validation-for="CNIC" class="text-danger"></span>
+                </div>       
+                <div class="form-group">
+                    <label asp-for="FatherName" class="control-label"></label>
+                    <input tabindex="2" asp-for="FatherName" class="form-control" />
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                 <div class="form-group">
+                    <label class="control-label">Designation</label>
+                    <select tabindex="4" id="DesignationId" name="DesignationId" class ="form-control" asp-items="ViewBag.DesignationId"></select>                 
+                </div>
+            </div>
+             <div class="col-md-4">                                       
+                <div class="form-group">
+                    <label asp-for="ProfilePicture" style="width: 100%;"></label>                    
+                    @if (Model.ProfilePicture != null)
+                    {
+                        <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePicture))">
+                    }
+                    else
+                    {
+                        <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">
+                    }                
+                    <input tabindex="6" type="file"
+                            accept=".png,.jpg,.jpeg,.gif,.tif"
+                            asp-for="ProfilePicture" name="ProfilePicture"
+                            class="form-control"
+                            style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                            onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                </div>
+            </div>                                                        
+    </div>
+      <div class="form-group">
+        <input type="submit" tabindex="8" value="Save Member" class="btn btn-primary" />
+    </div>
+    </form>
+<div>
+    <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@ViewBag.CommunityInstitutionId">Back to Community Institute Members</a>    
+</div>
+
+@section scripts{
+    <!-- form mask -->
+<script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- form mask init -->
+<script src="~/assets/js/pages/form-mask.init.js"></script>
+}

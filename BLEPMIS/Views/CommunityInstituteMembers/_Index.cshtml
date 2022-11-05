@@ -1,0 +1,86 @@
+﻿@model IEnumerable<DAL.Models.Domain.MasterSetup.CommunityInstituteMember>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+<div style="margin:5px">
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MISCode)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.Designation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member.MemberName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member.FatherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member.CNIC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Member.CellNo)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.Member.ProfilePicture)
+            </th>
+            
+            <th></th>
+                     
+                         
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.MISCode)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Designation.DesignationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.MemberName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.FatherName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.CNIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.CellNo)
+            </td>    
+            <td>
+               @if (item.Member.ProfilePicture != null)
+                {
+                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.Member.ProfilePicture))">
+                }
+                else
+                {
+                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/BLEP.png">
+                }
+            </td>  
+            @{
+                        if ((item.CommunityInstitution.IsSubmittedForReview == false) || AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.Edit).Result.Succeeded)
+                {               
+                <td>
+                <a asp-action="Edit" asp-route-id="@item.MemberId" asp-route-CIMId="@item.CommunityInstituteMemberId" asp-route-CIId="@item.CommunityInstitutionId"><i class="mdi mdi-pencil font-size-18"></i></a>                                  
+                            </td>
+                        }
+                 if (item.CommunityInstitution.IsSubmittedForReview == false)
+                {               
+                <td>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.CommunityInstituteMemberId">Drop</a>                                  
+                            </td>
+                        }
+                       
+            }           
+        </tr>
+}
+    </tbody>
+</table>
+</div>

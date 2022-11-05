@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <UserSecretsId>aspnet-BLEPMIS-A1F10769-2E50-4F9A-96B6-EAB57E7BC677</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Views\Districts\Create.cshtml" />
+    <None Include="Views\Districts\Delete.cshtml" />
+    <None Include="Views\Districts\Details.cshtml" />
+    <None Include="Views\Districts\Edit.cshtml" />
+    <None Include="Views\Districts\Index.cshtml" />
+    <None Include="Views\Divisions\Create.cshtml" />
+    <None Include="Views\Divisions\Delete.cshtml" />
+    <None Include="Views\Divisions\Details.cshtml" />
+    <None Include="Views\Divisions\Edit.cshtml" />
+    <None Include="Views\Divisions\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="GemBox.Document" Version="33.0.1372" /> 
+    <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />    
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="BAL">
+      <HintPath>Dependency\BAL.dll</HintPath>
+    </Reference>
+    <Reference Include="Constant">
+      <HintPath>..\Constant\bin\Release\net6.0\Constant.dll</HintPath>
+    </Reference>
+    <Reference Include="DAL">
+      <HintPath>Dependency\DAL.dll</HintPath>
+    </Reference>
+    <Reference Include="DBContext">
+      <HintPath>Dependency\DBContext.dll</HintPath>
+    </Reference>
+    <Reference Include="DefaultSeed">
+      <HintPath>Dependency\DefaultSeed.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dependency\" />
+  </ItemGroup>
+
+</Project>

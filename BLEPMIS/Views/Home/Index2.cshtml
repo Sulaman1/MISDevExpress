@@ -1,0 +1,306 @@
+﻿
+@{ ViewBag.Title = "Analysis Report";
+                ViewBag.pTitle = "Analysis Report";
+                ViewBag.pageTitle = "Dashboard";
+                Layout = "~/Views/_Shared/_Layout.cshtml"; }
+
+<style>
+    .card-body {
+        padding: .5rem;
+    }
+</style>
+<div class="row">
+    
+    <div class="col-xl-12">
+      
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4 float-sm-left">District Wise Summary</h4>
+                <div class="float-sm-right">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Week</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Month</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Year</a>
+                            </li>
+                        </ul>
+                    </div>
+                <div class="clearfix"></div>
+
+                <div id="stacked-column-chart" class="apex-charts" dir="ltr"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row -->
+<div class="row">
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Data Collection Source</h4>
+                <div class="text-center">
+                    <div class="avatar-sm mx-auto mb-4">
+                        <span class="avatar-title rounded-circle bg-soft-primary font-size-24">
+                            <i class="mdi mdi-facebook text-primary"></i>
+                        </span>
+                    </div>
+                    <p class="font-16 text-muted mb-2"></p>
+                    <h5><a href="#" class="text-dark">Headquarter - <span class="text-muted font-16">125 sales</span> </a></h5>
+                    <p class="text-muted">Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus tincidunt.</p>
+                    <a href="#" class="text-primary font-16">Learn more <i class="mdi mdi-chevron-right"></i></a>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <div class="social-source text-center mt-3">
+                            <div class="avatar-xs mx-auto mb-3">
+                                <span class="avatar-title rounded-circle bg-primary font-size-16">
+                                    <i class="mdi mdi-facebook text-white"></i>
+                                </span>
+                            </div>
+                            <h5 class="font-size-15">From Field</h5>
+                            <p class="text-muted mb-0">125 remaining</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="social-source text-center mt-3">
+                            <div class="avatar-xs mx-auto mb-3">
+                                <span class="avatar-title rounded-circle bg-info font-size-16">
+                                    <i class="mdi mdi-twitter text-white"></i>
+                                </span>
+                            </div>
+                            <h5 class="font-size-15">Checklist</h5>
+                            <p class="text-muted mb-0">112 get</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="social-source text-center mt-3">
+                            <div class="avatar-xs mx-auto mb-3">
+                                <span class="avatar-title rounded-circle bg-pink font-size-16">
+                                    <i class="mdi mdi-instagram text-white"></i>
+                                </span>
+                            </div>
+                            <h5 class="font-size-15">Social Mobilizer</h5>
+                            <p class="text-muted mb-0">104 get</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-5">Activity</h4>
+                <ul class="verti-timeline list-unstyled">
+                    <li class="event-list">
+                        <div class="event-timeline-dot">
+                            <i class="bx bx-right-arrow-circle font-size-18"></i>
+                        </div>
+                        <div class="media">
+                            <div class="mr-3">
+                                <h5 class="font-size-14">22 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ml-2"></i></h5>
+                            </div>
+                            <div class="media-body">
+                                <div>
+                                    Responded to need “Volunteer Activities
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="event-list">
+                        <div class="event-timeline-dot">
+                            <i class="bx bx-right-arrow-circle font-size-18"></i>
+                        </div>
+                        <div class="media">
+                            <div class="mr-3">
+                                <h5 class="font-size-14">17 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ml-2"></i></h5>
+                            </div>
+                            <div class="media-body">
+                                <div>
+                                    Everyone realizes why a new common language would be desirable... <a href="#">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="event-list active">
+                        <div class="event-timeline-dot">
+                            <i class="bx bxs-right-arrow-circle font-size-18 bx-fade-right"></i>
+                        </div>
+                        <div class="media">
+                            <div class="mr-3">
+                                <h5 class="font-size-14">15 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ml-2"></i></h5>
+                            </div>
+                            <div class="media-body">
+                                <div>
+                                    Joined the group “Boardsmanship Forum”
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="event-list">
+                        <div class="event-timeline-dot">
+                            <i class="bx bx-right-arrow-circle font-size-18"></i>
+                        </div>
+                        <div class="media">
+                            <div class="mr-3">
+                                <h5 class="font-size-14">12 Nov <i class="bx bx-right-arrow-alt font-size-16 text-primary align-middle ml-2"></i></h5>
+                            </div>
+                            <div class="media-body">
+                                <div>
+                                    Responded to need “In-Kind Opportunity”
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="text-center mt-4"><a href="" class="btn btn-primary waves-effect waves-light btn-sm">View More <i class="mdi mdi-arrow-right ml-1"></i></a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Top District</h4>
+
+                <div class="text-center">
+                    <div class="mb-4">
+                        <i class="bx bx-map-pin text-primary display-4"></i>
+                    </div>
+                    <h3>1,456</h3>
+                    <p>San Francisco</p>
+                </div>
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-centered table-nowrap">
+                        <tbody>
+                            <tr>
+                                <td style="width: 30%">
+                                    <p class="mb-0">San Francisco</p>
+                                </td>
+                                <td style="width: 25%">
+                                    <h5 class="mb-0">1,456</h5>
+                                </td>
+                                <td>
+                                    <div class="progress bg-transparent progress-sm">
+                                        <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 94%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="mb-0">Los Angeles</p>
+                                </td>
+                                <td>
+                                    <h5 class="mb-0">1,123</h5>
+                                </td>
+                                <td>
+                                    <div class="progress bg-transparent progress-sm">
+                                        <div class="progress-bar bg-success rounded" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="mb-0">San Diego</p>
+                                </td>
+                                <td>
+                                    <h5 class="mb-0">1,026</h5>
+                                </td>
+                                <td>
+                                    <div class="progress bg-transparent progress-sm">
+                                        <div class="progress-bar bg-warning rounded" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+<script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
+
+@*<script src="~/assets/js/pages/dashboard.init.js"></script>*@
+
+
+<script>
+    $(document).ready(function () {
+        var val = '@ViewBag.DistrictId';
+            debugger;
+        if (val == "33") {
+            $("#tempBlock").hide();
+            $("#tempBlock2").show();
+        } else {
+            $("#tempBlock2").hide();
+        }
+    });
+    $(function () {
+        $("#ddlYear").change(function () {
+            var end = this.value;
+            $.get('@Url.Action("Graph", "Home")', { year:end}, function (content) {
+                $("#dynamicContentContainer").html(content);
+            });
+        });
+    });
+    var options =
+    {
+        chart:
+        {
+            height: 359, type: "bar", stacked: !0, toolbar: { show: !1 },
+            zoom: { enabled: !0 }
+        },
+        plotOptions:
+        {
+            bar:
+                { horizontal: !1, columnWidth: "15%", endingShape: "rounded" }
+        },
+        dataLabels:
+        {
+            enabled: !1
+        },
+        series: [
+            { name: "Total", data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48, 44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48, 22, 10, 16, 24, 22, 13, 23, 20] },
+            { name: "Active", data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22, 13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22, 22, 10, 16, 24, 22, 13, 23, 20] },
+            { name: "In Process", data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18, 13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22, 22, 10, 16, 24, 22, 13, 23, 20] }
+        ],
+        xaxis:
+        {
+            categories: ["Awaran", "Barkhan", "Chagai", "Dera Bugti", "Duki", "Gwadar", "Harnai", "Jafarabad", "Jhal Magsi", "Kachhi", "Kalat", "Kech", "Kharan", "Khuzdar", "Killa Abdullah", "Killa Saifullah", "Kohlu", "Lasbela", "Loralai", "Makran", "Mastung", "Musakhel", "Nasirabad", "Nushki", "Panjgur", "Pishin", "Quetta", "Sherani", "Sibi", "Washuk", "Zhob","Ziarat"]
+        },
+        colors:
+            ["#556ee6", "#34c38f", "#f1b44c"],
+        legend:
+            { position: "bottom" }, fill: { opacity: 1 }
+    },
+        chart = new ApexCharts(document.querySelector("#stacked-column-chart"), options);
+    chart.render();
+    options =
+    {
+        chart:
+        {
+            height: 180, type: "radialBar", offsetY: -10
+        },
+        plotOptions:
+        {
+            radialBar:
+            {
+                startAngle: -135, endAngle: 135, dataLabels: { name: { fontSize: "13px", color: void 0, offsetY: 60 }, value: { offsetY: 22, fontSize: "16px", color: void 0, formatter: function (e) { return e + "%" } } }
+            }
+        },
+        colors: ["#556ee6"],
+        fill: {
+            type: "gradient",
+            gradient: { shade: "dark", shadeIntensity: .15, inverseColors: !1, opacityFrom: 1, opacityTo: 1, stops: [0, 50, 65, 91] }
+        },
+        stroke: { dashArray: 4 }, series: [67], labels: ["Series A"]
+    }; (chart = new ApexCharts(document.querySelector("#radialBar-chart"), options)).render();
+</script>

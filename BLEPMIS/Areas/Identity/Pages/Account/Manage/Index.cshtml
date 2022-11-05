@@ -1,0 +1,203 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewBag.pageTitle = "Profile";
+    ViewBag.Title = "Manage Profile";
+    ViewBag.pTitle = "Manage";
+    @*ViewData["ActivePage"] = ManageNavPages.Index;*@
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@*<h4>@ViewData["Title"]</h4>*@
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<partial name="_StatusMessage" model="Model.UserNameChangeLimitMessage" />
+
+<div class="checkout-tabs">
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                    <i class="bx bx-cool d-block check-nav-icon mt-4 mb-2"></i>
+                    <p class="font-weight-bold mb-4">Update Profile</p>
+                </a>
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/SetPassword" aria-selected="true">
+                    <i class="mdi mdi-security d-block check-nav-icon mt-4 mb-2"></i>
+                    <p class="font-weight-bold mb-4">Change Password</p>
+                </a>
+                @*<a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/SetPassword" aria-selected="true">
+                    <i class="mdi mdi-email-check d-block check-nav-icon mt-4 mb-2"></i>
+                    <p class="font-weight-bold mb-4">Change Email</p>
+                </a>*@
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                            <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h4 class="mt-2 card-title">Change your account settings</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="profile-form" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.FirstName"></label>
+                                            <input asp-for="Input.FirstName" class="form-control" />
+                                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.LastName"></label>
+                                            <input asp-for="Input.LastName" class="form-control" />
+                                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.Username"></label>
+                                            <input asp-for="Input.Username" class="form-control" />
+                                            <span asp-validation-for="Input.Username" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.PhoneNumber"></label>
+                                            <input asp-for="Input.PhoneNumber" class="form-control" />
+                                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                        <button id="sa-success" type="submit" class="btn btn-primary"><i class="bx bx-check-double font-size-16 align-middle mr-2"></i>Save</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="Input.ProfilePicture" style="width: 100%;"></label>
+                                            @if (Model.Input.ProfilePicture != null)
+                                            {
+                                                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))">
+                                            }
+                                            else
+                                            {
+                                                <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="">
+                                            }
+                                            <input type="file"
+                                                   accept=".png,.jpg,.jpeg,.gif,.tif"
+                                                   asp-for="Input.ProfilePicture"
+                                                   class="form-control"
+                                                   style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                                                   onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                                            <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                            <h4 class="card-title mb-5">Privacy Policy</h4>
+
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where does it come from?</h5>
+                                    <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where can I get some?</h5>
+                                    <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">What is Lorem Ipsum?</h5>
+                                    <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Why do we use it?</h5>
+                                    <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media   ">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where can I get some?</h5>
+                                    <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                            <h4 class="card-title mb-5">Support</h4>
+
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where can I get some?</h5>
+                                    <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where does it come from?</h5>
+                                    <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Why do we use it?</h5>
+                                    <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                                </div>
+                            </div>
+                            <div class="faq-box media mb-4">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">Where can I get some?</h5>
+                                    <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-box media">
+                                <div class="faq-icon mr-3">
+                                    <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="font-size-15">What is Lorem Ipsum?</h5>
+                                    <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

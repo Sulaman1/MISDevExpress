@@ -1,0 +1,424 @@
+﻿@model DAL.Models.Domain.MasterSetup.CommunityInstitution
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "BLEP";
+    ViewBag.Title = @ViewBag.Heading;
+    ViewBag.pTitle = @ViewBag.Heading;
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+    {   new SelectListItem { Text = "Male", Value = "Male" },
+        new SelectListItem { Text = "Female", Value = "Female" },
+    };
+}
+<style>
+     .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-route-id="@Model.CommunityTypeId" asp-controller="CommunityInstitutions" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of @ViewBag.Heading</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Add New @ViewBag.Heading</p>
+                    </a>
+                   @* <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Support</p>
+                    </a>*@
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Add New @ViewBag.Heading</h4>
+                                        </div>                                      
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="CommunityInstitutionId">
+                                            <input type="hidden" asp-for="CICode">
+                                            <input type="hidden" asp-for="OnDate">
+                                            <input type="hidden" asp-for="IsRejected">
+                                            <input type="hidden" asp-for="IsReviewed">
+                                            <input type="hidden" asp-for="ReviewedBy">
+                                            <input type="hidden" asp-for="ReviewedOn">
+                                            <input type="hidden" asp-for="IsSubmittedForReview">
+                                            <input type="hidden" asp-for="SubmittedForReviewBy">
+                                            <input type="hidden" asp-for="SubmittedForReviewOnDate">                                            
+                                            <input type="hidden" asp-for="VerifiedBy">
+                                            <input type="hidden" asp-for="VerifiedOn">                                            
+                                            <input type="hidden" asp-for="CommunityTypeId">
+                                            <input type="hidden" asp-for="SeletionFormAttachment">
+                                            <input type="hidden" asp-for="VillageProfileAttachment">
+                                            <input type="hidden" asp-for="TOPAttachment">
+                                            <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">                                                    
+                                                </select>
+                                            </div>                    
+                                        </div>
+                                        <div class="col-md-4">                                            
+                                           <div class="form-group">
+                                                <label class="control-label">Tehsil</label>
+                                                <select required id="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">                                                    
+                                                </select>
+                                            </div>                   
+                                        </div>
+                                        <div class="col-md-4">                                            
+                                           <div class="form-group">
+                                                <label class="control-label">Union Council</label>
+                                                <select required asp-items="ViewBag.UnionCouncilId" asp-for="UnionCouncilId" class="form-control">                                                    
+                                                </select>
+                                            </div>                   
+                                        </div>
+                                           <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="VillageId" class="control-label"></label>
+                                                <select required asp-for="VillageId" asp-items="ViewBag.VillageId" class="form-control"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Name" class="control-label"></label>
+                                                <input asp-for="Name" class="form-control" placeholder="CI Name" required />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="TotalHousehold" class="control-label"></label>
+                                                <input asp-for="TotalHousehold" class="form-control" />
+                                                <span asp-validation-for="TotalHousehold" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="HHParticipated" class="control-label"></label>
+                                                <input asp-for="HHParticipated" class="form-control" />
+                                                <span asp-validation-for="HHParticipated" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Venue" class="control-label"></label>
+                                                <input asp-for="Venue" class="form-control" />
+                                                <span asp-validation-for="Venue" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="OfficerName" class="control-label"></label>
+                                                <input asp-for="OfficerName" class="form-control" readonly="readonly"/>
+                                                <span asp-validation-for="OfficerName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="CIAccount" class="control-label"></label>
+                                                <input asp-for="CIAccount" class="form-control" />
+                                                <span asp-validation-for="CIAccount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Latitude" class="control-label"></label>
+                                                <input asp-for="Latitude" class="form-control" />
+                                                <span asp-validation-for="Latitude" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Longitute" class="control-label"></label>
+                                                <input asp-for="Longitute" class="form-control" />
+                                                <span asp-validation-for="Longitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                           <div class="form-group">
+                                                <label asp-for="SeletionFormAttachment" class="control-label"></label>
+                                                <input type="file" name="SeletionFormAttachment" class="form-control" accept="application/pdf"/>
+                                                <span asp-validation-for="SeletionFormAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                           <div class="form-group">
+                                                <label asp-for="VillageProfileAttachment" class="control-label"></label>
+                                                <input type="file" name="VillageProfileAttachment" class="form-control" accept="application/pdf"/>
+                                                <span asp-validation-for="VillageProfileAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                          <div class="col-md-4">
+                                           <div class="form-group">
+                                                <label asp-for="TOPAttachment" class="control-label"></label>
+                                                <input type="file" name="TOPAttachment" class="form-control" accept="application/pdf"/>
+                                                <span asp-validation-for="TOPAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         @{
+                                            if(Model.SeletionFormAttachment != null)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Seletion Form</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.SeletionFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        }   
+                                        
+                                        @{
+                                            if(Model.VillageProfileAttachment != null)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Village Profile</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.VillageProfileAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        }   
+                                       
+                                         @{
+                                            if(Model.TOPAttachment != null)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Term of Partnership</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.TOPAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        }  
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="OnDate" class="control-label"></label>
+                                                <input asp-for="OnDate" class="form-control" />
+                                                <span asp-validation-for="OnDate" class="text-danger"></span>
+                                            </div>
+                                              <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Gender" class="control-label"></label>
+                                                <select asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @{
+                                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded){
+                                                <div class="col-md-4">
+                                                    <div class="form-group custom-checkbox-danger">
+                                                        <label asp-for="IsVerified" class="control-label"></label>
+                                                        <input asp-for="IsVerified" class="form-control text-danger" />
+                                                        <span asp-validation-for="IsVerified" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            }else{
+                                                <input type="hidden" asp-for="IsVerified">
+                                            }
+                                        }
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                                <h4 class="card-title mb-5">Support</h4>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where does it come from?</h5>
+                                        <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Why do we use it?</h5>
+                                        <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">What is Lorem Ipsum?</h5>
+                                        <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section scripts{
+    <script src="~/assets/libs/parsleyjs/parsley.min.js"></script>
+    <script src="~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script src="~/assets/js/pages/form-validation.init.js"></script>
+    <!-- bs custom file input plugin -->
+    <script src="~/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/assets/js/pages/form-element.init.js"></script>
+    <script>
+        $(document).ready(function () {            
+            $("#DistrictId").change(function () {                
+                $("#TehsilId").empty();
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#TehsilId").append('<option value="0">Select...</option>');
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {                
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+             $("#UnionCouncilId").change(function () {                
+                $("#VillageId").empty();
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#VillageId").empty();
+                    $("#VillageId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        }); 
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

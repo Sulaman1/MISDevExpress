@@ -1,0 +1,146 @@
+﻿@model DAL.Models.Domain.MasterSetup.Village
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "UC";
+    ViewBag.Title = "Village";
+    ViewBag.pTitle = "UC";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                @{
+                                    if(ViewBag.message != null)
+                                    {
+                                        if(ViewBag.val == 2)
+                                        {
+                                            <div id="FetchDataOnSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+                                                <div id="FetchDataOnSuccessText">@ViewBag.message</div>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div id="FetchDataOnFailed" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                <div id="FetchDataOnFailedText">@ViewBag.message</div>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit Village</h4>
+                                        </div>
+                                        @*<div class="col-sm-6">
+                    <div class="text-sm-right">
+                        <a asp-action="Index" type="button" class="btn btn-primary btn-rounded waves-effect waves-light mr-2">Back to List</a>
+                    </div>
+                </div>*@<!-- end col-->
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="VillageId"/>
+                                            <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save Village" class="btn btn-primary" />
+                                            </div>
+                                            <div class="form-group">
+                                                <a asp-action="Index" asp-route-id="@ViewBag.Id">Back to list</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="UnionCouncilId" class="control-label"></label>
+                                                <select required asp-for="UnionCouncilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Name" class="control-label"></label>
+                                                <input asp-for="Name" class="form-control" placeholder="Village Name" required />
+                                                <span asp-validation-for="Name" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {            
+            $("#TehsilId").change(function () {                                
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });           
+        });      
+    </script>
+}

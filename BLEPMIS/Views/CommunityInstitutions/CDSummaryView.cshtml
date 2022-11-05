@@ -1,0 +1,182 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "Summary";
+    ViewBag.Title = "Community Development";
+    ViewBag.pTitle = "Community Development";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<style>
+    td{
+        text-align: center;
+    }
+     th{
+        text-align: center;
+    }
+</style>
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info text-center" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">Community Institute/Common Interest Groups Analysis</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">District</label>
+                                            <select id="DistrictId" class="form-control" asp-items="ViewBag.DistrictId">                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Tehsil</label>
+                                            <select id="TehsilId" class="form-control">
+                                                <option value="0">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Union Council</label>
+                                            <select id="UnionCouncilId" class="form-control">
+                                                <option value="0">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Community Type</label>
+                                            <select id="CTId" class="form-control" asp-items="ViewBag.CommunityTypeId">
+                                                <option value="0">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label class="control-label">Apply</label>
+                                            <button class="btn btn-sm btn-primary mt-1" onclick="UpdateTable()">Go</button>
+                                        </div>                                        
+                                    </div>
+                                    <div class="col-md-1" style="padding-top:30px;Display:none" id="loading">
+                                        <img src="~/assets/images/loading.gif" height="25" />
+                                    </div>
+                                    <div class="col-md-1" id="result">
+                                        <label class="control-label">Result</label>
+                                        <a href="javascript: void(0);" class="team-member d-inline-block" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fetch CI/CIG">
+                                            <div class="avatar-xs">
+                                                <span class="avatar-title rounded-circle bg-soft-success text-success font-size-14">
+                                                    <span id="test">@ViewBag.TotalCD</span>
+                                                </span>
+                                            </div>
+                                        </a>                                      
+                                    </div>
+                                </div>
+                                <div class="table-responsive" id="events">
+                                    @(await Component.InvokeAsync("CDSummary", new { DId = 1, TId = 0, UCId = 0, CTId = 0 }))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{    
+    <script>
+
+    $(document).ready(function () {        
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">All</option>');
+                    $("#TehsilId").append('<option value="0">All</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">All</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+    });
+    function UpdateTable() {               
+        var DId = $("#DistrictId").val();
+        var TId = $("#TehsilId").val();
+        var UCId = $("#UnionCouncilId").val();        
+        var CTId = $("#CTId").val(); 
+            $("#loading").show();
+            $("#result").hide();
+            $.ajax({
+            url: '@Url.Action("ReloadCDSummary", "CommunityInstitutions")',
+            data: {
+                DId: DId,
+                TId: TId,
+                UCId: UCId,
+                CTId: CTId
+            },
+            success: function (data) {
+                $("#events").html(data);
+                $("#loading").hide();
+                $("#result").show();
+            }
+        });
+    }    
+    </script> 
+}

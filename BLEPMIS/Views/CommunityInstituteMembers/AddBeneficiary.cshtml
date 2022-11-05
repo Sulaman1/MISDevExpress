@@ -1,0 +1,119 @@
+﻿@model DAL.Models.Domain.MasterSetup.Member
+
+@{
+    ViewData["Title"] = "AddMember";
+    ViewBag.pageTitle = "Community Development";
+    ViewBag.Title = "Beneficiary";
+    ViewBag.pTitle = "Beneficiary";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+            };
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<h5>Add Beneficiary</h5>
+<hr />
+ <form asp-action="AddBeneficiary" enctype="multipart/form-data">
+<div class="row">    
+        <div class="col-md-4">              
+                     <input type="hidden" asp-for="BeneficiaryTypeId" />                     
+                  <div class="form-group">
+                    <label asp-for="MemberName" class="control-label"></label>
+                    <input tabindex="1" asp-for="MemberName" class="form-control" />
+                    <span asp-validation-for="MemberName" class="text-danger"></span>
+                </div>                
+                <div class="form-group">
+                    <label asp-for="CellNo" class="control-label"></label>
+                    <input tabindex="4" asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                    <span asp-validation-for="CellNo" class="text-danger"></span>
+                </div>  
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select tabindex="6" asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input disabled="disabled" class="form-check-input" asp-for="IsRefugee" /> @Html.DisplayNameFor(model => model.IsRefugee)
+                    </label>
+                </div>
+                 <div class="form-group">
+                    <input type="submit" tabindex="8" value="Add Beneficiary" class="btn btn-primary" />
+                </div>
+            </div>   
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+                <div class="form-group">
+                    <label asp-for="FatherName" class="control-label"></label>
+                    <input tabindex="2" asp-for="FatherName" class="form-control" />
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                  <div class="form-group">
+                    <label class="control-label">CNIC/Identity#</label>
+                    <input tabindex="3" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                    <span asp-validation-for="CNIC" class="text-danger"></span>
+                </div>                 
+            </div>
+             <div class="col-md-4">                                       
+                <div class="form-group">
+                    <label asp-for="ProfilePicture" style="width: 100%;"></label>                    
+                    <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">                    
+                    <input tabindex="7" type="file"
+                            accept=".png,.jpg,.jpeg,.gif,.tif"
+                            asp-for="ProfilePicture" name="ProfilePicture"
+                            class="form-control"
+                            style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                            onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                </div>
+            </div>                                                        
+    </div>     
+    </form>
+
+
+@section scripts{
+     <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+<!-- form mask -->
+<script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- form mask init -->
+<script src="~/assets/js/pages/form-mask.init.js"></script>
+ <script type="text/javascript">
+        $(document).ready(function () {
+        $('#CNIC').keyup(function (event) {
+            var refLength = $("#CNIC").val();           
+                if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
+                    $('#IsRefugee').prop('checked', true);
+                } else {
+                    $('#IsRefugee').prop('checked', false);
+                }                      
+});
+        });
+        function isAlphaOrParen(str) {
+            return /^[a-zA-Z()]+$/.test(str);
+        }
+function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+</script>
+}

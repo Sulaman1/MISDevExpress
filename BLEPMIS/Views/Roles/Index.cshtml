@@ -1,0 +1,187 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+@using Constant.Constants
+
+@{ ViewData["Title"] = "Role";
+    ViewBag.pageTitle = "Management";
+    ViewBag.Title = "Role";
+    ViewBag.pTitle = "Role";
+    Layout = "~/Views/_Shared/_Layout.cshtml"; 
+}
+
+@if (true)
+{<!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+ <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Roles</p>
+                    </a>                   
+                   @* <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Support</p>
+                    </a>*@
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of Roles</h4>
+                                </div>
+                                <form method="post" asp-action="addrole" asp-controller="roles">
+                                    <div class="input-group">
+                                        <input name="roleName" class="form-control w-25">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info">Add New Role</button>
+                                        </span>
+                                    </div>
+                                </form>
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Role
+                                            </th>
+                                            <th>
+                                                Id
+                                            </th>
+
+                                            <th style="width:10%">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var role in Model)
+                                        {
+                                <tr>
+                                    <td>
+                                        @role.Name
+                                    </td>
+                                    <td>
+                                        @role.Id
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Permission
+                                            </button>
+                                            <div class="dropdown-menu shadow animated--grow-in">
+                                               @* <a class="dropdown-item">
+                                                    <i class="fas fa-pencil-alt"></i> Edit
+                                                </a>
+                                                <form class="d-inline">
+                                                    <a class="dropdown-item"><i class="fas fa-trash-alt"></i> Delete</a>
+                                                </form>*@
+                                                @if (role.Name != "SuperAdmin")
+                                                {
+                                                    <a style='margin-right:16px' asp-controller="Permission" asp-action="Index" asp-route-roleId="@role.Id" class="dropdown-item">
+                                                        <i class="fas fa-wrench"></i> Manage Permissions
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+}
+                                    </tbody>
+                                </table>
+                                                                                                                
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">Support</h4>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where does it come from?</h5>
+                                        <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Why do we use it?</h5>
+                                        <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-box media mb-4">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">Where can I get some?</h5>
+                                        <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-box media">
+                                    <div class="faq-icon mr-3">
+                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="font-size-15">What is Lorem Ipsum?</h5>
+                                        <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> }
+else
+{
+<div class="account-pages my-5 pt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center mb-5">
+                    <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                    <h4 class="text-uppercase">Sorry, page not found</h4>
+                    @*<div class="mt-5 text-center">
+                            <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-xl-6">
+                <div>
+                    <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>}
+

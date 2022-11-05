@@ -1,0 +1,387 @@
+﻿@model DAL.Models.Domain.Training.MemberTraining
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "Training";
+    ViewBag.Title = "Conducted";
+    ViewBag.pTitle = "Conducted";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<style>
+     .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-controller="MemberTrainings" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Training Conducted</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Add New Training</p>
+                    </a>                   
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Add New Training</h4>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="hidden" asp-for="MemberTrainingId"/>
+                                             <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <select required asp-for="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>  
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Tehsil</label>
+                                                <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Union Council</label>
+                                                <select required asp-for="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>                                            
+                                           <div class="form-group">
+                                                <label asp-for="TrainingType.TrainingHead" class="control-label"></label>
+                                                <select name="TrainingHeadId" id="TrainingHeadId" class ="form-control" asp-items="ViewBag.TrainingHeadId" required>
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">                                            
+                                           <div class="form-group">
+                                                <label asp-for="TrainingTypeId" class="control-label"></label>
+                                                <select asp-for="TrainingTypeId" asp-items="ViewBag.TrainingTypeId" class ="form-control" required>
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label asp-for="TrainingName" class="control-label"></label>
+                                                <input asp-for="TrainingName" class="form-control" placeholder="Training Name" required />
+                                                <span asp-validation-for="TrainingName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="TrainingOn" class="control-label"></label>
+                                                <input asp-for="TrainingOn" class="form-control" required/>
+                                                <span asp-validation-for="TrainingOn" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Trained By</label>
+                                                <select id="SectionId" class ="form-control" asp-items="ViewBag.TrainingById"></select>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="EmployeeId" class="control-label"></label>
+                                                <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="TotalDays" class="control-label"></label>
+                                                <input asp-for="TotalDays" class="form-control" required/>
+                                                <span asp-validation-for="TotalDays" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="TotalMember" class="control-label"></label>
+                                                <input asp-for="TotalMember" class="form-control" min="2" required/>
+                                                <span asp-validation-for="TotalMember" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                           <div class="form-group">
+                                                <label asp-for="AttendanceAttachment" class="control-label"></label>
+                                                <input type="file" name="AttendanceAttachment" class="form-control" accept="application/pdf"/>
+                                                <span asp-validation-for="AttendanceAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                            if(Model.AttendanceAttachment != null)
+                                            {
+                                                <div class="form-group">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Attendance</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.AttendanceAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        }  
+                                        </div>
+                                        
+                                         <div class="col-md-4">
+                                           <div class="form-group">
+                                                <label asp-for="ReportAttachment" class="control-label"></label>
+                                                <input type="file" name="ReportAttachment" class="form-control" accept="application/pdf"/>
+                                                <span asp-validation-for="ReportAttachment" class="text-danger"></span>
+                                            </div>    
+                                            @{
+                                            if(Model.ReportAttachment != null)
+                                            {
+                                                <div class="form-group">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Report</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.ReportAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        }  
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="SessionPlanAttachment" class="control-label"></label>
+                                                <input type="file" name="SessionPlanAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="SessionPlanAttachment" class="text-danger"></span>
+                                            </div>   
+                                            @{
+                                            if(Model.SessionPlanAttachment != null)
+                                            {
+                                                <div class="form-group">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Session Plan</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.SessionPlanAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        } 
+                                        </div>
+                                        
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Upload Pictures-1</label>
+                                                <input accept="image/png, image/gif, image/jpeg"  type="file" name="PictureAttachment1" class="form-control" accept="application/pdf" />                                                
+                                            </div>
+                                            @{
+                                            if(Model.PictureAttachment1 != null)
+                                            {
+                                                <div class="form-group">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Picture-1</label>                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal2" onclick="createModal2('@Model.PictureAttachment1')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>                                                        
+                                                    </div>
+                                                </div>                                                
+                                            }
+                                        } 
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Upload Pictures-2</label>
+                                                <input accept="image/png, image/gif, image/jpeg"  type="file" name="PictureAttachment2" class="form-control" accept="application/pdf" />                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Upload Pictures-3</label>
+                                                <input accept="image/png, image/gif, image/jpeg"  type="file" name="PictureAttachment3" class="form-control" accept="application/pdf" />                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Upload Pictures-4</label>
+                                                <input accept="image/png, image/gif, image/jpeg"  type="file" name="PictureAttachment4" class="form-control" accept="application/pdf" />                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label asp-for="Description" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="Description" rows="4" placeholder="Enter a description ..."></textarea>
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>  
+                                             <div class="form-group">
+                                                <input type="submit" value="Add Training" class="btn btn-primary" />
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </form>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="container">
+<div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container">
+<div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>                    
+                </div>
+                <div class="modal-body">
+                     <img id="imageFile" src="" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {            
+            $("#TrainingHeadId").change(function () {                                
+                $.get("/MemberTrainings/GetTrainingTypes", { trainingHeadId: $("#TrainingHeadId").val() }, function (data) {
+                    $("#TrainingTypeId").empty();                   
+                    $("#TrainingTypeId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TrainingTypeId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#SectionId").change(function () {                                
+                $.get("/MemberTrainings/GetEmployees", { sectionId: $("#SectionId").val() }, function (data) {
+                    $("#EmployeeId").empty();                   
+                    $("#EmployeeId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#EmployeeId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    $("#TehsilId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            })
+        });
+         function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+        function createModal2(url) {
+            $("#imageFile").attr("src", url);
+        }
+    </script>
+}

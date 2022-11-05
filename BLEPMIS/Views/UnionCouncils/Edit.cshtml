@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+@model DAL.Models.Domain.MasterSetup.UnionCouncil
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "Tehsil";
+    ViewBag.Title = "UC";
+    ViewBag.pTitle = "UC";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+
+
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit UC</h4>
+                                        </div>
+                                        @*<div class="col-sm-6">
+                                                <div class="text-sm-right">
+                                                    <a asp-action="Index" type="button" class="btn btn-primary btn-rounded waves-effect waves-light mr-2">Back to List</a>
+                                                </div>
+                                            </div>*@<!-- end col-->
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="UnionCouncilId" />
+                                            <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save District" class="btn btn-primary" />
+                                            </div>
+                                            <div class="form-group">
+                                                <a asp-action="Index">Back to list</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="TehsilId" class="control-label"></label>
+                                                <select required asp-for="TehsilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="UnionCouncilName" class="control-label"></label>
+                                                <input asp-for="UnionCouncilName" class="form-control" placeholder="Tehsil Name" required />
+                                                <span asp-validation-for="UnionCouncilName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#TehsilId").append('<option value="">Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        });
+    </script>
+}

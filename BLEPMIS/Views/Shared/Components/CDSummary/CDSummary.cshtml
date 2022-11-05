@@ -1,0 +1,160 @@
+﻿@model IEnumerable<DAL.Models.ViewModels.CDSummary>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<table id="datatable" class="table table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <thead>
+        <tr>           
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TehsilName)
+            </th>           
+            <th>
+                @Html.DisplayNameFor(model => model.UnionCouncil)
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CDForm)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.SubmittedForReview)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmittedForApproval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Approved)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(a=>a.DistrictId).ThenBy(a=>a.TehsilName).ThenBy(a=>a.UnionCouncilId))
+        {
+            <tr>           
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TehsilName)
+                </td>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnionCouncilName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommunityType.Code)
+                </td>
+                <td>                    
+                    @item.CDForm
+                </td>
+                 <td>
+                    @item.SubmittedForReview
+                </td>
+                 <td>
+                    @item.SubmittedForApproval
+                </td>
+                <td>
+                    @item.Approved
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="5" style="text-align:right"></th>
+            <th style="text-align:right"></th>
+            <th style="text-align:right"></th>
+            <th style="text-align:right"></th>            
+        </tr>
+    </tfoot>
+</table>
+
+
+<!-- JAVASCRIPT -->
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+<!-- Required datatable js -->
+<script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    $(document).ready(function () {     
+        $("#test").text(@ViewBag.TotalCD);
+
+        $('#datatable').DataTable({
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+ 
+            // Total over all pages
+            total4 = api
+                .column(4)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            total5 = api
+                .column(5)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            total6 = api
+                .column(6)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            total7 = api
+                .column(7)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            // Total over this page
+            pageTotal4 = api
+                .column(4, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            pageTotal5 = api
+                .column(5, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            pageTotal6 = api
+                .column(6, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            pageTotal7 = api
+                .column(7, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+            
+            // Update footer
+            $(api.column(4).footer()).html(pageTotal4 + ' (' + total4 + ' total)');
+            $(api.column(5).footer()).html(pageTotal5 + ' (' + total5 + ' total)');
+            $(api.column(6).footer()).html(pageTotal6 + ' (' + total6 + ' total)');
+            $(api.column(7).footer()).html(pageTotal7 + ' (' + total7 + ' total)');
+        },
+    });
+    });
+</script>
+

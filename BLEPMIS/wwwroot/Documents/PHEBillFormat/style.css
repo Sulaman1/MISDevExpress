@@ -1,0 +1,73 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: Urdufont;
+    src: url(Jameel\ Noori\ Nastaleeq\ Regular.ttf);
+}
+
+.bill {
+    font-family: Urdufont;
+}
+
+.bill h1,
+.bill h2 {
+    word-spacing: 5px;
+}
+
+.table-1 tbody tr th {
+    width: 120px !important;
+}
+
+.table-1 tbody tr td {
+    width: 200px !important;
+}
+
+.table-2 tbody tr td {
+    width: 100px;
+}
+
+.table-2 tbody tr th {
+    width: 60px;
+}
+
+.table-3 tbody tr td {
+    width: 100%;
+}
+
+.table-3 tbody .table-4-lastRow td {
+    width: 300px !important;
+}
+
+.table-3 tbody tr th {
+    width: 100px;
+    height: 38px;
+}
+
+.table-4 tbody tr th {
+    height: 45px;
+    width: 200px !important;
+}
+
+.table-4 tbody tr td {
+    height: 71px;
+}
+
+.last-row td {
+    height: 20px !important;
+}
+
+.bg-color {
+    background-color: #bfccff;
+}
+
+.text-color {
+    color: #0031FC;
+}
+
+.table-bordered {
+    border-color: #0031FC !important;
+}

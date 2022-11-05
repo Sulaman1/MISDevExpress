@@ -1,0 +1,206 @@
+﻿@model DAL.Models.Domain.MasterSetup.Member
+
+@{
+    ViewData["Title"] = "AddMember";
+    ViewBag.pageTitle = "Community Institute";
+    ViewBag.Title = "Member";
+    ViewBag.pTitle = "Member";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+            };
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<h5>Add Community Institute Member</h5>
+<hr />
+ <form asp-action="Create" enctype="multipart/form-data">
+<div class="row">    
+        <div class="col-md-4">       
+            <input type="hidden" id="MemberId" name="MemberId" value="0" />
+                 <div class="form-group">                     
+                     <input type="hidden" name="CIId" value="@ViewBag.CIId" />  
+                     <input type="hidden" asp-for="BeneficiaryTypeId" />  
+                     <label class="control-label">Community Institution</label>
+                    <select style="background-color: lightgray" disabled="disabled" class ="form-control" asp-items="ViewBag.CommunityInstitutionId"></select>
+                </div> 
+                 <div class="form-group">
+                    <label asp-for="MemberName" class="control-label"></label>
+                    <input tabindex="2" asp-for="MemberName" class="form-control" />
+                    <span asp-validation-for="MemberName" class="text-danger"></span>
+                </div>                 
+                <div class="form-group">
+                    <label asp-for="CellNo" class="control-label"></label>
+                    <input tabindex="4" asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                    <span asp-validation-for="CellNo" class="text-danger"></span>
+                </div>  
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select tabindex="6" asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input disabled="disabled" class="form-check-input" asp-for="IsRefugee" /> @Html.DisplayNameFor(model => model.IsRefugee)
+                    </label>
+                </div>
+            </div>   
+            <div class="col-md-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>   
+                 <div class="form-group">                      
+                    <label asp-for="CNIC" class="control-label">CNIC <span id="loader" style="display:none"><img src="/assets/images/loading.gif" height="15" /></span></label>
+                    <input tabindex="1" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                    <span asp-validation-for="CNIC" class="text-danger"></span>
+                </div>     
+                <div class="form-group">
+                    <label asp-for="FatherName" class="control-label"></label>
+                    <input tabindex="3" asp-for="FatherName" class="form-control" />
+                    <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>
+                 <div class="form-group">
+                    <label class="control-label">Designation</label>
+                    <select id="DesignationId" name="DesignationId" tabindex="5" class ="form-control" asp-items="ViewBag.DesignationId"></select>                 
+                </div>
+            </div>
+             <div class="col-md-4">                                       
+                <div class="form-group">
+                    <label asp-for="ProfilePicture" style="width: 100%;"></label>                    
+                    <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">                    
+                    <input tabindex="7" type="file"
+                            accept=".png,.jpg,.jpeg,.gif,.tif"
+                            asp-for="ProfilePicture" name="ProfilePicture"
+                            class="form-control"
+                            style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                            onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                </div>
+            </div>                                                        
+    </div>
+      <div class="form-group">
+        <input type="submit" tabindex="8" value="Add Member" class="btn btn-primary" />
+    </div>
+    </form>
+<div>
+    <a asp-action="Details" asp-controller="CommunityInstitutions" asp-route-id="@ViewBag.CIId">Back to Community Institute</a>    
+</div>
+<h6 class="m-2"><b>List of Community Institute Members </b></h6>
+<div id="dynamicContentContainer"></div>
+@section scripts{
+     <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+<!-- form mask -->
+<script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- form mask init -->
+<script src="~/assets/js/pages/form-mask.init.js"></script>
+ <script type="text/javascript">
+var IsCleaned = false;
+$(document).ready(function() {
+    $('#CNIC').focus();
+    $.get('@Url.Action("_Index","CommunityInstituteMembers", new { id=ViewBag.CIId })', function(content) {
+        $("#dynamicContentContainer").html(content);
+        /* $("#divLoading").hide();*/
+        notificationme('Fetch Record Successfully!');
+        $('#CNIC').keyup(function (event) {
+            var refLength = $("#CNIC").val();
+            if(event.keyCode == 8 && refLength.charAt(14) == '_' && IsCleaned){
+                 EnableTextBoxes(false);  
+            }
+            if(!(event.keyCode == 37 || event.keyCode == 39 || refLength.charAt(14) == '_' || event.keyCode == 8)){                
+               fetch();
+            }                           
+            });
+    });
+});
+function fetch() {            
+            var id = $("#CNIC").val();   
+    $("#loader").show();
+            $.ajax({
+                type: "POST",
+                url: "/MemberTrainingDetails/AjaxMemberInformation",
+                data: { id: id },
+                dataType: "json",
+                success: function (response) {
+                    debugger;
+                    if (response.isValid != false) {                        
+                        $('#MemberId').val(response.memberId);                        
+                        $('#MemberName').val(response.memberName);                        
+                        $('#FatherName').val(response.fatherName);                        
+                        $('#Designation').val(response.designation);                        
+                        $('#CellNo').val(response.cellNo);
+                        $('#Gender').val(response.gender);
+                        $('#IsRefugee').prop('checked', response.isRefugee);
+                        $('#MISCode').val(response.misCode);    
+                        if(true){   
+                            var imgdata = 'data:image/png;base64,' + response.profilePicture;                            
+                            $('#profilePicture').attr('src', imgdata);
+                        }       
+                        EnableTextBoxes(true);
+                        IsCleaned = true;
+                        notificationme('Fetch data successfully!');
+                    }else{
+                        IsCleaned = false;
+                        var refLength = $("#CNIC").val();                    
+                        if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
+                            $('#IsRefugee').prop('checked', true);                                    
+                        }    else{
+                            $('#IsRefugee').prop('checked', false);
+                        }                    
+                    }
+                    $("#loader").hide();
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        function isAlphaOrParen(str) {
+          return /^[a-zA-Z()]+$/.test(str);
+        }
+        function EnableTextBoxes(val){
+            $("#MemberName").attr('readonly',val);
+            $("#FatherName").attr('readonly',val);
+            $("#Designation").attr('readonly',val);
+            $("#CellNo").attr('readonly',val);
+            $("#Gender").attr('disabled',val);
+            //$("#IsRefugee").attr('disabled',val);
+            $("#MISCode").attr('readonly',val);
+            if (val == false) {
+                IsCleaned = true;
+                $('#MemberId').val(0);     
+                $("#MemberName").val('');
+                $("#FatherName").val('');
+                $("#Designation").val('');
+                $("#CellNo").val('');                
+                $("#MISCode").val('');
+                $('#profilePicture').attr('src', '');
+                //$("#IsRefugee").attr('disabled',val);
+                //$('#IsRefugee').prop('checked', false);
+            }
+        }
+function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+</script>
+}

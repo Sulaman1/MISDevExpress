@@ -1,0 +1,25 @@
+﻿@model DAL.Models.Domain.MasterSetup.BeneficiaryType
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BeneficiaryType</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BeneficiaryTypeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BeneficiaryTypeName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BeneficiaryTypeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
