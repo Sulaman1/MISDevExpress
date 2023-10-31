@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DAL.Models.Domain.BSF.BSFPrivateStage>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+
+
+        <div class="col-lg-4">
+            <div class="card mini-stats-wid">
+                <div class="card-body" style="background-color:#E5E4E2">
+                    <div class="d-flex flex-wrap">
+                        <div class="mr-3">
+                            <h5 class="mb-0">Stage-@item.StageNumber</h5>
+                            <p class="text-muted mb-2">@item.StageName</p>
+                            @*<div data-toggle="modal" data-target="#myModal" onclick="createModal('@item.StageAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>*@
+                            @*<p>Release Amount: @item.AmountRelease</p>*@
+                        </div>
+                        <div class="avatar-sm ml-auto">
+                            <div style="cursor:pointer" data-toggle="modal" data-target="#myModal" onclick="createModal('@item.StageAttachment')" class="avatar-title bg-light rounded-circle text-primary font-size-20">
+                                <i class="mdi mdi-attachment"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                        @if (item.BeforeAttachment != null)
+                        {
+                            <div class="mr-auto">
+                                <div style="cursor:pointer" data-toggle="modal" data-target="#myModal" onclick="createModal('@item.BeforeAttachment')" class="p-1 rounded font-size-16 bg-soft-warning">
+                                    <i class="dripicons-arrow-left"> </i> <span style="font-size:12px"> <b>Before</b></span>
+                                </div>
+                            </div>
+                        }         
+                        @if (item.AfterAttachment != null)
+                        {
+                            <div class="ml-auto">
+                                <div style="cursor:pointer" data-toggle="modal" data-target="#myModal" onclick="createModal('@item.AfterAttachment')" class="p-1 rounded font-size-16 bg-soft-success">
+                                    <i class="dripicons-arrow-right mt-1"></i> <span style="font-size:12px"> <b>After</b></span>
+                                </div>
+                            </div>
+                        }                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

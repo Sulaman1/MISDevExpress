@@ -1,0 +1,156 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.TVTTraining>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "Training";
+    ViewBag.Title = "Conducted";
+    ViewBag.pTitle = "Conducted";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.View).Result.Succeeded)
+{
+    <!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Training Conducted</p>
+                    </a>
+                    @{
+                        if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Create).Result.Succeeded)
+                        {
+                            <a class="nav-link" role="tab" asp-action="Create" asp-controller="TVTTrainings" aria-controls="v-pills-privacy" aria-selected="false">
+                                <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                                <p class="font-weight-bold mb-4">Add Training</p>
+                            </a>
+                        }
+                    }                                       
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of Training Conducted</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingType.TrainingHead.TrainingHeadName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingType.TrainingTypeName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingCode)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingTitle)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.District)
+                                                </th>  
+
+                                                 <th>
+                                                    Action
+                                                </th>  
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded)
+                                                {
+                                                    <th>Edit</th>
+                                                }
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Delete)).Result.Succeeded)
+                                                {
+                                                    <th>Delete</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingHead.TrainingHeadName)
+                                                    </td>
+                                                   <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingCode)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingTitle)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.District)
+                                                    </td>  
+                                                     <td>
+                                                        <a asp-action="details" asp-route-id="@item.TVTTrainingId">Detail</a>
+                                                    </td>
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded)
+                                                    {
+                                                        <td>
+                                                            <a asp-action="Edit" asp-route-id="@item.TVTTrainingId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                        </td>
+                                                    }
+
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Delete)).Result.Succeeded)
+                                                    {
+                                                        <td>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.TVTTrainingId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, Access denied!</h4>
+                        <h6>Contact with IT Administrator</h6>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

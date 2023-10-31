@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DAL.Models.Domain.ToolApp.ToolControlDetail>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ToolControl.Control)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToolControl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Label)
+            </th>                       
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.ToolControl.Control.Name)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToolControl.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Label)
+            </td>                     
+            <td>
+               @* <a asp-action="Edit" asp-route-id="@item.ToolControlDetailId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ToolControlDetailId">Details</a> |*@
+                    <a asp-action="DeleteControlOption" asp-route-id="@item.ToolControlDetailId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

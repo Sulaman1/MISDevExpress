@@ -1,0 +1,67 @@
+﻿@model DAL.Models.Domain.BSF.BSFPrivateStage
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>BSFPrivateStage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BSFPrivateStageId" />
+            <div class="form-group">
+                <label asp-for="BSFPrivateId" class="control-label"></label>
+                <select asp-for="BSFPrivateId" class="form-control" asp-items="ViewBag.BSFPrivateId"></select>
+                <span asp-validation-for="BSFPrivateId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StageNumber" class="control-label"></label>
+                <input asp-for="StageNumber" class="form-control" />
+                <span asp-validation-for="StageNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StageName" class="control-label"></label>
+                <input asp-for="StageName" class="form-control" />
+                <span asp-validation-for="StageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StageAttachment" class="control-label"></label>
+                <input asp-for="StageAttachment" class="form-control" />
+                <span asp-validation-for="StageAttachment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmountRelease" class="control-label"></label>
+                <input asp-for="AmountRelease" class="form-control" />
+                <span asp-validation-for="AmountRelease" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OnDate" class="control-label"></label>
+                <input asp-for="OnDate" class="form-control" />
+                <span asp-validation-for="OnDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedBy" class="control-label"></label>
+                <input asp-for="CreatedBy" class="form-control" />
+                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

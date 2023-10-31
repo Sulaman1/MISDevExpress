@@ -12,8 +12,21 @@
     Layout = "~/Views/_Shared/_Layout.cshtml";
 }
 
-
-@if (true)
+@{
+    var classes = new[]
+         {   new SelectListItem { Text = "1", Value = "1" },
+              new SelectListItem { Text = "2", Value = "2" },
+              new SelectListItem { Text = "3", Value = "3" },
+              new SelectListItem { Text = "4", Value = "4" },
+              new SelectListItem { Text = "5", Value = "5" },
+              new SelectListItem { Text = "6", Value = "6" },
+              new SelectListItem { Text = "7", Value = "7" },
+              new SelectListItem { Text = "8", Value = "8" },
+              new SelectListItem { Text = "9", Value = "9" },
+              new SelectListItem { Text = "10", Value = "10" },
+    };
+}
+@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Create).Result.Succeeded)
 {
     <div class="checkout-tabs">
         <div class="row">
@@ -63,7 +76,15 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label class="control-label">Union Council</label>
-                                                <select required asp-for="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">
+                                                <select required id="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Village</label>
+                                                <select required asp-for="VillageId" asp-items="ViewBag.VillageId" class="form-control">
                                                     <option value=""> - - Select - -</option>
                                                 </select>
                                             </div>
@@ -85,7 +106,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label asp-for="TrainingName" class="control-label"></label>
                                                 <input asp-for="TrainingName" class="form-control" placeholder="Training Name" required />
@@ -117,7 +138,7 @@
                                                 <input asp-for="TotalDays" class="form-control" required/>
                                                 <span asp-validation-for="TotalDays" class="text-danger"></span>
                                             </div>
-                                        </div>
+                                        </div>                                       
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label asp-for="TotalMember" class="control-label"></label>
@@ -125,21 +146,28 @@
                                                 <span asp-validation-for="TotalMember" class="text-danger"></span>
                                             </div>
                                         </div>
-                                         <div class="col-md-4">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="TotalClasses" class="control-label"></label>
+                                                <input asp-for="TotalClasses" class="form-control" required />
+                                                <span asp-validation-for="TotalClasses" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
                                            <div class="form-group">
                                                 <label asp-for="AttendanceAttachment" class="control-label"></label>
                                                 <input type="file" name="AttendanceAttachment" class="form-control" accept="application/pdf"/>
                                                 <span asp-validation-for="AttendanceAttachment" class="text-danger"></span>
                                             </div>
                                         </div>
-                                         <div class="col-md-4">
+                                         <div class="col-md-3">
                                            <div class="form-group">
                                                 <label asp-for="ReportAttachment" class="control-label"></label>
                                                 <input type="file" name="ReportAttachment" class="form-control" accept="application/pdf"/>
                                                 <span asp-validation-for="ReportAttachment" class="text-danger"></span>
                                             </div>                                           
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label asp-for="SessionPlanAttachment" class="control-label"></label>
                                                 <input type="file" name="SessionPlanAttachment" class="form-control" accept="application/pdf" />
@@ -224,7 +252,7 @@ else
             $("#TrainingHeadId").change(function () {                                
                 $.get("/MemberTrainings/GetTrainingTypes", { trainingHeadId: $("#TrainingHeadId").val() }, function (data) {
                     $("#TrainingTypeId").empty();                   
-                    $("#TrainingTypeId").append('<option value="0">Select...</option>');
+                    $("#TrainingTypeId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -236,7 +264,7 @@ else
             $("#SectionId").change(function () {                                
                 $.get("/MemberTrainings/GetEmployees", { sectionId: $("#SectionId").val() }, function (data) {
                     $("#EmployeeId").empty();                   
-                    $("#EmployeeId").append('<option value="0">Select...</option>');
+                    $("#EmployeeId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -249,8 +277,10 @@ else
                 $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
                     $("#TehsilId").empty();
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
-                    $("#TehsilId").append('<option value="0">Select...</option>');
+                    $("#VillageId").empty();
+                    $("#VillageId").append('<option>Select...</option>');
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -259,11 +289,12 @@ else
                 });
                 return false;
             });
-            $("#TehsilId").change(function () {
-                $("#UnionCouncilId").empty();
+            $("#TehsilId").change(function () {                
                 $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    $("#VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -271,7 +302,19 @@ else
                     });
                 });
                 return false;
-            })
+            });
+            $("#UnionCouncilId").change(function () {                
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#VillageId").empty();
+                    $("#VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
         });      
     </script>
 }

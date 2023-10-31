@@ -1,0 +1,90 @@
+﻿@model DAL.Models.Domain.ToolApp.DropdownenuAccess
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<h1>Create</h1>
+
+<h4>DropdownenuAccess</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ToolId"/>   
+             <div class="form-group">
+                <label asp-for="ToolModuleName" class="control-label"></label>
+                <input asp-for="ToolModuleName" class="form-control" style="background-color:lightpink" readyonly="readonly"/>
+                <span asp-validation-for="ToolModuleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DropdownMenuName" class="control-label"></label>
+                <select required asp-for="DropdownMenuName" asp-items="ViewBag.DropdownMenuId" class="form-control">
+                    <option value=""> - - Select - -</option>
+                </select>
+                <span asp-validation-for="DropdownMenuName" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <select asp-for="Value" required asp-for="DropdownMenuName" class="form-control">
+                    
+                </select>
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts{
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#DropdownMenuName").change(function () {
+                $.get("/DropdownenuAccesses/GetDropdown", { DropdownMenuName: $("#DropdownMenuName").val() }, function (data) {
+                    $("#Value").empty();                                        
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#Value").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+       
+        });
+        
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+    </script>
+}
+

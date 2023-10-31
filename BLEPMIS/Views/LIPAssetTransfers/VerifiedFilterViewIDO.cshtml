@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "LIP";
+    ViewBag.Title = "Asset Transfer";
+    ViewBag.pTitle = "Asset Transfer";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info text-center" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">LIP Asset Transfer</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">District</label>
+                                            <select id="DistrictId" class="form-control" asp-items="ViewBag.DistrictId">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Tehsil</label>
+                                            <select id="TehsilId" class="form-control">
+                                                <option>All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Union Council</label>
+                                            <select id="UnionCouncilId" class="form-control">
+                                                <option>All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">LIP Package</label>
+                                            <select id="LIPPackageId" class="form-control" asp-items="ViewBag.LIPPackageId">
+                                                <option>All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Apply</label>
+                                            <button class="btn btn-sm btn-primary mt-1" onclick="UpdateTable()">Go</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1" style="padding-top:30px;Display:none" id="loading">
+                                        <img src="~/assets/images/loading.gif" height="25" />
+                                    </div>
+
+                                </div>
+                                <div class="table-responsive" id="events">
+
+                                    @(await Component.InvokeAsync("LIPAssetTransferReport", new { DId = ViewBag.DId, TId = 0, UCId = 0, PId = 0, IsRefugee = true }))
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    <script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option>All</option>');
+                    $("#TehsilId").append('<option>All</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option>All</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        });
+        function UpdateTable() {
+            var DId = $("#DistrictId").val();
+            var TId = $("#TehsilId").val();
+            var UCId = $("#UnionCouncilId").val();
+            var PId = $("#LIPPackageId").val();
+            $("#loading").show();
+            $("#result").hide();
+            $.ajax({
+                url: '@Url.Action("ReloadLIPAssetTransferReportIDO", "LIPAssetTransfers")',
+                data: {
+                    DId: DId,
+                    TId: TId,
+                    UCId: UCId,
+                    PId: PId
+                },
+                success: function (data) {
+                    $("#events").html(data);
+                    $("#loading").hide();
+                    $("#result").show();
+                }
+            });
+        }
+
+
+    </script>
+    }

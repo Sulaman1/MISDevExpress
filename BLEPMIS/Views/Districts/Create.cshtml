@@ -13,7 +13,7 @@
 }
 
 
-@if (true)
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Create).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Create).Result.Succeeded)
 {
     <div class="checkout-tabs">
         <div class="row">

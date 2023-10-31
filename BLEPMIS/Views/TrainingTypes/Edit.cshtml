@@ -69,7 +69,14 @@
                                                 <input asp-for="TrainingTypeName" class="form-control" placeholder="Training Name" required />
                                                 <span asp-validation-for="TrainingTypeName" class="text-danger"></span>
                                             </div>
-                                        </div>                                                                                                                       
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="TrainingTypeCode" class="control-label"></label>
+                                                <input asp-for="TrainingTypeCode" class="form-control inputBox input-mask" data-inputmask="'mask': 'AA'" />
+                                                <span asp-validation-for="TrainingTypeCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -155,4 +162,10 @@ else
             </div>
         </div>
     </div>
+}
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
 }

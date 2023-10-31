@@ -11,16 +11,19 @@ using System.IO;
 using UnionCouncil = DAL.Models.Domain.MasterSetup.UnionCouncil;
 using Tehsil = DAL.Models.Domain.MasterSetup.Tehsil;
 using BAL.IRepository.MasterSetup.CD;
+using DBContext.Data;
 
 namespace BLEPMIS.Controllers.MasterSetup
 {
     public class CommunityInstitutionsController : Controller
     {
         private readonly ICommunityInstitution _context;                     
+        private readonly ApplicationDbContext _context0;                     
         
-        public CommunityInstitutionsController(ICommunityInstitution context)
+        public CommunityInstitutionsController(ICommunityInstitution context, ApplicationDbContext context1)
         {
             _context = context;            
+            _context0 = context1;            
         }
         public async Task<IActionResult> CDSummaryView()
         {          
@@ -124,7 +127,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             string message = "";
             if (status)
             {
-                message = "Profile has been rejected and pushed back successfully.";
+                message = "Profile has been approved successfully.";
                 return Json(new { isValid = status, message = message });
             }
             else
@@ -138,7 +141,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             string message = "";
             if (status)
             {
-                message = "Profile has been rejected and pushed back successfully.";
+                message = "Profile has been forwarded for approval successfully.";
                 return Json(new { isValid = status, message = message });
             }
             else
@@ -155,6 +158,16 @@ namespace BLEPMIS.Controllers.MasterSetup
                 Value = m.TehsilId.ToString(),
             });
             return Json(tehsilList);            
+        }
+        public async Task<JsonResult> GetTehsilsName(string districtName)
+        {
+            List<Tehsil> tehsils = await _context.GetAllTehsilName(districtName);
+            var tehsilList = tehsils.Select(m => new SelectListItem()
+            {
+                Text = m.TehsilName.ToString(),
+                Value = m.TehsilName.ToString(),
+            });
+            return Json(tehsilList);
         }
         public async Task<JsonResult> GetUCs(int tehsilId)
         {
@@ -176,7 +189,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             });
             return Json(VillageList);
         }
-        // GET: CommunityInstitutions/Create
+        // GET: CommunityInstitutions/detail
         public async Task<IActionResult> Create(int id)
         {
             if (id == 0)
@@ -229,9 +242,71 @@ namespace BLEPMIS.Controllers.MasterSetup
                 }
             }
             if (ModelState.IsValid)
-            {                                
-                _context.Insert(communityInstitution, DistrictId, TehsilId, SeletionFormAttachment, VillageProfileAttachment, TOPAttachment);
-                _context.Save();
+            {
+                if (SeletionFormAttachment != null && SeletionFormAttachment.Length > 0)
+                {
+                    Random random = new Random();
+                    int randomNumber1 = random.Next(999, 100000);
+                    var rootPath = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\SeletionForm"+ randomNumber1.ToString() +"\\");
+                    string fileName = Path.GetFileName(SeletionFormAttachment.FileName);
+                    int randomNumber2 = random.Next(999, 100000);
+                    fileName = "SeletionForm" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                    communityInstitution.SeletionFormAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/SeletionForm" + randomNumber1.ToString() + "/" + fileName);//Server Path
+                    string sPath = Path.Combine(rootPath);
+                    if (!System.IO.Directory.Exists(sPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sPath);
+                    }
+                    string FullPathWithFileName = Path.Combine(sPath, fileName);
+                    using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                    {
+                        await SeletionFormAttachment.CopyToAsync(stream);
+                    }
+                }
+                if (VillageProfileAttachment != null && VillageProfileAttachment.Length > 0)
+                {
+                    Random random = new Random();
+                    int randomNumber1 = random.Next(999, 100000);
+                    var rootPath = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\VillageProfile"+ randomNumber1.ToString() +"\\");
+                    string fileName = Path.GetFileName(VillageProfileAttachment.FileName);                    
+                    int randomNumber2 = random.Next(999, 100000);
+                    fileName = "VillageProfile" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                    communityInstitution.VillageProfileAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/VillageProfile"+ randomNumber1.ToString() + "/" + fileName);//Server Path
+                    string sPath = Path.Combine(rootPath);
+                    if (!System.IO.Directory.Exists(sPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sPath);
+                    }
+                    string FullPathWithFileName = Path.Combine(sPath, fileName);
+                    using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                    {
+                        await VillageProfileAttachment.CopyToAsync(stream);
+                    }
+                }
+                if (TOPAttachment != null && TOPAttachment.Length > 0)
+                {
+                    Random random = new Random();
+                    int randomNumber1 = random.Next(999, 100000);
+                    var rootPath = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\TOP"+ randomNumber1.ToString() +"\\");
+                    string fileName = Path.GetFileName(TOPAttachment.FileName);                    
+                    int randomNumber2 = random.Next(999, 100000);
+                    fileName = "TOP" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                    communityInstitution.TOPAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/TOP"+ randomNumber1.ToString() +"/" + fileName);//Server Path
+                    string sPath = Path.Combine(rootPath);
+                    if (!System.IO.Directory.Exists(sPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sPath);
+                    }
+                    string FullPathWithFileName = Path.Combine(sPath, fileName);
+                    using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                    {
+                        await TOPAttachment.CopyToAsync(stream);
+                    }
+                }                
+                _context.Insert(communityInstitution, DistrictId, TehsilId);                
                 return RedirectToAction(nameof(Index), new {id = communityInstitution.CommunityTypeId});
             }
             //-----------------------------------------------
@@ -239,8 +314,8 @@ namespace BLEPMIS.Controllers.MasterSetup
             ViewData["DistrictId"] = new SelectList(districtAccess, "DistrictId", "Name", communityInstitution.DistrictId);
             //----------------------------------------------- 
             ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(DistrictId), "TehsilId", "TehsilName", TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
             return View(communityInstitution);
         }
 
@@ -265,9 +340,9 @@ namespace BLEPMIS.Controllers.MasterSetup
                 ViewBag.Heading = "Common Interest Groups";
             }                        
             ViewData["DistrictId"] = new SelectList(await _context.GetDistricts(HttpContext.User), "DistrictId", "Name", communityInstitution.DistrictId);            
-            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(communityInstitution.DistrictId), "TehsilId", "TehsilName", communityInstitution.UnionCouncil.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(communityInstitution.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(communityInstitution.DistrictId), "TehsilId", "TehsilName", communityInstitution.Village.UnionCouncil.TehsilId);
+            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(communityInstitution.Village.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
             return View(communityInstitution);
         }
 
@@ -276,7 +351,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  CommunityInstitution communityInstitution, int DistrictId, IFormFile SeletionFormAttachment, IFormFile VillageProfileAttachment, IFormFile TOPAttachment)
+        public async Task<IActionResult> Edit(int id,  CommunityInstitution communityInstitution, int DistrictId, IFormFile SeletionFormAttachment, IFormFile VillageProfileAttachment, IFormFile TOPAttachment, int IsUnverifed)
         {
             if (id != communityInstitution.CommunityInstitutionId)
             {
@@ -286,9 +361,86 @@ namespace BLEPMIS.Controllers.MasterSetup
             if (ModelState.IsValid)
             {
                 try
-                {                   
-                    _context.UpdateCI(communityInstitution, DistrictId, SeletionFormAttachment, VillageProfileAttachment, TOPAttachment);
-                    _context.Save();
+                {           
+                    if(IsUnverifed == 1)
+                    {
+                        communityInstitution.IsVerified = false;
+                    }else if(IsUnverifed == 2)
+                    {
+                        communityInstitution.IsReviewed = false;
+                        communityInstitution.IsVerified = false;
+                    }else if(IsUnverifed == 3)
+                    {
+                        communityInstitution.IsReviewed = false;
+                        communityInstitution.IsVerified = false;
+                        communityInstitution.IsSubmittedForReview = false;
+                    }
+                    if (SeletionFormAttachment != null && SeletionFormAttachment.Length > 0)
+                    {
+                        Random random = new Random();
+                        int randomNumber1 = random.Next(999, 100000);
+                        var rootPath = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\SeletionForm" + randomNumber1.ToString() + "\\");
+                        string fileName = Path.GetFileName(SeletionFormAttachment.FileName);
+                        int randomNumber2 = random.Next(999, 100000);
+                        fileName = "SeletionForm" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                        communityInstitution.SeletionFormAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/SeletionForm" + randomNumber1.ToString() + "/" + fileName);//Server Path
+                        string sPath = Path.Combine(rootPath);
+                        if (!System.IO.Directory.Exists(sPath))
+                        {
+                            System.IO.Directory.CreateDirectory(sPath);
+                        }
+                        string FullPathWithFileName = Path.Combine(sPath, fileName);
+                        using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                        {
+                            await SeletionFormAttachment.CopyToAsync(stream);
+                        }
+                    }
+                    if (VillageProfileAttachment != null && VillageProfileAttachment.Length > 0)
+                    {
+                        Random random = new Random();
+                        int randomNumber1 = random.Next(999, 100000);
+                        var rootPath = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\VillageProfile" + randomNumber1.ToString() + "\\");
+                        string fileName = Path.GetFileName(VillageProfileAttachment.FileName);
+                        int randomNumber2 = random.Next(999, 100000);
+                        fileName = "VillageProfile" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                        communityInstitution.VillageProfileAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/VillageProfile" + randomNumber1.ToString() + "/" + fileName);//Server Path
+                        string sPath = Path.Combine(rootPath);
+                        if (!System.IO.Directory.Exists(sPath))
+                        {
+                            System.IO.Directory.CreateDirectory(sPath);
+                        }
+                        string FullPathWithFileName = Path.Combine(sPath, fileName);
+                        using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                        {
+                            await VillageProfileAttachment.CopyToAsync(stream);
+                        }
+                    }
+                    if (TOPAttachment != null && TOPAttachment.Length > 0)
+                    {
+                        Random random = new Random();
+                        int randomNumber1 = random.Next(999, 100000);
+                        var rootPath = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot\\Documents\\CD" + DistrictId.ToString() + "\\TOP" + randomNumber1.ToString() + "\\");
+                        string fileName = Path.GetFileName(TOPAttachment.FileName);
+                        int randomNumber2 = random.Next(999, 100000);
+                        fileName = "TOP" + randomNumber2.ToString() + Path.GetExtension(fileName);
+                        communityInstitution.TOPAttachment = Path.Combine("/Documents/CD" + DistrictId.ToString() + "/TOP" + randomNumber1.ToString() + "/" + fileName);//Server Path
+                        string sPath = Path.Combine(rootPath);
+                        if (!System.IO.Directory.Exists(sPath))
+                        {
+                            System.IO.Directory.CreateDirectory(sPath);
+                        }
+                        string FullPathWithFileName = Path.Combine(sPath, fileName);
+                        using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                        {
+                            await TOPAttachment.CopyToAsync(stream);
+                        }
+                    }
+                    communityInstitution.District = _context0.District.Find(DistrictId).Name;
+                    _context0.Update(communityInstitution);
+                    _context0.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -305,9 +457,9 @@ namespace BLEPMIS.Controllers.MasterSetup
             }
             ViewBag.Heading = (id == 1) ? "Community Institutions" : "Common Interest Groups";           
             ViewData["DistrictId"] = new SelectList(await _context.GetDistricts(HttpContext.User), "DistrictId", "Name", communityInstitution.DistrictId);            
-            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(communityInstitution.DistrictId), "TehsilId", "TehsilName", communityInstitution.UnionCouncil.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(communityInstitution.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.UnionCouncilId);
-            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
+            ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(communityInstitution.DistrictId), "TehsilId", "TehsilName", communityInstitution.Village.UnionCouncil.TehsilId);
+            ViewData["UnionCouncilId"] = new SelectList(await _context.GetAllUC(communityInstitution.Village.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", communityInstitution.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(await _context.GetAllVillage(communityInstitution.Village.UnionCouncilId), "VillageId", "Name", communityInstitution.VillageId);
             return View(communityInstitution);
         }
         // GET: CommunityInstitutions/Delete/5
@@ -340,8 +492,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 _context.Remove(communityInstitution);
             }
-            
-            _context.Save();
+                        
             return RedirectToAction(nameof(Index));
         }
         private bool CommunityInstitutionExists(int id)

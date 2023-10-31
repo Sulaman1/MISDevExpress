@@ -8,47 +8,38 @@ using Microsoft.EntityFrameworkCore;
 using DBContext.Data;
 using DAL.Models.Domain.MasterSetup;
 using BAL.IRepository.MasterSetup.HR;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BLEPMIS.Controllers.MasterSetup
 {
     public class EmployeeContractsController : Controller
     {
-        private readonly IEmployeeContract _context;
+        private readonly ApplicationDbContext _context;
 
-        public EmployeeContractsController(IEmployeeContract context)
+        public EmployeeContractsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: EmployeeContracts
-        public async Task<IActionResult> Index()
-        {            
-            return View(await _context.GetAll());
+        public async Task<IActionResult> Index(int id)
+        {
+            ViewBag.Id = id;            
+            return View(await _context.EmployeeContract.Include(a=>a.HREmployee).Where(a=>a.HREmployeeId == id).ToListAsync());
         }
 
         // GET: EmployeeContracts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context == null)
-            {
-                return NotFound();
-            }
-
-            var employeeContract = await _context
-                .GetById(id);
-            if (employeeContract == null)
-            {
-                return NotFound();
-            }
-
-            return View(employeeContract);
-        }
+        
 
         // GET: EmployeeContracts/Create
-        public IActionResult Create()
-        {
-            //ViewData["EmployeeId"] = new SelectList(_context.GetAll(), "EmployeeId", "EmployeeId");
-            return View();
+        public IActionResult Create(int id)
+        {            
+            EmployeeContract obj = new EmployeeContract();
+            obj.HREmployeeId = id;
+            obj.StartDate = DateTime.Today;
+            obj.EndDate = DateTime.Today;
+            return View(obj);
         }
 
         // POST: EmployeeContracts/Create
@@ -56,13 +47,33 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeContractId,EmployeeContractPath,StartDate,EndDate,EmployeeId")] EmployeeContract employeeContract)
+        public async Task<IActionResult> Create(EmployeeContract employeeContract, IFormFile? EmployeeContractPath)
         {
             if (ModelState.IsValid)
             {
-                _context.Insert(employeeContract);
-                _context.Save();
-                return RedirectToAction(nameof(Index));
+                if (EmployeeContractPath != null && EmployeeContractPath.Length > 0)
+                {
+                    var rootPath = Path.Combine(
+                    Directory.GetCurrentDirectory(), "wwwroot\\Documents\\HR" + employeeContract.HREmployeeId + "\\");
+                    string fileName = Path.GetFileName(EmployeeContractPath.FileName);
+                    Random random = new Random();
+                    int randomNumber = random.Next(9999, 100000);
+                    fileName = "Contract" + randomNumber.ToString() + Path.GetExtension(fileName);
+                    employeeContract.EmployeeContractPath = Path.Combine("/Documents/HR" + employeeContract.HREmployeeId + "/" + fileName);//Server Path
+                    string sPath = Path.Combine(rootPath);
+                    if (!System.IO.Directory.Exists(sPath))
+                    {
+                        System.IO.Directory.CreateDirectory(sPath);
+                    }
+                    string FullPathWithFileName = Path.Combine(sPath, fileName);
+                    using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
+                    {
+                        await EmployeeContractPath.CopyToAsync(stream);
+                    }
+                }
+                _context.Add(employeeContract);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new {id = employeeContract.HREmployeeId});
             }
             //ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "EmployeeId", employeeContract.EmployeeId);
             return View(employeeContract);
@@ -76,7 +87,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                 return NotFound();
             }
 
-            var employeeContract = await _context.GetById(id);
+            var employeeContract = await _context.EmployeeContract.FindAsync(id);
             if (employeeContract == null)
             {
                 return NotFound();
@@ -90,7 +101,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeContractId,EmployeeContractPath,StartDate,EndDate,EmployeeId")] EmployeeContract employeeContract)
+        public async Task<IActionResult> Edit(int id, EmployeeContract employeeContract)
         {
             if (id != employeeContract.EmployeeContractId)
             {
@@ -101,8 +112,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    _context.Update(employeeContract);
-                    _context.Save();
+                    _context.Update(employeeContract);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,7 +139,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                 return NotFound();
             }
 
-            var employeeContract = await _context.GetById(id);
+            var employeeContract = await _context.EmployeeContract.FindAsync(id);
             if (employeeContract == null)
             {
                 return NotFound();
@@ -147,18 +157,17 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 return Problem("Entity set 'ApplicationDbContext.EmployeeContract'  is null.");
             }
-            var employeeContract = await _context.GetById(id);
+            var employeeContract = await _context.EmployeeContract.FindAsync(id);
             if (employeeContract != null)
             {
                 _context.Remove(employeeContract);
-            }            
-            _context.Save();
-            return RedirectToAction(nameof(Index));
+            }                        
+            return RedirectToAction(nameof(Index), new {id = employeeContract.HREmployeeId});
         }
 
         private bool EmployeeContractExists(int id)
         {
-          return _context.Exist(id);
+            return _context.EmployeeContract.Any(e => e.EmployeeContractId == id);
         }
     }
 }

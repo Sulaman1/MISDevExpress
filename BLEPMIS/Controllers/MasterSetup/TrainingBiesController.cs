@@ -63,7 +63,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     return View(trainingBy);
                 }
                 _context.Add(trainingBy);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(trainingBy);
@@ -108,7 +108,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                         return View(trainingBy);
                     }
                     _context.Update(trainingBy);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,8 +158,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 _context.TrainingBy.Remove(trainingBy);
             }
-            
-            await _context.SaveChangesAsync();
+                        
             return RedirectToAction(nameof(Index));
         }
 

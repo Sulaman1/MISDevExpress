@@ -12,7 +12,7 @@
 }
 
 
-@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded)
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verified).Result.Succeeded)
 {
     <!-- DataTables -->
     <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -64,7 +64,7 @@
                                                     <td>
                                                         <a asp-action="details" asp-route-id="@item.CommunityInstitutionId">View</a>
                                                         @{
-                                                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.Edit).Result.Succeeded){
+                                                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Special).Result.Succeeded){
                                                                 <span> | </span>
                                                                 <a asp-action = "Edit" asp-route-id = "@item.CommunityInstitutionId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
                                                             }

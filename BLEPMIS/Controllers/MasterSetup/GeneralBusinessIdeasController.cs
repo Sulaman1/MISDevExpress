@@ -58,8 +58,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         {
             if (ModelState.IsValid)
             {
-                _context.Insert(generalBusinessIdea);
-                _context.Save();
+                _context.Insert(generalBusinessIdea);                
                 return RedirectToAction(nameof(Index));
             }
             return View(generalBusinessIdea);
@@ -97,8 +96,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    _context.Update(generalBusinessIdea);
-                    _context.Save();
+                    _context.Update(generalBusinessIdea);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -146,9 +144,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             if (generalBusinessIdea != null)
             {
                 _context.Remove(generalBusinessIdea);
-            }
-            
-            _context.Save();
+            }            
             return RedirectToAction(nameof(Index));
         }
 

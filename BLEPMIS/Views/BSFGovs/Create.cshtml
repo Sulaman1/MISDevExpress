@@ -1,0 +1,262 @@
+﻿@model DAL.Models.Domain.BSF.BSFGov
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Create";
+    ViewBag.pageTitle = "BSF";
+    ViewBag.Title = "Government";
+    ViewBag.pTitle = "Government";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var state = new[]
+         {   new SelectListItem { Text = "New", Value = "New" },
+              new SelectListItem { Text = "Rehabilitation", Value = "Rehabilitation" },
+    };
+}
+
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+          @*  <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-controller="BSFGovs" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of BSF</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Add New BSF</p>
+                    </a>                  
+                </div>
+            </div>*@
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Add New BSF</h4>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <form asp-action="Create" enctype="multipart/form-data">
+                                    <div class="row">                                        
+                                        <div class="col-md-4">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="CreatedBy"/>
+                                            <input type="hidden" asp-for="CreatedOn"/>
+                                            <input type="hidden" asp-for="UserId"/>                                        
+                                            <input type="hidden" asp-for="BSFName"/>                                        
+                                            <div class="form-group">
+                                                <label asp-for="DepartmentName" class="control-label"></label>
+                                                <select asp-for="DepartmentName" class="form-control" asp-items="ViewBag.BSFDepartmentId"></select>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="SiteName" class="control-label"></label>
+                                                <input asp-for="SiteName" class="form-control" />
+                                                <span asp-validation-for="SiteName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="DistrictName" class="control-label"></label>
+                                                <select asp-for="DistrictName" class="form-control" asp-items="ViewBag.DistrictId">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                                <span asp-validation-for="DistrictName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="TehsilName" class="control-label"></label>
+                                                <select asp-for="TehsilName" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="ConstructionType" class="control-label"></label>
+                                                <select asp-for="ConstructionType" class="form-control" asp-items="ViewBag.ConstructionType">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                                <span asp-validation-for="ConstructionType" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="BSFGovtPackage" class="control-label"></label>
+                                                <select required asp-for="BSFGovtPackage" asp-items="ViewBag.BSFGovtPackage" class="form-control">
+                                                    <option value=""> - - Select - -</option>
+                                                </select>
+                                                <span asp-validation-for="BSFGovtPackage" class="text-danger"></span>
+                                            </div>
+                                        </div>                                       
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DepartmentContactNumber" class="control-label"></label>
+                                                <input asp-for="DepartmentContactNumber" class="form-control" />
+                                                <span asp-validation-for="DepartmentContactNumber" class="text-danger"></span>
+                                            </div>                                          
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DepartmentFaxNumber" class="control-label"></label>
+                                                <input asp-for="DepartmentFaxNumber" class="form-control" />
+                                                <span asp-validation-for="DepartmentFaxNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @*<div class="form-group">
+                                            <label asp-for="IsNew" class="control-label"></label>
+                                            <select tabindex="6" asp-for="IsNew" asp-items="@state" class="form-control"></select>
+                                            <span asp-validation-for="IsNew" class="text-danger"></span>
+                                        </div>*@
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Latitute" class="control-label"></label>
+                                                <input asp-for="Latitute" class="form-control" type="number" min="-90.000000" max="90.000000" step="0.000001" />
+                                                <span asp-validation-for="Latitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Longitute" class="control-label"></label>
+                                                <input asp-for="Longitute" class="form-control" type="number" min="-90.000000" max="90.000000" step="0.000001" />
+                                                <span asp-validation-for="Longitute" class="text-danger"></span>
+                                            </div>
+                                        </div>                                      
+                                       
+                                       @* <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="FocalPersonName" class="control-label"></label>
+                                                <input asp-for="FocalPersonName" class="form-control" />
+                                                <span asp-validation-for="FocalPersonName" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                      @*  <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Designation" class="control-label"></label>
+                                                <input asp-for="Designation" class="form-control" />
+                                                <span asp-validation-for="Designation" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                      @*  <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="FocalPersonCellNumber" class="control-label"></label>
+                                                <input asp-for="FocalPersonCellNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" required/>
+                                                <span asp-validation-for="FocalPersonCellNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="OnSitePersonName" class="control-label"></label>
+                                                <input asp-for="OnSitePersonName" class="form-control" />
+                                                <span asp-validation-for="OnSitePersonName" class="text-danger"></span>
+                                            </div>                                           
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="OnSitePersonCellNumber" class="control-label"></label>
+                                                <input tabindex="3" asp-for="OnSitePersonCellNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                                <span asp-validation-for="OnSitePersonCellNumber" class="text-danger"></span>
+                                            </div>                                           
+                                        </div>                                       
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="WorkScopeAttachment" class="control-label"></label>
+                                                <input type="file" name="WorkScopeAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="WorkScopeAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label asp-for="Description" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="Description" rows="4" placeholder="Enter a description ..."></textarea>
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Add BSF" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                       @* <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="TotalComponent" class="control-label"></label>
+                                                <input asp-for="TotalComponent" type="number" class="form-control" />
+                                                <span asp-validation-for="TotalComponent" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                        @*
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="FisibilityReportAttachment" class="control-label"></label>
+                                                <input type="file" name="FisibilityReportAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="FisibilityReportAttachment" class="text-danger"></span>
+                                            </div>                                            
+                                        </div>   *@                                     
+                                    </div>
+                                </form>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{    
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+
+    <script>
+    $(document).ready(function () {
+            $("#DistrictName").change(function () {
+                $.get("/CommunityInstitutions/GetTehsilsName", { districtName: $("#DistrictName").val() }, function (data) {
+                $("#TehsilName").empty();                
+                    $("#TehsilName").append('<option>Select...</option>');
+                console.log(data);
+                $.each(data, function (index, row) {
+                    console.log(row);
+                        $("#TehsilName").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                });
+            });            
+        });
+    });
+    </script>
+}

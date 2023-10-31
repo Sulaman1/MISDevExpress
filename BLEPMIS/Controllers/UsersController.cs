@@ -11,8 +11,8 @@ using BAL.IRepository.MasterSetup.UserManagement;
 
 namespace BLEPMIS.Controllers
 {
-[Authorize]
-public class UsersController : Controller
+    [Authorize(Roles = "SuperAdmin,Administrator")]
+    public class UsersController : Controller
 {
     private readonly IUser _context;    
     public UsersController(IUser context)

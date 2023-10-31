@@ -1,0 +1,692 @@
+﻿@model DAL.Models.ViewModels.LIPMemberAfghan
+@{
+    ViewData["Title"] = "Add";
+    ViewBag.pageTitle = "Add LIP Member";
+    ViewBag.Title = "Asset Transfer";
+    ViewBag.pTitle = "Asset Transfer";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+    };
+    var HouseStatus = new[]
+        {   new SelectListItem { Text = "Own", Value = "Own" },
+              new SelectListItem { Text = "Rented", Value = "Rented" },
+              new SelectListItem { Text = "Residing with Relatives", Value = "Residing with Relatives" },
+              new SelectListItem { Text = "Others", Value = "Others" },
+    };
+    var Assistance = new[]
+            {                 new SelectListItem { Text = "N/A", Value = "N/A" },
+new SelectListItem { Text = "Cash Based Incentives", Value = "Male" },
+              new SelectListItem { Text = "Vocational Trainings", Value = "Vocational Trainings" },
+              new SelectListItem { Text = "Livelihood Assets", Value = "Livelihood Assets" },
+              new SelectListItem { Text = "Others", Value = "Others" },
+    };
+    var training = new[]
+       {   new SelectListItem { Text = "Sun Drying", Value = "Sun Drying" },
+              new SelectListItem { Text = "Poultry", Value = "Poultry" },
+              new SelectListItem { Text = "Kitchen Gardening", Value = "Kitchen Gardening" },
+              new SelectListItem { Text = "Others", Value = "Others" },
+    };
+    var socioEconomic = new[]
+        {   new SelectListItem { Text = "Extremely Poor", Value = "Extremely Poor" },
+              new SelectListItem { Text = "Economically Active", Value = "Economically Active" },
+              new SelectListItem { Text = "Medium Income", Value = "Medium Income" },
+    };
+}
+<style>
+    .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<h6 class="danger" style="background-color:red">@Html.ValidationMessage("CustomError")</h6>
+<hr />
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="IndexIDO" asp-controller="LIPAssetTransfers" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Asset Transfer</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bxs-edit d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Edit Asset Transfer</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit Asset Transfer</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form asp-action="Update" enctype="multipart/form-data">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <input type="hidden" asp-for="LIPAssetTransfer.IdentifiedById" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.LIPAssetTransferId" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.DistrictId" />
+                                    @*                                    <input type="hidden" asp-for="LIPAssetTransfer.LIPPackageId" />
+                                *@                                    <input type="hidden" asp-for="LIPAssetTransfer.MemberId" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.VillageId" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.CNICAttachment" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.LIPFormAttachment" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.GRNAttachment" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.PictureAttachment1" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.PictureAttachment2" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.PictureAttachment3" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.PictureAttachment4" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.CreatedOn" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.DataCollectedBy" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.DataCollectorDesignation" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.IsReviewed" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.IsSubmitted" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.SubmittedBy" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.SubmittedOnDate" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.ReviewedBy" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.ReviewedOn" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.LIPCode" />
+                                    <input type="hidden" asp-for="LIPAssetTransfer.PSC" />
+                                    <input type="hidden" asp-for="Member.MemberId" />
+                                    @*                                    <input type="hidden" asp-for="Member.CNIC" />
+                                *@                                    <input type="hidden" asp-for="Member.IsRefugee" />
+                                    <input type="hidden" asp-for="Member.BeneficiaryTypeId" />
+                                    <input type="hidden" asp-for="MemberAfghanDetail.MemberId" />
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="Member.MemberName" class="control-label"></label>
+                                            <input asp-for="Member.MemberName" class="form-control" />
+                                            <span asp-validation-for="Member.MemberName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="Member.FatherName" class="control-label">Father/Husband Name</label>
+                                            <input asp-for="Member.FatherName" class="form-control" />
+                                            <span asp-validation-for="Member.FatherName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="Member.Gender" class="control-label"></label>
+                                            <select asp-for="Member.Gender" asp-items="@gender" class="form-control"></select>
+                                            <span asp-validation-for="Member.Gender" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="Member.CellNo" class="control-label">Contact #</label>
+                                            <input asp-for="Member.CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                            <span asp-validation-for="Member.CellNo" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Age" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Age" class="form-control inputBox input-mask" data-inputmask="'mask': '99'" />
+                                            <span asp-validation-for="MemberAfghanDetail.Age" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Education" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Education" class="form-control" />
+                                            <span asp-validation-for="MemberAfghanDetail.Education" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">ACC/PoR #</label>
+                                            @*                                            <input asp-for="Member.CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '**99999999999'" />
+                                        *@                                            <input asp-for="Member.CNIC" class="form-control inputBox input-mask" />
+                                            <span asp-validation-for="Member.CNIC" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">Family #</label>
+                                            @*                                            <input asp-for="Member.HouseHoldNo" class="form-control inputBox input-mask" data-inputmask="'mask': '**99999999999'" />
+                                        *@                                            <input asp-for="Member.HouseHoldNo" class="form-control inputBox input-mask" />
+                                            <span asp-validation-for="Member.HouseHoldNo" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">District</label>
+                                            <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">
+                                                <option value=""> - - Select - -</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">Tehsil</label>
+                                            <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
+                                                <option value=""> - - Select - -</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">Union Council</label>
+                                            <select required id="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">
+                                                <option value=""> - - Select - -</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label">Village</label>
+                                            <select required asp-for="Member.VillageId" asp-items="ViewBag.VillageId" class="form-control">
+                                                <option value=""> - - Select - -</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Muhalla" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Muhalla" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.Muhalla" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.ResidingSince" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.ResidingSince" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.ResidingSince" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Disability" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Disability" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.Disability" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.LivelihoodSource" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.LivelihoodSource" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.LivelihoodSource" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MonthlyIncome" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MonthlyIncome" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MonthlyIncome" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Province" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Province" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.Province" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.District" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.District" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.District" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Tehsil" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Tehsil" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.Tehsil" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.UC" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.UC" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.UC" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.Village" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.Village" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.Village" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.AfghanMuhalla" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.AfghanMuhalla" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.AfghanMuhalla" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.ReasonNotGoingback" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.ReasonNotGoingback" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.ReasonNotGoingback" class="text-danger"></span>
+                                        </div>
+                                        @*  <div class="col-md-3 form-group">
+                                    <label class="control-label">House Hold#</label>
+                                    <input asp-for="Member.HouseHoldNo" class="form-control" />
+                                    </div>*@
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.HHName" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.HHName" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.HHName" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.HHGender" class="control-label"></label>
+                                            <select asp-for="MemberAfghanDetail.HHGender" asp-items="@gender" class="form-control"></select>
+                                            <span asp-validation-for="MemberAfghanDetail.HHGender" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.HHAge" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.HHAge" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.HHAge" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <h4> Family Composition</h4>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Persons </th>
+                                                    <th> 0-04</th>
+                                                    <th> 5-11</th>
+                                                    <th> 12-17</th>
+                                                    <th> 18-59</th>
+                                                    <th> 60+</th>
+                                                    <th> Special Person</th>
+                                                    @* <th> Agriculture</th>
+                                                <th> LiveStock</th>
+                                                <th> job (Govt/Pvt)</th>
+                                                <th>Skilled Labor </th>
+                                                <th>Unskilled Labor </th>
+                                                <th>Business </th>*@
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th> Male</th>
+
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonM04" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonM511" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonM1217" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonM1859" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonM60" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonSpecialPersonM" class="form-control " /> </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th> Girls</th>
+
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonF04" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonF511" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonF1217" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonF1859" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonF60" class="form-control " /> </td>
+                                                    <td>  <input asp-for="MemberAfghanDetail.FamilyPersonSpecialPersonF" class="form-control " /> </td>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 form-group">
+                                            <h4>Livelihood Source</h4> <br />
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonAgri" class="form-check-input" />
+                                            <label asp-for="MemberAfghanDetail.FamilyPersonAgri" class="control-label">Agriculture/ Farming</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonAgri" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonLiveStock" class="form-check-input " />
+                                            <label asp-for="MemberAfghanDetail.FamilyPersonLiveStock" class="control-label">LiveStock / Poultry</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonLiveStock" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonJob" class="form-check-input " />
+                                            <label as p-for="MemberAfghanDetail.FamilyPersonJob" class="control-label">Job (Govt/Pvt)</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonJob" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonSkilled" class="form-check-input " />
+                                            <label asp-for="MemberAfghanDetail.FamilyPersonSkilled" class="control-label">Skilled Labor</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonSkilled" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonUnskilled" class="form-check-input " />
+                                            <label asp-for="MemberAfghanDetail.FamilyPersonUnskilled" class="control-label">Unskilled Labor</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonUnskilled" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <input asp-for="MemberAfghanDetail.FamilyPersonBusiness" class="form-check-input " />
+                                            <label asp-for="MemberAfghanDetail.FamilyPersonBusiness" class="control-label">Business/ Shop</label>
+                                            <span asp-validation-for="MemberAfghanDetail.FamilyPersonBusiness" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div clas="row">
+                                        <h4>  Current house status and livelihood Means </h4>
+                                    </div>
+                                    <div class="row">
+
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.HouseStatus" class="control-label"></label>
+                                            <select asp-for="MemberAfghanDetail.HouseStatus" asp-items="@HouseStatus" class="form-control"></select>
+                                            <span asp-validation-for="MemberAfghanDetail.HouseStatus" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MeanIncomeSource" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MeanIncomeSource" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MeanIncomeSource" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MeanIncomeSourceOther" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MeanIncomeSourceOther" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MeanIncomeSourceOther" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MeanIncomeMembersInvolve" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MeanIncomeMembersInvolve" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MeanIncomeMembersInvolve" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MeanIncomeMonthly" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MeanIncomeMonthly" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MeanIncomeMonthly" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.MeanIncomeExpenditure" class="control-label"></label>
+                                            <input asp-for="MemberAfghanDetail.MeanIncomeExpenditure" class="form-control " />
+                                            <span asp-validation-for="MemberAfghanDetail.MeanIncomeExpenditure" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <input asp-for="MemberAfghanDetail.PreviousExperience" class="form-check-input " />
+                                            <label asp-for="MemberAfghanDetail.PreviousExperience" class="control-label"></label>
+                                            <span asp-validation-for="MemberAfghanDetail.PreviousExperience" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.AssistanceType" class="control-label"></label>
+                                            <select asp-for="MemberAfghanDetail.AssistanceType" asp-items="@Assistance" class="form-control"></select>
+                                            <div id="AssistOther"> <input asp-for="MemberAfghanDetail.AssistanceOther" class=" form-control" /></div>
+                                            <span asp-validation-for="MemberAfghanDetail.AssistanceType" class="text-danger"></span>
+                                        </div>
+                                        @*  <div class="col-md-3 form-group">
+                                    <label asp-for="MemberAfghanDetail.TrainingInsterest" class="control-label"></label>
+                                    <select asp-for="MemberAfghanDetail.TrainingInsterest" asp-items="@training" class="form-control"></select>
+                                    <div id="TrainOther"> <input asp-for="MemberAfghanDetail.TrainingOther" class=" form-control" /></div>
+                                    <span asp-validation-for="MemberAfghanDetail.TrainingInsterest" class="text-danger"></span>
+                                    </div>*@
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="MemberAfghanDetail.SocioEconomicStatus" class="control-label"></label>
+                                            <select asp-for="MemberAfghanDetail.SocioEconomicStatus" asp-items="@socioEconomic" class="form-control"></select>
+                                            <span asp-validation-for="MemberAfghanDetail.SocioEconomicStatus" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label asp-for="LIPAssetTransfer.LIPPackageId" class="control-label"> Training Insterest / LIP Package </label>
+                                            <select asp-for="LIPAssetTransfer.LIPPackageId" class="form-control" asp-items="ViewBag.LIPPackageId"></select>
+                                        </div>
+
+                                        <div class="col-md-3 form-group">
+                                            <label class="control-label" asp-for="LIPAssetTransfer.IdentifiedById"></label>
+                                            <select required asp-for="LIPAssetTransfer.IdentifiedById" asp-items="ViewBag.IdentifiedById" class="form-control">
+                                            </select>
+                                        </div>
+
+
+                                    </div> @*row end*@
+
+
+                                    <div class="row">
+
+                                        <div class="col-md-6 form-group">
+                                            <label class="control-label" asp-for="LIPAssetTransfer.Latitute"></label>
+                                            <input asp-for="LIPAssetTransfer.Latitute" class="form-control " />
+
+                                        </div>  <div class="col-md-6 form-group">
+                                            <label class="control-label" asp-for="LIPAssetTransfer.Longitute"></label>
+                                            <input asp-for="LIPAssetTransfer.Latitute" class="form-control" />
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="LIPAssetTransfer.DataCollectedBy" class="control-label"></label>
+                                                <input asp-for="LIPAssetTransfer.DataCollectedBy" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="LIPAssetTransfer.DataCollectedBy" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="LIPAssetTransfer.DataCollectorDesignation" class="control-label"></label>
+                                                <input asp-for="LIPAssetTransfer.DataCollectorDesignation" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="LIPAssetTransfer.DataCollectorDesignation" class="text-danger"></span>
+                                            </div>
+                                        </div> <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="LIPAssetTransfer.CNICAttachment" class="control-label">ACC/PoR Scanned</label>
+                                                <input type="file" name="CNICAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="LIPAssetTransfer.CNICAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @{
+                                            if (Model.LIPAssetTransfer.CNICAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded ACC/PoR</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="LIPAssetTransfer.LIPFormAttachment" class="control-label"></label>
+                                                <input type="file" name="LIPFormAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="LIPAssetTransfer.LIPFormAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @{
+                                            if (Model.LIPAssetTransfer.LIPFormAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded LIP Form</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.LIPFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Save LIP Form" class="btn btn-primary" />
+                                                    </div>
+
+                                                    @* <div class="form-group">
+                                        <a href="" style="cursor:pointer" type="button" value="Save LIP Form" onclick="fire()" class="btn btn-primary" />
+                                        </div>*@
+
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //Reason TrainOther
+            if ($("#MemberAfghanDetail_TrainingInsterest option:selected").text() == 'Others') {
+                //alert("show")
+                $("#TrainOther").show();
+            }
+            else {
+                //alert("hide")
+                $("#TrainOther").hide();
+            }
+            $('#MemberAfghanDetail_TrainingInsterest').change(function () {
+                debugger;
+                if ($("#MemberAfghanDetail_TrainingInsterest option:selected").text() == 'Others') {
+                    //alert("show")
+                    $("#TrainOther").show();
+                }
+                else {
+                    //alert("hide")
+                    $("#TrainOther").hide();
+                }
+            });
+
+            //Reason Assistance 0ther
+            if ($("#MemberAfghanDetail_AssistanceType option:selected").text() == 'Others') {
+                //alert("show")
+                $("#AssistOther").show();
+            }
+            else {
+                //alert("hide")
+                $("#AssistOther").hide();
+            }
+            $('#MemberAfghanDetail_AssistanceType').change(function () {
+                debugger;
+                if ($("#MemberAfghanDetail_AssistanceType option:selected").text() == 'Others') {
+                    //alert("show")
+                    $("#AssistOther").show();
+                }
+                else {
+                    //alert("hide")
+                    $("#AssistOther").hide();
+                }
+            });
+        });
+        $(document).ready(function () {
+            $('#CNIC').keyup(function (event) {
+                var refLength = $("#CNIC").val();
+                if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
+                    $('#IsRefugee').prop('checked', true);
+                } else {
+                    $('#IsRefugee').prop('checked', false);
+                }
+            });
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#UnionCouncilId").change(function () {
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#Member_VillageId").empty();
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#Member_VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        });
+        function isAlphaOrParen(str) {
+            return /^[a-zA-Z()]+$/.test(str);
+        }
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}
+

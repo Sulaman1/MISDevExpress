@@ -15,15 +15,21 @@
                 <li>
                     <a asp-area="" asp-action="Index" asp-controller="Home" key="t-invoice-list">
                         <i class="bx bxs-dashboard "></i>
+                        <span key="t-calendar">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-action="Index22" asp-controller="Home" key="t-invoice-list">
+                        <i class="bx bxs-dashboard "></i>
                         <span key="t-calendar">Result Framework</span>
                     </a>
                 </li>
-                  <li>
+                  @*<li>
                     <a asp-area="" asp-action="IntermediateResultFramework" asp-controller="Home" key="t-invoice-list">
                         <i class="bx bx-line-chart"></i>
                         <span key="t-calendar">Intermediate Results</span>
                     </a>
-                </li>
+                </li>*@
                @* <li>
                     <a asp-action="Index2" asp-controller="Home" key="t-invoice-list">
                         <i class="bx bxs-area"></i>
@@ -31,7 +37,7 @@
                     </a>
                 </li>*@
                 @if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded
-                    || AuthorizationService.AuthorizeAsync(User, Permissions.UnionCouncil.Create).Result.Succeeded)
+                    || AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Create).Result.Succeeded)
                 {
                     <li class="menu-title" key="t-menu">Master Configuration</li>
                     <li>
@@ -77,6 +83,11 @@
                             </li>
                             @if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded)
                             {
+                                <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="Members" key="t-invoice-detail">                                        
+                                        <span key="t-calendar">Members</span>
+                                    </a>
+                                </li>
                                  <li>
                                 <a asp-area="" asp-action="Index" asp-controller="TrainingHeads" key="t-invoice-detail">
                                     @*<i class="bx bxs-capsule"></i>*@
@@ -90,11 +101,41 @@
                                 </a>
                             </li>
                              <li>
-                                <a asp-area="" asp-action="Index" asp-controller="TrainingBies" key="t-invoice-detail">
+                                <a asp-area="" asp-action="Index" asp-controller="TVTTrainedBy" key="t-invoice-detail">
                                     @*<i class="bx bxs-capsule"></i>*@
-                                    <span key="t-calendar">Training By</span>
+                                    <span key="t-calendar">TVT Trainers</span>
                                 </a>
                             </li>
+                                <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="TrainingBies" key="t-invoice-detail">
+                                        @*<i class="bx bxs-capsule"></i>*@
+                                        <span key="t-calendar">Training By</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="BSFDepartments" key="t-invoice-detail">
+                                        @*<i class="bx bxs-capsule"></i>*@
+                                        <span key="t-calendar">BSF Department</span>
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="ConstructionTypes" key="t-invoice-detail">
+                                        @*<i class="bx bxs-capsule"></i>*@
+                                        <span key="t-calendar">Construction Type</span>
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="BSFGovtPackages" key="t-invoice-detail">
+                                        @*<i class="bx bxs-capsule"></i>*@
+                                        <span key="t-calendar">BSF Packages</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-action="Index" asp-controller="Stages" key="t-invoice-detail">
+                                        @*<i class="bx bxs-capsule"></i>*@
+                                        <span key="t-calendar">BSF-Govt Stages</span>
+                                    </a>
+                                </li>
                              <li>
                                 <a asp-area="" asp-action="Index" asp-controller="Sections" key="t-invoice-detail">
                                     @*<i class="bx bxs-capsule"></i>*@
@@ -106,8 +147,13 @@
                                     @*<i class="bx bxs-capsule"></i>*@
                                     <span key="t-calendar">Employee</span>
                                 </a>
+                            </li> 
+                              <li>
+                                <a asp-area="" asp-action="Index" asp-controller="LIPPackages" key="t-invoice-detail">                                    
+                                    <span key="t-calendar">LIP Packages</span>
+                                </a>
                             </li>
-                            <li>
+                             <li>
                                 <a asp-area="" asp-action="Index" asp-controller="GeneralBusinessIdeas" key="t-invoice-detail">                                    
                                     <span key="t-calendar">General Business Idea</span>
                                 </a>
@@ -130,34 +176,64 @@
                     }
                     
                 }
-                @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded)
+                @if (AuthorizationService.AuthorizeAsync(User, Permissions.HR.View).Result.Succeeded)
                 {
-                    <li class="menu-title" key="t-menu">Community Development</li>      
-                     <li>
-                        <a asp-area="" asp-action="CDSummaryView" asp-controller="CommunityInstitutions" key="t-invoice-list">
-                            <i class="bx bx-bar-chart-square "></i>
-                            <span key="t-calendar">CI/CIG Summary</span>
+                    <li class="menu-title" key="t-menu">Human Resource</li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bxs-user"></i>
+                            <span key="t-invoices">HR</span>
                         </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.HR.View).Result.Succeeded)
+                            {
+                                <li><a asp-area="" asp-action="Index" asp-controller="HREmployees" key="t-invoice-list">View Employees</a></li>
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.HR.View).Result.Succeeded)
+                            {
+                                <li><a asp-area="" asp-action="Create" asp-controller="HREmployees" key="t-invoice-detail">Add Employee</a></li>
+                            }                            
+                        </ul>
                     </li>
+                }
+                @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinatorBLEP.View).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpertBLEP.View).Result.Succeeded)
+                {
+                    <li class="menu-title" key="t-menu">Community Development</li>     
+                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Summary).Result.Succeeded){
+                        <li>
+                            <a asp-area="" asp-action="CDSummaryView" asp-controller="CommunityInstitutions" key="t-invoice-list">
+                                <i class="bx bx-bar-chart-square "></i>
+                                <span key="t-calendar">CI/CIG Summary</span>
+                            </a>
+                        </li>
+                    }                    
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="bx bx-building-house"></i>
                             <span key="t-email">CI</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LocalFacilitator.View).Result.Succeeded)
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded)
                             {                                
-                                <li><a asp-action="Index" asp-route-id="1" asp-area="" asp-controller="CommunityInstitutions" key="t-inbox">Registration of CI</a></li>
-                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           
-                            }                            
-                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
-                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>                           
+                                <li><a asp-action="Index" asp-route-id="1" asp-area="" asp-controller="CommunityInstitutions" key="t-inbox">Registration of CI</a></li>                                
+                            }     
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.SubmittedForReview).Result.Succeeded)
+                            {                             
+                                <li><a asp-action="SubmittedForReviewIndex" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           
+                            }
+                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Review).Result.Succeeded){
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>                                                           
+                            }
+                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.SubmittedForApproval).Result.Succeeded){                                
                                 <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Approval</a></li>                           
                             }
-                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
+                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verify).Result.Succeeded){
                                 <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Verify</a></li>                           
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verified).Result.Succeeded)
+                            {
+                                <li><a asp-action="VerifiedIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>                           
                             }                            
-                            <li><a asp-action="VerifiedIndex" asp-area="" asp-route-id="1" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>                           
                         </ul>
                     </li>  
                      <li>
@@ -166,42 +242,174 @@
                             <span key="t-email">CIG</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LocalFacilitator.View).Result.Succeeded)
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded)
                             {   
-                                <li><a asp-action="Index" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-inbox">Registration of CIG</a></li>
+                                <li><a asp-action="Index" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-inbox">Registration of CIG</a></li>                                
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.SubmittedForReview).Result.Succeeded)
+                            {                                   
                                 <li><a asp-action="SubmittedForReviewIndex" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           
                             }
-                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
-                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>                           
-                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Approval</a></li>                           
-                            } 
-                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
-                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Verify</a></li>                           
-                            }                               
-                            <li><a asp-action="VerifiedIndex" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>                           
+                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Review).Result.Succeeded){
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>                                                           
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.SubmittedForApproval).Result.Succeeded)
+                            {                                
+                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Approval</a></li>
+                            }
+                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verify).Result.Succeeded){
+                              
+                                 <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Verify</a></li>                           
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verified).Result.Succeeded)
+                            {
+                                <li><a asp-action="VerifiedIndex" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>
+                            }                            
                         </ul>
                     </li>
+                    @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.View).Result.Succeeded)
+                    {
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-building-house"></i>
+                                <span key="t-email">Training</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.LocalFacilitatorBLEP.View).Result.Succeeded)
+                                {
+                                    <li><a asp-action="Index" asp-area="" asp-controller="MemberTrainings" key="t-inbox">Add Training</a></li>
+                                    @* <li><a asp-action="Index" asp-area="" asp-controller="TVTTrainings" key="t-inbox">Add TVT Training</a></li> *@
+                                    @*<li><a asp-action="SubmittedForReviewIndex" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           *@
+                                }
+                                @*@if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinatorBLEP.View).Result.Succeeded){
+                        <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>
+                        <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Approval</a></li>
+                        }
+                        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpertBLEP.View).Result.Succeeded){
+                        <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Verify</a></li>
+                        }
+                        <li><a asp-action="VerifiedIndex" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>                           *@
+                            </ul>
+                        </li>
+                    }
+                    @if(AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded){
+                        <li class="menu-title" key="t-menu">IMPLEMENTATION PARTNER - IDO</li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-building-house"></i>
+                                <span key="t-email">LIP</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @if (AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded)
+                                {
+                                    <li><a asp-action="VerifiedFilterViewIDO" asp-area="" asp-controller="LIPAssetTransfers" key="t-inbox">Ready for Disbursement</a></li>
+                                }                               
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-building-house"></i>
+                                <span key="t-email">Training</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @if (AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded)
+                                {
+                                    <li><a asp-action="Index" asp-area="" asp-controller="LIPTrainings" key="t-inbox">Training List</a></li>                                    
+                                }                               
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="bx bx-building-house"></i>
+                                <span key="t-email">Asset Transfer</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="false">
+                                @if (AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded)
+                                {
+                                    <li><a asp-action="ATIndexIDO" asp-area="" asp-controller="LIPAssetTransfers" key="t-inbox">Asset Transferred List</a></li>                                    
+                                }
+                            </ul>
+                        </li>
+                    }
+                   
+                    <li class="menu-title" key="t-menu">Grievance Redress Mechanisms</li>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="bx bx-building-house"></i>
-                            <span key="t-email">Training</span>
+                            <span key="t-email">GRM</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.LocalFacilitator.View).Result.Succeeded)
-                            {   
-                                <li><a asp-action="Index" asp-area="" asp-controller="MemberTrainings" key="t-inbox">Add Training</a></li>
-                                @*<li><a asp-action="SubmittedForReviewIndex" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           *@
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.GRM.View).Result.Succeeded)
+                            {
+                                <li><a asp-action="Index" asp-area="" asp-controller="GrievanceRedressals" key="t-inbox">List View</a></li>
                             }
-                             @*@if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
-                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>                           
-                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Approval</a></li>                           
-                            } 
-                             @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
-                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Verify</a></li>                           
-                            }                               
-                            <li><a asp-action="VerifiedIndex" asp-route-id="2" asp-area="" asp-controller="CommunityInstitutions" key="t-read-email">Verified List</a></li>                           *@
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.GRM.Create).Result.Succeeded)
+                            {
+                                <li><a asp-action="Create" asp-area="" asp-controller="GrievanceRedressals" key="t-inbox">Add</a></li>
+                            }
                         </ul>
                     </li>
+                    <li class="menu-title" key="t-menu">M&amp;E Monitoring Tools</li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-building-house"></i>
+                            <span key="t-email">Tools</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.View).Result.Succeeded)
+                            {
+                                <li><a asp-action="Index" asp-area="" asp-controller="Tools" key="t-inbox">List View</a></li>
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.View).Result.Succeeded)
+                            {
+                                <li><a asp-action="ToolList" asp-area="" asp-controller="ToolControlInfoPosts" key="t-inbox">Uploaded Data</a></li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="menu-title" key="t-menu">Livelihood Investment Plan</li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-building-house"></i>
+                            <span key="t-email">LIP</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Create).Result.Succeeded)
+                            {                                                                
+                                <li><a asp-action="Create" asp-area="" asp-controller="LIPAssetTransfers" key="t-inbox">Add LIP Member</a></li>
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Unsubmitted).Result.Succeeded)
+                            {
+                                <li><a asp-action="Index" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Un-Submitted</a></li>
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.SubmittedForReview).Result.Succeeded)
+                            {             
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Submitted For Review</a></li>
+                            }
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.AssetDistribution).Result.Succeeded)
+                            {
+                                <li><a asp-action="VerifiedFilterView" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Ready for Disbursement</a></li>
+                            }          
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.TransferAsset).Result.Succeeded)
+                            {
+                                <li><a asp-action="VerifiedIndex" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Transfer Asset</a></li>
+                            }     
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.AssetTransfferedList).Result.Succeeded)
+                            {
+                                <li><a asp-action="ATIndex" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Asset Transffered List</a></li>
+                            }                             
+                                @*<li><a asp-action="TrackMember" asp-area="" asp-controller="LIPAssetTransfers" key="t-inbox">Asset Transfer</a></li>*@
+                                @*<li><a asp-action="AddBeneficiary" asp-area="" asp-controller="CommunityInstituteMembers" key="t-inbox">Add Beneficiary</a></li>*@                                                                                      
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Review).Result.Succeeded)
+                            {
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Review LIP</a></li>                                
+                            }  
+                          @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.InternalReview).Result.Succeeded)
+                            {
+                                <li><a asp-action="VerifiedIndex2" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Internal Review</a></li>
+                                <li><a asp-action="VerifiedIndex3" asp-area="" asp-controller="LIPAssetTransfers" key="t-read-email">Internal Reviewed List</a></li>
+                            } 
+                        </ul>
+                    </li>    
                    @* <li>
                         <a asp-action="Index" asp-controller="PagesComingsoon" class=" waves-effect">
                             <i class="bx bx-user"></i>
@@ -210,22 +418,78 @@
                     </li> *@     
                 }
                 @if(true){
-                    <li class="menu-title" key="t-menu">Business Development</li>      
-                    <li>
-                        <a asp-area="" asp-action="Index" asp-controller="PagesComingsoon" key="t-invoice-detail">                                    
-                            <span key="t-calendar">General Business Idea</span>
+                    <li class="menu-title" key="t-menu">Business Development</li>                         
+                   @*<li>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-building-house"></i>
+                            <span key="t-email">LIP</span>
                         </a>
-                    </li>
+                        <ul class="sub-menu" aria-expanded="false">
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.LIPTraining.Create).Result.Succeeded)
+                            {                                
+                                <li><a asp-action="Index" asp-area="" asp-controller="LIPTrainings" key="t-inbox">Add Training</a></li>                                
+                                <li><a asp-action="AddBeneficiary" asp-area="" asp-controller="CommunityInstituteMembers" key="t-inbox">Add Beneficiary</a></li>
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-controller="LIPTrainings" key="t-read-email">Submitted For Review</a></li> 
+                            }                            
+                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinatorBLEP.View).Result.Succeeded){
+                                <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-controller="LIPTrainings" key="t-read-email">Review</a></li>                           
+                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-controller="LIPTrainings" key="t-read-email">Submitted For Approval</a></li>                           
+                            }
+                            @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpertBLEP.View).Result.Succeeded){
+                                <li><a asp-action="SubmittedForVerifyIndex" asp-area="" asp-controller="LIPTrainings" key="t-read-email">Verify</a></li>                           
+                            }                            
+                            <li><a asp-action="VerifiedIndex" asp-area="" asp-controller="LIPTrainings" key="t-read-email">Verified List</a></li>                         
+                        </ul>
+                    </li>*@         
                     <li>
-                        <a asp-area="" asp-action="Index" asp-controller="PagesComingsoon" key="t-invoice-detail">                                    
-                            <span key="t-calendar">LIP Plan</span>
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="bx bx-building-house"></i>
+                            <span key="t-email">BSF</span>
                         </a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-action="Index" asp-controller="PagesComingsoon" key="t-invoice-detail">                                    
-                            <span key="t-calendar">Training of LIP's</span>
-                        </a>
-                    </li>
+                        <ul class="sub-menu" aria-expanded="false">                            
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">                                    
+                                    <span key="t-email">Government</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">   
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.BSFGovt.View).Result.Succeeded){
+                                         <li><a asp-action="Index" asp-area="" asp-controller="BSFGovs" key="t-inbox">View BSF</a></li>  
+                                    } 
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.BSFGovt.Create).Result.Succeeded){
+                                         <li><a asp-action="Create" asp-area="" asp-controller="BSFGovs" key="t-inbox">Add BSF</a></li>  
+                                    }                                                                          
+                                </ul>
+                            </li> 
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">                                    
+                                    <span key="t-email">Private</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">  
+                                     @if (AuthorizationService.AuthorizeAsync(User, Permissions.BSFPrivate.View).Result.Succeeded)
+                                    {
+                                        <li><a asp-action="Index" asp-area="" asp-controller="BSFPrivates" key="t-inbox">View BSF</a></li>  
+                                    }  
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.BSFPrivate.Create).Result.Succeeded)
+                                    {
+                                        <li><a asp-action="Create" asp-area="" asp-controller="BSFPrivates" key="t-inbox">Add BSF</a></li>  
+                                    }                                                                          
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">                                    
+                                    <span key="t-email">HTS</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">   
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.HTS.View).Result.Succeeded){
+                                         <li><a asp-action="Index" asp-area="" asp-controller="HTS" key="t-inbox">View HTS</a></li>  
+                                    } 
+                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.HTS.Create).Result.Succeeded){
+                                         <li><a asp-action="Create" asp-area="" asp-controller="HTS" key="t-inbox">Add HTS</a></li>  
+                                    }                                                                          
+                                </ul>
+                            </li> 
+                        </ul>
+                    </li>   
                 }  
                 @if (false)//AuthorizationService.AuthorizeAsync(User, Permissions.SuperAdmin.View).Result.Succeeded)
                 {

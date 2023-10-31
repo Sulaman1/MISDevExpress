@@ -1,0 +1,138 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.LIPAssetTransfer>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "BLEP";
+    ViewBag.Title = "LIP";
+    ViewBag.pTitle = "LIP";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Review).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.SubmittedForReview).Result.Succeeded)
+{
+    <!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Asset Transfer Submitted for Verification</p>
+                    </a>
+                    @*@{
+                        if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Create).Result.Succeeded)
+                        {
+                            <a class="nav-link" role="tab" asp-action="TrackMember" asp-controller="LIPAssetTransfers" aria-controls="v-pills-privacy" aria-selected="false">
+                                <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                                <p class="font-weight-bold mb-4">Add New Asset Transfer</p>
+                            </a>
+                        }
+                    }*@
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of Asset Transfer to LIP</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.LIPCode)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.MemberName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.FatherName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.CNIC)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.IdentifiedBy)
+                                                </th>                                               
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.LIPPackage)
+                                                </th>
+                                                <th>Detail</th>                                              
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LIPCode)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.MemberName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.FatherName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.CNIC)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IdentifiedBy.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LIPPackage.PackageName)
+                                                    </td>                                                  
+                                                    <td>
+                                                        <a asp-action="Details" asp-route-id="@item.LIPAssetTransferId" class="mr-2 text-primary">View</a>
+                                                    </td>                                                   
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, Access denied!</h4>
+                        <h6>Contact with IT Administrator</h6>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

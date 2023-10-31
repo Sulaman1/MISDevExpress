@@ -1,11 +1,16 @@
 ﻿@model IEnumerable<DAL.Models.Domain.Training.MemberTrainingDetail>
-
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
 @{
     if(Model.Count() > 0){
         <div style="margin:5px">
             <table class="table">
                 <thead>
                     <tr>
+                        <th>
+                            S.No
+                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.CommunityInstituteMember.MISCode)
                         </th>
@@ -26,14 +31,23 @@
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.CommunityInstituteMember.Member.ProfilePicture)
-                        </th>
-                        <th>Action</th>
+                        </th>                        
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit).Result.Succeeded)
+                        {
+                            <th>Action</th>
+                        }                        
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        int counter = 0;
+                    }
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                @(counter = counter + 1)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CommunityInstituteMember.MISCode)
                             </td>
@@ -62,9 +76,12 @@
                                     <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/BLEP.png">
                                 }
                             </td>
-                            <td>
-                                <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingDetailId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
-                            </td>
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit).Result.Succeeded)
+                            {
+                                <td>
+                                    <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingDetailId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                </td>
+                            }                            
                         </tr>
                     }
                 </tbody>

@@ -1,0 +1,415 @@
+﻿@model DAL.Models.ViewModels.HTSMember
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "HTS";
+    ViewBag.Title = "Government";
+    ViewBag.pTitle = "Government";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+    };
+}
+@section Styles {
+    <!-- DataTables -->
+    <style>        
+        .main-footer.main-footer {
+            margin: 0;
+        }
+
+        .page-title-box {
+            padding: 0;
+        }
+        /* CSS link color */
+        .modal-dialog {
+            height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+        }
+
+        .modal-content {
+            height: 100%; /* = 100% of the .modal-dialog block */
+        }
+
+        #PdfModal {
+            height: 100%;
+        }
+    </style>
+}
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">           
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit HTS</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="HTS.HTSId"/>
+                                            <input type="hidden" asp-for="HTS.MemberId"/>
+                                            <input type="hidden" asp-for="HTS.HTSCode"/>
+                                            <input type="hidden" asp-for="HTS.UserId"/>
+                                            <input type="hidden" asp-for="HTS.VillageId"/>
+                                            <input type="hidden" asp-for="HTS.CreatedBy"/>
+                                            <input type="hidden" asp-for="HTS.CreatedOn"/>
+                                            <input type="hidden" asp-for="HTS.AgricultureLandProofAttachment"/>
+                                            <input type="hidden" asp-for="HTS.CNICAttachment"/>
+                                            <input type="hidden" asp-for="HTS.ApplicationFormAttachment"/>
+                                            <input type="hidden" asp-for="HTS.TunnelSiteSuitabilityFormAttachment"/>
+                                            <input type="hidden" asp-for="Member.BeneficiaryTypeId"/>
+                                            <input type="hidden" asp-for="Member.MemberId"/>
+                                            <input type="hidden" asp-for="Member.VillageId"/>                                            
+                                            <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Tehsil</label>
+                                                <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Union Council</label>
+                                                <select required id="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">                                                   
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Village</label>
+                                                <select required asp-for="Member.VillageId" asp-items="ViewBag.VillageId" class="form-control">                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.Latitute" class="control-label"></label>
+                                                <input asp-for="HTS.Latitute" class="form-control" type="number" min="-90.000000" max="90.000000" step="0.000001" />
+                                                <span asp-validation-for="HTS.Latitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.Khasra" class="control-label"></label>
+                                                <input asp-for="HTS.Khasra" class="form-control" />
+                                                <span asp-validation-for="HTS.Khasra" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.Longitute" class="control-label"></label>
+                                                <input asp-for="HTS.Longitute" class="form-control" type="number" min="-90.000000" max="90.000000" step="0.000001" />
+                                                <span asp-validation-for="HTS.Longitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.MemberName" class="control-label"></label>
+                                                <input asp-for="Member.MemberName" class="form-control" />
+                                                <span asp-validation-for="Member.MemberName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.FatherName" class="control-label"></label>
+                                                <input asp-for="Member.FatherName" class="form-control"/>
+                                                <span asp-validation-for="Member.FatherName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.CNIC" class="control-label"></label>
+                                                <input asp-for="Member.CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '99999-9999999-9'" />
+                                                <span asp-validation-for="Member.CNIC" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.CellNo" class="control-label"></label>
+                                                <input asp-for="Member.CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                                <span asp-validation-for="Member.CellNo" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Gender" class="control-label"></label>
+                                                <select asp-for="Member.Gender" asp-items="@gender" class="form-control"></select>
+                                                <span asp-validation-for="Member.Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.TunnelSize" class="control-label"></label>
+                                                <input asp-for="HTS.TunnelSize" class="form-control" />
+                                                <span asp-validation-for="HTS.TunnelSize" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.TotalGrant" class="control-label"></label>
+                                                <input asp-for="HTS.TotalGrant" class="form-control" />
+                                                <span asp-validation-for="HTS.TotalGrant" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="HTS.IsSubmitDeposit" /> @Html.DisplayNameFor(model => model.HTS.IsSubmitDeposit)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="HTS.IsCompleted" /> @Html.DisplayNameFor(model => model.HTS.IsCompleted)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h4 class="mt-2 card-title">Attachments</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.CNICAttachment" class="control-label"></label>
+                                                <input type="file" name="CNICAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="HTS.CNICAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                                if (Model.HTS.CNICAttachment != null)
+                                                {                                                    
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Attachment</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.HTS.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    
+                                                }
+                                            }
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.AgricultureLandProofAttachment" class="control-label"></label>
+                                                <input type="file" name="AgricultureLandProofAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="HTS.AgricultureLandProofAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                            if (Model.HTS.AgricultureLandProofAttachment != null)
+                                            {                                                
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Attachment</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.HTS.AgricultureLandProofAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>                                                
+                                            }
+                                        }
+                                        </div>                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.ApplicationFormAttachment" class="control-label"></label>
+                                                <input type="file" name="ApplicationFormAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="HTS.ApplicationFormAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                                if (Model.HTS.ApplicationFormAttachment != null)
+                                                {                                                    
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Attachment</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.HTS.ApplicationFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>                                                    
+                                                }
+                                            }
+                                        </div>
+                                        
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="HTS.TunnelSiteSuitabilityFormAttachment" class="control-label"></label>
+                                                <input type="file" name="TunnelSiteSuitabilityFormAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="HTS.TunnelSiteSuitabilityFormAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                                if (Model.HTS.TunnelSiteSuitabilityFormAttachment != null)
+                                                {
+                                                    
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Attachment</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.HTS.TunnelSiteSuitabilityFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    
+                                                }
+                                            }
+                                           
+                                            @{
+                                                if(Model.HTS.IsCompleted == false)
+                                                {
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Submit" class="btn btn-primary" />
+                                                    </div>
+                                                }
+                                            }                                            
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#UnionCouncilId").change(function () {
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#Member_VillageId").empty();
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#Member_VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        });
+        function isAlphaOrParen(str) {
+            return /^[a-zA-Z()]+$/.test(str);
+        }
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

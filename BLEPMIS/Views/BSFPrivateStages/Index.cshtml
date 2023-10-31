@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DAL.Models.Domain.BSF.BSFPrivateStage>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StageNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StageAttachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountRelease)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+           @*  <th>
+                @Html.DisplayNameFor(model => model.BSFPrivate)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StageNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StageName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StageAttachment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountRelease)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+           @*  <td>
+                @Html.DisplayFor(modelItem => item.BSFPrivate.AccountTitle)
+            </td> *@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BSFPrivateStageId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BSFPrivateStageId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BSFPrivateStageId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

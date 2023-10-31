@@ -45,7 +45,7 @@
                                         <div class="form-group">
                                             <label class="control-label">Tehsil</label>
                                             <select id="TehsilId" class="form-control">
-                                                <option value="0">All</option>
+                                                <option>All</option>
                                             </select>
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                         <div class="form-group">
                                             <label class="control-label">Union Council</label>
                                             <select id="UnionCouncilId" class="form-control">
-                                                <option value="0">All</option>
+                                                <option>All</option>
                                             </select>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                         <div class="form-group">
                                             <label class="control-label">Community Type</label>
                                             <select id="CTId" class="form-control" asp-items="ViewBag.CommunityTypeId">
-                                                <option value="0">All</option>
+                                                <option>All</option>
                                             </select>
                                         </div>
                                     </div>
@@ -132,8 +132,8 @@ else
                 $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
                     $("#TehsilId").empty();
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">All</option>');
-                    $("#TehsilId").append('<option value="0">All</option>');
+                    $("#UnionCouncilId").append('<option>All</option>');
+                    $("#TehsilId").append('<option>All</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -146,7 +146,7 @@ else
                 $("#UnionCouncilId").empty();
                 $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">All</option>');
+                    $("#UnionCouncilId").append('<option>All</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);

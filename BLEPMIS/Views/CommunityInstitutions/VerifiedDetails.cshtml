@@ -85,20 +85,20 @@
                         <input asp-for="CICode" class="form-control" disabled="disabled" />                        
                     </div>
                      <div class="col-md-3">
-                        <label asp-for="VillageId" class="control-label"></label>
-                        <input asp-for="VillageId" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village" class="control-label"></label>
+                        <input asp-for="Village.Name" class="form-control" disabled="disabled" />                        
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="UnionCouncil.Tehsil.District" class="control-label"></label>
-                        <input asp-for="UnionCouncil.Tehsil.District.Name" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village.UnionCouncil.Tehsil.District" class="control-label"></label>
+                        <input asp-for="Village.UnionCouncil.Tehsil.District.Name" class="form-control" disabled="disabled" />                        
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="UnionCouncil.Tehsil" class="control-label"></label>
-                        <input asp-for="UnionCouncil.Tehsil.TehsilName" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village.UnionCouncil.Tehsil" class="control-label"></label>
+                        <input asp-for="Village.UnionCouncil.Tehsil.TehsilName" class="form-control" disabled="disabled" />                        
                     </div>
                     <div class="col-md-4">
-                        <label asp-for="UnionCouncil" class="control-label"></label>
-                        <input asp-for="UnionCouncil.UnionCouncilName" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village.UnionCouncil" class="control-label"></label>
+                        <input asp-for="Village.UnionCouncil.UnionCouncilName" class="form-control" disabled="disabled" />                        
                     </div>                   
                     <div class="col-md-4">
                         <label asp-for="TotalHousehold" class="control-label"></label>
@@ -114,11 +114,11 @@
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Latitude" class="control-label"></label>
-                        <input asp-for="Latitude" class="form-control" disabled="disabled" />                        
+                        <input type="number" asp-for="Latitude" class="form-control" disabled="disabled" />                        
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Longitute" class="control-label"></label>
-                        <input asp-for="Longitute" class="form-control" disabled="disabled" />                        
+                        <input type="number" asp-for="Longitute" class="form-control" disabled="disabled" />                        
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="OfficerName" class="control-label"></label>
@@ -175,7 +175,7 @@
     </div>
     <h6><b>List of Community Institute Members </b>
     @{
-        if (!Model.IsSubmittedForReview)
+            if ((!Model.IsSubmittedForReview) && AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded)
         {
             <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@Model.CommunityInstitutionId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
         }
@@ -183,7 +183,7 @@
     </h6>
     <div id="dynamicContentContainer"></div>
     @{
-        @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Review).Result.Succeeded){
             if(Model.IsSubmittedForReview == true && Model.IsReviewed == false)
             {
                 <div>
@@ -194,7 +194,7 @@
         }              
     }
     @{
-        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verify).Result.Succeeded){
             if(Model.IsVerified == false && Model.IsReviewed == true)
             {
                 <div>

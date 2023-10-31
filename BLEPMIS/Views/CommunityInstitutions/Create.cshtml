@@ -297,8 +297,8 @@ else
                 $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
                     $("#TehsilId").empty();
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
-                    $("#TehsilId").append('<option value="0">Select...</option>');
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -311,7 +311,7 @@ else
                 $("#UnionCouncilId").empty();
                 $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
                     $("#UnionCouncilId").empty();
-                    $("#UnionCouncilId").append('<option value="0">Select...</option>');
+                    $("#UnionCouncilId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);
@@ -324,7 +324,7 @@ else
                 $("#VillageId").empty();
                 $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
                     $("#VillageId").empty();
-                    $("#VillageId").append('<option value="0">Select...</option>');
+                    $("#VillageId").append('<option>Select...</option>');
                     console.log(data);
                     $.each(data, function (index, row) {
                         console.log(row);

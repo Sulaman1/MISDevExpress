@@ -1,5 +1,7 @@
 ﻿@model DAL.Models.Domain.MasterSetup.Member
-
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
 @{
     ViewData["Title"] = "Edit Member";
     ViewBag.pageTitle = "Community Institute";
@@ -13,6 +15,11 @@
               new SelectListItem { Text = "Female", Value = "Female" },
             };
 }
+
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded || AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit).Result.Succeeded)
+{
+    
+
 <h5>Edit Community Institute Member</h5>
 <hr />
 <form asp-action="Edit" enctype="multipart/form-data">
@@ -25,13 +32,14 @@
                      <input type="hidden" id="CIId" name="CIId" value="@ViewBag.CIId" />
                      <input type="hidden" id="CIMId" name="CIMId" value="@ViewBag.CIMId" />
                      <input type="hidden" asp-for="IsRefugee" />
+                     <input type="hidden" asp-for="VillageId" />
                      <input type="hidden" asp-for="ProfilePicture" />                     
                     <label class="control-label">Community Institution</label>
                     <select disabled="disabled" class ="form-control" asp-items="ViewBag.CommunityInstitutionId"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="MemberName" class="control-label"></label>
-                    <input tabindex="1" asp-for="MemberName" class="form-control" />
+                    <input tabindex="1" asp-for="MemberName" class="form-control" readonly="readonly"/>
                     <span asp-validation-for="MemberName" class="text-danger"></span>
                 </div>                 
                 <div class="form-group">
@@ -41,7 +49,7 @@
                 </div>  
                 <div class="form-group">
                     <label asp-for="Gender" class="control-label"></label>
-                    <select tabindex="5" asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                    <select readonly="readonly" tabindex="5" asp-for="Gender" asp-items="@gender" class="form-control"></select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
                  <div class="form-group form-check">
@@ -59,7 +67,7 @@
                 </div>       
                 <div class="form-group">
                     <label asp-for="FatherName" class="control-label"></label>
-                    <input tabindex="2" asp-for="FatherName" class="form-control" />
+                    <input readonly="readonly" tabindex="2" asp-for="FatherName" class="form-control" />
                     <span asp-validation-for="FatherName" class="text-danger"></span>
                 </div>
                  <div class="form-group">
@@ -95,7 +103,32 @@
 <div>
     <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@ViewBag.CommunityInstitutionId">Back to Community Institute Members</a>    
 </div>
-
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 @section scripts{
     <!-- form mask -->
 <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>

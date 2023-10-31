@@ -1,0 +1,183 @@
+﻿@model DAL.Models.Domain.ToolApp.Tool
+@using DAL.Models.Domain.ToolApp.ToolAppPost;
+@{
+    ViewBag.Title = "Monitoring";
+    ViewBag.pTitle = "Monitoring";
+    ViewBag.pageTitle = "Tool";
+    Layout = "~/Views/_Shared/_Layout.cshtml";    
+}
+
+    <style>    
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+        </style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-success" style="padding: .30rem 1rem" role="alert">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4 class="mt-2 card-title">BLEP Monitoring System</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="media">
+                                <div class="mr-3">
+                                    <img src="~/assets/images/systemmonitoring.webp" alt="" class="avatar-md rounded-circle img-thumbnail">
+                                </div>
+                                <div class="media-body align-self-center">
+                                    <div class="text-muted">
+                                        <h6 class="mb-2">Welcome to Monitoring Tool Activity: @Model.Name</h6>
+                                        <p>Description: @Model.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+
+                        <div class="col-md-4">
+                            <div id="dynamicContentContainer"></div>
+                            @{
+                                if (Model.ToolControl.Count > 0)
+                                {
+                                    @foreach (var item in ViewBag.MDependency)
+                                    {                                       
+                                        <div class="form-group">
+                                            <label class="control-label">@item.DropdownMenuName</label>
+                                            <input class="form-control" value="@item.Value" readonly="readonly" />
+                                        </div>
+                                        <hr />
+                                    }
+                                }
+                                int counter = 1;
+                                if (Model.ToolControl.Count > 0)
+                                {
+                                    @foreach (var item in Model.ToolControl)
+                                    {
+                                        if (item.Control.Name.Equals("Text Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                                    @item.Name
+                                                </label>
+                                                <input class="form-control" value="@item.Value" readonly="readonly"/>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Picture"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                                @{
+                                                    @if(item.Value == null)
+                                                    {
+                                                        <img height="60" src="~/assets/images/capture.jpg" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img height="350" src="data:image/png;base64, @item.Value" />
+                                                    }
+                                                }                                                                                                                                              
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Rick Text Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                                <textarea disabled="disabled" class="input-large form-control" asp-for="Description" rows="2" placeholder="Enter a remarks ...">@item.Value</textarea>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Check Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="margin:10px">
+                                                    @{
+                                                        if (item.ToolControlDetail.Count > 0)
+                                                        {
+                                                            @foreach (var item2 in item.ToolControlDetail)
+                                                            {
+                                                                <label for="option1" class="checkbox-inline">
+                                                                    <input type="checkbox" @(item2.Value == true ? "checked" : "") disabled="disabled"> @item2.Label
+                                                                </label>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Radio Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="margin:10px" class="form-check">
+                                                    @{
+                                                        if (item.ToolControlDetail.Count > 0)
+                                                        {
+                                                            @foreach (var item2 in item.ToolControlDetail)
+                                                            {
+                                                                <label for="option1" class="checkbox-inline">
+                                                                    <input type="radio" @(item2.Value == true ? "checked" : "") disabled="disabled"> @item2.Label
+                                                                </label>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                    }                                    
+                                }
+                            }
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">                                
+                                <h3 class="card-title">@ViewBag.Info</h3>                                  
+                            </div>                            
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+                <div class="m-2">
+                    <a asp-action="AddControl" asp-route-id="@Model.ToolId">Add Controls</a> |
+                    <a asp-controller="DropdownenuAccesses" asp-action="Index" asp-route-id="@Model.ToolId">Add Module Dependency</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    if(ViewBag.Latitute != null)
+    {
+        <div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@ViewBag.Latitute,",",ViewBag.Longitute,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+    }    
+}

@@ -1,0 +1,322 @@
+﻿@model DAL.Models.ViewModels.LIPMember
+@{
+    ViewData["Title"] = "Add";    
+    ViewBag.pageTitle = "Add LIP Member";
+    ViewBag.Title = "LIP";
+    ViewBag.pTitle = "LIP";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+            };
+    var MaritalStatus = new[]
+        {   new SelectListItem { Text = "Yes", Value = "Yes" },
+              new SelectListItem { Text = "No", Value = "No" },
+    };
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+@if (true)
+{
+    <h5>Add Beneficiary</h5>
+    <h6 class="danger" style="background-color:red">@Html.ValidationMessage("CustomError")</h6>
+    <hr />
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-3">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Member.BeneficiaryTypeId" />
+                <input type="hidden" asp-for="LIPAssetTransfer.UserId" />
+                <div class="form-group">
+                    <label class="control-label">District</label>
+                    <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">
+                        <option value=""> - - Select - -</option>
+                    </select>
+                </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Tehsil</label>
+                    <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
+                        <option value=""> - - Select - -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Union Council</label>
+                    <select required id="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control">
+                        <option value=""> - - Select - -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Village</label>
+                    <select required asp-for="Member.VillageId" asp-items="ViewBag.VillageId" class="form-control">
+                        <option value=""> - - Select - -</option>
+                    </select>
+                </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.MemberName" class="control-label"></label>
+                    <input tabindex="1" asp-for="Member.MemberName" class="form-control" />
+                    <span asp-validation-for="Member.MemberName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.FatherName" class="control-label"></label>
+                    <input tabindex="2" asp-for="Member.FatherName" class="form-control" />
+                    <span asp-validation-for="Member.FatherName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">CNIC/Identity#</label>
+                    <input tabindex="4" asp-for="Member.CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                    <span asp-validation-for="Member.CNIC" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.Gender" class="control-label"></label>
+                    <select tabindex="6" asp-for="Member.Gender" asp-items="@gender" class="form-control"></select>
+                    <span asp-validation-for="Member.Gender" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.MaritalStatus" class="control-label"></label>
+                    <select tabindex="6" asp-for="Member.MaritalStatus" asp-items="@MaritalStatus" class="form-control"></select>
+                    <span asp-validation-for="Member.MaritalStatus" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">House Hold#</label>
+                    <input asp-for="Member.HouseHoldNo" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Age</label>
+                    <input asp-for="Member.Age" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.CellNo" class="control-label"></label>
+                    <input tabindex="3" asp-for="Member.CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                    <span asp-validation-for="Member.CellNo" class="text-danger"></span>
+                </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.DataCollectorDesignation" class="control-label"></label>
+                    <input asp-for="LIPAssetTransfer.DataCollectorDesignation" class="form-control" required />
+                    <span asp-validation-for="LIPAssetTransfer.DataCollectorDesignation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.Latitute" class="control-label"></label>
+                    <input asp-for="LIPAssetTransfer.Latitute" class="form-control" required />
+                    <span asp-validation-for="LIPAssetTransfer.Latitute" class="text-danger"></span>
+                </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.Longitute" class="control-label"></label>
+                    <input asp-for="LIPAssetTransfer.Longitute" class="form-control" required />
+                    <span asp-validation-for="LIPAssetTransfer.Longitute" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.DataCollectedBy" class="control-label"></label>
+                    <input asp-for="LIPAssetTransfer.DataCollectedBy" class="form-control" required />
+                    <span asp-validation-for="LIPAssetTransfer.DataCollectedBy" class="text-danger"></span>
+                </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.LIPPackageId" class="control-label"></label>
+                    <select asp-for="LIPAssetTransfer.LIPPackageId" class="form-control" asp-items="ViewBag.LIPPackageId"></select>
+                </div>
+            </div>
+        
+                <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" asp-for="LIPAssetTransfer.IdentifiedById"></label>
+                    <select required asp-for="LIPAssetTransfer.IdentifiedById" asp-items="ViewBag.IdentifiedById" class="form-control">
+                    </select>
+                </div>
+                </div>
+               
+            @* <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Member.ProfilePicture" style="width: 100%;"></label>
+                    <img id="profilePicture" style="width:200px;height:200px; object-fit:cover" src="">
+                    <input tabindex="7" type="file"
+                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                       asp-for="Member.ProfilePicture" name="ProfilePicture"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="Member.ProfilePicture" class="text-danger"></span>
+                </div>
+                </div> *@
+                <div class="col-md-3">
+
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.LIPFormAttachment" class="control-label"></label>
+                    <input type="file" name="LIPFormAttachment" class="form-control" accept="application/pdf" required />
+                    <span asp-validation-for="LIPAssetTransfer.LIPFormAttachment" class="text-danger"></span>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="LIPAssetTransfer.CNICAttachment" class="control-label"></label>
+                    <input type="file" name="CNICAttachment" class="form-control" accept="application/pdf" />
+                    <span asp-validation-for="LIPAssetTransfer.CNICAttachment" class="text-danger"></span>
+                </div>                  
+            </div>
+            <div class="col-md-3">
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input disabled="disabled" class="form-check-input" asp-for="Member.IsRefugee" /> @Html.DisplayNameFor(model => model.Member.IsRefugee)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Add Member" class="btn btn-primary" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input disabled="disabled" class="form-check-input" asp-for="Member.IsAnyDisability" /> @Html.DisplayNameFor(model => model.Member.IsAnyDisability)
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+    else
+    {
+        <div class="account-pages my-5 pt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mb-5">
+                            <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                            <h4 class="text-uppercase">Sorry, page not found</h4>
+                            @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-xl-6">
+                        <div>
+                            <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+@section scripts{
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#CNIC').keyup(function (event) {
+                var refLength = $("#CNIC").val();
+                if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
+                    $('#IsRefugee').prop('checked', true);
+                } else {
+                    $('#IsRefugee').prop('checked', false);
+                }
+            });
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#Member_VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#UnionCouncilId").change(function () {                
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#Member_VillageId").empty();
+                    $("#Member_VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#Member_VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+        });
+        function isAlphaOrParen(str) {
+            return /^[a-zA-Z()]+$/.test(str);
+        }
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+    </script>
+}
+

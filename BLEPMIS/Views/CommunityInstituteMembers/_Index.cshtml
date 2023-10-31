@@ -6,6 +6,9 @@
 <table class="table">
     <thead>
         <tr>
+                <th>
+                    S.No
+                </th>
             <th>
                 @Html.DisplayNameFor(model => model.MISCode)
             </th>
@@ -26,16 +29,21 @@
             </th> 
             <th>
                 @Html.DisplayNameFor(model => model.Member.ProfilePicture)
-            </th>
-            
+            </th>           
             <th></th>
                      
                          
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+            @{
+                int counter = 0;
+            }
+            @foreach (var item in Model) {
         <tr>
+                    <td>
+                        @(counter =counter + 1)
+                    </td>
              <td>
                 @Html.DisplayFor(modelItem => item.MISCode)
             </td>
@@ -65,18 +73,18 @@
                 }
             </td>  
             @{
-                        if ((item.CommunityInstitution.IsSubmittedForReview == false) || AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.Edit).Result.Succeeded)
+                if ((item.CommunityInstitution.IsSubmittedForReview == false) && AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit).Result.Succeeded && item.CommunityInstitution.IsVerified == false)
                 {               
                 <td>
                 <a asp-action="Edit" asp-route-id="@item.MemberId" asp-route-CIMId="@item.CommunityInstituteMemberId" asp-route-CIId="@item.CommunityInstitutionId"><i class="mdi mdi-pencil font-size-18"></i></a>                                  
-                            </td>
-                        }
-                 if (item.CommunityInstitution.IsSubmittedForReview == false)
+                </td>
+                }
+                if (item.CommunityInstitution.IsSubmittedForReview == false && AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit).Result.Succeeded && item.CommunityInstitution.IsVerified == false)
                 {               
                 <td>
                 <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.CommunityInstituteMemberId">Drop</a>                                  
-                            </td>
-                        }
+                </td>
+                }
                        
             }           
         </tr>

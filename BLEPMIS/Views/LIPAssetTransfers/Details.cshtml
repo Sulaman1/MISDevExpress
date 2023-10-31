@@ -1,0 +1,434 @@
+﻿@model DAL.Models.Domain.Training.LIPAssetTransfer
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+@{
+     ViewData["Title"] = "Detail";
+    ViewBag.pageTitle = "BLEP";
+    ViewBag.Title = "LIP";
+    ViewBag.pTitle = "LIP";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <!-- DataTables -->
+    <style>
+        input {
+            color: black;
+        }
+
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+
+        #link {
+            color: #FFFFFF;
+        }
+
+        .main-footer.main-footer {
+            margin: 0;
+        }
+        .page-title-box {
+            padding: 0;
+        }
+          label{
+            margin-top:5px;
+        }
+        /* CSS link color */
+         .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+    </style>    
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<section class="content mt-0">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">            
+            <h4 class="card-title">
+                <b>LIP Asset Transfer Form</b>
+            </h4>
+        </div><!-- /.card-header -->
+        <div class="card-body">    
+    <div class="row">
+        <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPCode)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPCode)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.MemberName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.MemberName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.FatherName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.FatherName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.CNIC)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.CNIC)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.CellNo)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.CellNo)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.Gender)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.Gender)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.PSC)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.PSC)
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.CNICAttachment)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.CNICAttachment == null)
+                            {
+                                <span>Not Uploaded</span>
+                            }
+                            else
+                            {
+                                <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                            }
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPFormAttachment)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.LIPFormAttachment == null)
+                            {
+                                <span>Not Uploaded</span>
+                            }
+                            else
+                            {
+                                <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                            }
+                        </dd>
+                        @{
+                            if (Model.IsAssetTransfer)
+                            {
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.GRNAttachment)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.GRNAttachment == null)
+                                    {
+                                        <span>Not Uploaded</span>
+                                    }
+                                    else
+                                    {
+                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.GRNAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.PictureAttachment1)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.PictureAttachment1 == null)
+                                    {
+                                        <span>Not Uploaded</span>
+                                    }
+                                    else
+                                    {
+                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.PictureAttachment1')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                    }
+                                </dd>
+                            }
+                        }
+                        @{
+                            if (Model.IsInternalReviewed)
+                            {                              
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.PictureAttachment4)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.PictureAttachment4 == null)
+                                    {
+                                        <span>Not Uploaded</span>
+                                    }
+                                    else
+                                    {
+                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.PictureAttachment4')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                    }
+                                </dd>
+                            }
+                        }
+                    </dl>
+        </div>
+        <div class="col-md-6">
+                    <dl class="row">                       
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.IdentifiedBy.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.IdentifiedBy.Name)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Village.UnionCouncil.Tehsil.District.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Village.UnionCouncil.Tehsil.District.Name)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Village.UnionCouncil.Tehsil.TehsilName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Village.UnionCouncil.Tehsil.TehsilName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Village.UnionCouncil.UnionCouncilName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Village.UnionCouncil.UnionCouncilName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPPackage.PackageName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPPackage.PackageName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPPackage.Description)
+                        </dt>
+                        <dd class="col-sm-8">
+                            <textarea class="input-large form-control" rows="10" readonly="readonly">@Model.LIPPackage.Description</textarea>
+                        </dd>
+                    </dl>
+        </div>
+    </div>    
+</div>
+</div>
+    @{
+        if ((!Model.IsSubmitted) && (AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Edit)).Result.Succeeded)
+        {
+            <div>
+                <button id="btnreviewsubmit" class="btn btn-sm btn-info" onclick="submitprofile(@Model.LIPAssetTransferId)">Submit for Review</button>
+            </div>
+        }
+        if ((Model.IsReviewed == true && Model.IsAssetTransfer == false) && AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.AssetDistribution).Result.Succeeded)
+        {
+            <div>
+                <a class="btn btn-sm btn-info" asp-action="Edit" asp-controller="LIPAssetTransfers" asp-route-id="@Model.LIPAssetTransferId">Asset Transfer Request</a>
+            </div>
+        }
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.LIPAssetTransfer.Review).Result.Succeeded)
+        if ((!Model.IsReviewed) && Model.IsSubmitted)
+        {
+            <div>
+                <button id="btnverifysubmit" class="btn btn-sm btn-info" onclick="submitforapproval(@Model.LIPAssetTransferId)">Approved</button>
+                <button id="btnrejectverifiy" class="btn btn-sm btn-danger" onclick="rejectforapproval(@Model.LIPAssetTransferId)">Reject</button>
+            </div>
+        }
+    }
+</section>
+
+
+
+<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Latitute,",",@Model.Longitute,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    @*<div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+        
+        function submitprofile(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit LIP Asset Transfer for Review',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $('#btnreviewsubmit').prop('disabled', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/SubmitForReviewRequest",
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnreviewsubmit').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function submitforapproval(Id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit Asset Transfer for Approval',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/ApprovalRequest",
+                        data: { id: Id, val: 1 },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifysubmit').prop('disabled', true);
+                                    $('#btnrejectverifiy').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+function rejectforapproval(Id) {
+    var Description = "";
+            Swal.fire({
+                title: "Are you sure?",                
+                html: "<h6>You Want to Reject Asset Transfer for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                type: "warning",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!",
+                preConfirm: () => {
+                    Description = document.getElementById('description').value;
+                    if (Description == "") {
+                        Swal.showValidationMessage(
+                            `Invalid Reason!`
+                        )
+                    }
+                }
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/ApprovalRequest",
+                        data: { id: Id, val: 0, description : Description},
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifysubmit').prop('disabled', true);
+                                    $('#btnrejectverifiy').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

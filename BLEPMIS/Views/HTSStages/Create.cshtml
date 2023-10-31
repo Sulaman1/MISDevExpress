@@ -1,0 +1,252 @@
+﻿@model DAL.Models.Domain.HTSModule.HTSStage
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Add";
+    ViewBag.pageTitle = "BSF";
+    ViewBag.Title = "HTS";
+    ViewBag.pTitle = "HTS";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    decimal TotalGrant = ViewBag.TotalGrant;
+    decimal ReceivedGrant = ViewBag.ReceivedGrant;    
+    decimal ComletedStage = ViewBag.ComletedStage;
+}
+<style>
+    .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+@if (true)
+{
+    <div class="checkout-tabs">
+        
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body" style="padding:10px">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="media">
+                            <div class="mr-3">
+                                <img style="border-radius:5%" src="~/assets/images/hts.gif" alt="" height="100" width="300">
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-muted">
+                                    <p class="mb-2">Welcome to HTS Activity</p>
+                                            <h6 class="mb-1">Beneficiary Name: <b>@ViewBag.BName</b></h6>
+                                    @*<p class="mb-0">@ViewBag.TotalGrant</p>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 align-self-center">
+                        <div class="text-lg-center mt-4 mt-lg-0">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2">Total Grant</p>
+                                                <h5 class="mb-0">@Math.Round((TotalGrant),0)</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2">Release Amount</p>
+                                        <h5 class="mb-0">@Math.Round((ReceivedGrant),0)</h5>
+                                    </div>
+                                </div>
+                               @* <div class="col-3">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2">Financial Progress</p>
+                                        <h5 class="mb-0">@Math.Round((ReceivedGrant/TotalGrant * 100),2)%</h5>
+                                    </div>
+                                </div>*@
+                                <div class="col-4">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2">Remaining Amount</p>
+                                        <h5 class="mb-0">@Math.Round((TotalGrant - ReceivedGrant),0)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="row">            
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            High Tunneling System - Status:
+                                            @if (ViewBag.IsCompleted == true)
+                                            {
+                                                <span class="badge badge-pill badge-soft-success font-size-11">Complete</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-pill badge-soft-primary font-size-11">In Process</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                @{
+                                    if(ComletedStage > 0)
+                                    {
+                                        <div class="alert alert-success" style="padding: .40rem 1.25rem" role="alert">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h4 class="mt-2 card-title">List of Financial Stages</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }                                
+                                <div id="dynamicContentContainer"></div>
+                                @if (ViewBag.IsCompleted == false && AuthorizationService.AuthorizeAsync(User, Permissions.HTS.Create).Result.Succeeded)
+                                {
+                                    <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h4 class="mt-2 card-title">Upload Financial Stage</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form asp-action="Create" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                <input asp-for="UserId" type="hidden" />
+                                                <input asp-for="CreatedBy" type="hidden" />
+                                                <input asp-for="HTSId" type="hidden" />
+                                                <input asp-for="InstallmentNo" type="hidden" />                                                
+                                                <div class="form-group">
+                                                    <label asp-for="InstallmentNo" class="control-label"></label>
+                                                    <input asp-for="InstallmentNo" class="form-control" readonly="readonly"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="AmountPaid" class="control-label"></label>
+                                                    <input asp-for="AmountPaid" class="form-control" type="number" max="@ViewBag.MaxRelease" />
+                                                    <span asp-validation-for="AmountPaid" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="StageAttachment" class="control-label"></label>
+                                                    <input type="file" name="StageAttachment" class="form-control" accept="application/pdf" required />
+                                                    <span asp-validation-for="StageAttachment" class="text-danger"></span>
+                                                </div>                                               
+                                            </div>      
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture1" class="control-label"></label>
+                                                    <input type="file" name="Picture1" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture1" class="text-danger"></span>
+                                                </div>                                                
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture2" class="control-label"></label>
+                                                    <input type="file" name="Picture2" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture2" class="text-danger"></span>
+                                                </div>                                               
+                                            </div>
+                                        </div>
+                                    </form>
+                                }                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get('@Url.Action("_Index","HTSStages", new { id=Model.HTSId })', function (content) {
+                $("#dynamicContentContainer").html(content);
+                //notificationme('Fetch Record Successfully!');                
+            });
+        });
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

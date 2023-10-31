@@ -11,23 +11,21 @@ namespace BLEPMIS.Controllers
 [Authorize(Roles ="SuperAdmin, Administrator")]
 public class RolesController : Controller
 {
-    private readonly IRole _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public RolesController(RoleManager<IdentityRole> roleManager)
+        {
+            _roleManager = roleManager;
+        }
 
-    public RolesController(IRole context)
-    {
-        _context = context;
-    }
-
-    public async Task<IActionResult> Index()
-    {
-        var roles = await _context.GetAll();
-        return View(roles);
+   public async Task<IActionResult> Index()
+    {            
+        return View(await _roleManager.Roles.Where(a => a.Id != "e9cabf5e-0bd2-4f34-ad54-8af22f32c607").ToListAsync());
     }
     [HttpPost]
     public async Task<IActionResult> AddRole(string roleName)
     {
         if(roleName != null)
-            _context.AddRole(roleName);
+            await _roleManager.CreateAsync(new IdentityRole(roleName.Trim()));
         return RedirectToAction("Index");
     }
 }

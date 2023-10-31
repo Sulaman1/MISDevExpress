@@ -1,0 +1,335 @@
+﻿@model DAL.Models.Domain.MasterSetup.HREmployee
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "HR";
+    ViewBag.Title = "Employee";
+    ViewBag.pTitle = "Employee";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+    };
+    var DomicileLocal = new[]
+        {   new SelectListItem { Text = "Domicile", Value = "Domicile" },
+              new SelectListItem { Text = "Local", Value = "Local" },
+    };
+    var MaritalStatus = new[]
+         {   new SelectListItem { Text = "Married", Value = "Married" },
+              new SelectListItem { Text = "Un Married", Value = "Un Married" },
+              new SelectListItem { Text = "Divorced", Value = "Divorced" },
+              new SelectListItem { Text = "Widowed", Value = "Widowed" },
+    };
+}
+<style>
+    .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.HR.Edit).Result.Succeeded)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-controller="HREmployees" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Employee</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Edit Employee</p>
+                    </a>                   
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit Employee</h4>
+                                        </div>                                       
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="HREmployeeId"/>
+                                            <input type="hidden" asp-for="CNICAttachment"/>
+                                            <input type="hidden" asp-for="JoiningLetterAttachment"/>
+                                            <input type="hidden" asp-for="CVAttachment"/>                                            
+                                            <div class="form-group">
+                                                <label asp-for="Section" class="control-label"></label>
+                                                <select asp-for="Section" class="form-control" asp-items="ViewBag.SectionId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="EmployeeName" class="control-label"></label>
+                                                <input asp-for="EmployeeName" class="form-control" required />
+                                                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="FatherName" class="control-label"></label>
+                                                <input asp-for="FatherName" class="form-control"/>
+                                                <span asp-validation-for="FatherName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="CNIC" class="control-label"></label>
+                                                <input tabindex="1" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                                                <span asp-validation-for="CNIC" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="ContactNumber" class="control-label"></label>
+                                                <input tabindex="4" asp-for="ContactNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="PTCLNumber" class="control-label"></label>
+                                                <input asp-for="PTCLNumber" class="form-control"/>
+                                                <span asp-validation-for="PTCLNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Email" class="control-label"></label>
+                                                <input asp-for="Email" class="form-control" />
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+                                        </div>                                       
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="LastEducationLevel" class="control-label"></label>
+                                                <select asp-for="LastEducationLevel" class="form-control" asp-items="ViewBag.HRQualificationLevelId"></select>
+                                                <span asp-validation-for="LastEducationLevel" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="DOB" class="control-label"></label>
+                                                <input asp-for="DOB" class="form-control" />
+                                                <span asp-validation-for="DOB" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="JoiningDate" class="control-label"></label>
+                                                <input asp-for="JoiningDate" class="form-control" />
+                                                <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="BankAccount" class="control-label"></label>
+                                                <input asp-for="BankAccount" class="form-control" />
+                                                <span asp-validation-for="BankAccount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Gender" class="control-label"></label>
+                                                <select asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="DomicileLocal" class="control-label"></label>
+                                                <select asp-for="DomicileLocal" asp-items="@DomicileLocal" class="form-control"></select>
+                                                <span asp-validation-for="DomicileLocal" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="MaritalStatus" class="control-label"></label>
+                                                <select asp-for="Gender" asp-items="@MaritalStatus" class="form-control"></select>
+                                                <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                                            </div>
+                                        </div>                                        
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Designation" class="control-label"></label>
+                                                <select asp-for="Designation" class="form-control" asp-items="ViewBag.HRDesignationId"></select>
+                                                <span asp-validation-for="Designation" class="text-danger"></span>
+                                            </div>
+                                        </div>                                                                             
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="Address" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="Address" rows="4" placeholder="Enter address ..."></textarea>
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>                                        
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="MailingAddress" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="MailingAddress" rows="4" placeholder="Enter mailing address ..."></textarea>
+                                                <span asp-validation-for="MailingAddress" class="text-danger"></span>
+                                            </div>                                           
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label asp-for="DistrictOfWork" class="control-label"></label>
+                                                <select asp-for="DistrictOfWork" class="form-control" asp-items="ViewBag.DistrictId"></select>
+                                                <span asp-validation-for="DistrictOfWork" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CNICAttachment" class="control-label"></label>
+                                                <input type="file" name="CNICAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="CNICAttachment" class="text-danger"></span>
+                                            </div>
+                                           
+                                            @{
+                                                if (Model.CNICAttachment != null)
+                                                {                                                    
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded CNIC</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>                                                   
+                                                }
+                                            }
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="JoiningLetterAttachment" class="control-label"></label>
+                                                <input type="file" name="JoiningLetterAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="JoiningLetterAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                                if (Model.JoiningLetterAttachment != null)
+                                                {
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded Joining Letter</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.JoiningLetterAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CVAttachment" class="control-label"></label>
+                                                <input type="file" name="CVAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="CVAttachment" class="text-danger"></span>
+                                            </div>
+                                            @{
+                                                if (Model.CVAttachment != null)
+                                                {
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded CV</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.CVAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>                                       
+                                    </div>
+                                </form>
+                            </div>                            
+                        </div>
+                        <a asp-action="Index" asp-controller="EmployeeContracts" asp-route-id="@Model.HREmployeeId">View/Upload Employee Contract</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script>
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

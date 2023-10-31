@@ -1,0 +1,174 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.LIPTraining>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingFormNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AttendanceAttachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportAttachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SessionPlanAttachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PictureAttachment1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PictureAttachment2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PictureAttachment3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PictureAttachment4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMember)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalFemale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSubmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsVerified)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerifiedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DistrictId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Village.UnionCouncil)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingFormNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AttendanceAttachment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportAttachment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SessionPlanAttachment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PictureAttachment1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PictureAttachment2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PictureAttachment3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PictureAttachment4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMember)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalFemale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSubmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsVerified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerifiedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DistrictId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Village.UnionCouncil.UnionCouncilName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LIPTrainingId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LIPTrainingId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LIPTrainingId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

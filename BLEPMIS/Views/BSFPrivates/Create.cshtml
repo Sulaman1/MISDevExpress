@@ -1,0 +1,419 @@
+﻿@model DAL.Models.Domain.BSF.BSFPrivate
+
+@{
+    ViewData["Title"] = "Create";
+    ViewBag.pageTitle = "BSF";
+    ViewBag.Title = "Government";
+    ViewBag.pTitle = "Government";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{    
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+            };            
+    var businessNature = new[]
+         {   new SelectListItem { Text = "New", Value = "New" },
+              new SelectListItem { Text = "Existing", Value = "Existing" },
+            };
+    var structureofProposedBusiness = new[]
+         {   new SelectListItem { Text = "Sole", Value = "Sole" },
+              new SelectListItem { Text = "Prop", Value = "Prop" },
+    };
+}
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-controller="BSFPrivates" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of BSF</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Add New BSF</p>
+                    </a>                  
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .20rem 1rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h6 class="mt-2 card-title">Add New BSF - Personal Information</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form asp-action="Create" enctype="multipart/form-data">                                    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            @* <input type="hidden" asp-for="ContractAwardAttachment"/>
+                                            <input type="hidden" asp-for="FisibilityReportAttachment"/>
+                                            <input type="hidden" asp-for="Email"/>
+                                            <input type="hidden" asp-for="CNICAttachment"/>
+                                            <input type="hidden" asp-for="BusinessPlanAttachment"/> *@
+                                            <div class="form-group">
+                                                <label asp-for="BeneficiaryName" class="control-label"></label>
+                                                <input asp-for="BeneficiaryName" class="form-control" />
+                                                <span asp-validation-for="BeneficiaryName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CNIC" class="control-label"></label>
+                                                <input asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '99999-9999999-9'" />
+                                                <span asp-validation-for="CNIC" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Gender" class="control-label"></label>
+                                                <select asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="NTN" class="control-label"></label>
+                                                <input asp-for="NTN" class="form-control" />
+                                                <span asp-validation-for="NTN" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CellNumber" class="control-label"></label>
+                                                <input asp-for="CellNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                                <span asp-validation-for="CellNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Education" class="control-label"></label>
+                                                <input asp-for="Education" class="form-control" />
+                                                <span asp-validation-for="Education" class="text-danger"></span>
+                                            </div>
+                                        </div>      
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Age" class="control-label"></label>
+                                                <input asp-for="Age" class="form-control" />
+                                                <span asp-validation-for="Age" class="text-danger"></span>
+                                            </div>
+                                        </div>  
+                                        <div action="col-md-2">
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="IsRefuge" /> @Html.DisplayNameFor(model => model.IsRefuge)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="Address" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="Address" rows="2" placeholder="Enter detail here ..."></textarea>
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+                                    
+                                    <div class="alert alert-info" style="padding: .20rem 1rem" role="alert">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h6 class="mt-2 card-title">Current Business Information</h6>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ExperienceInYear" class="control-label"></label>
+                                                <input asp-for="ExperienceInYear" class="form-control" />
+                                                <span asp-validation-for="ExperienceInYear" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BusinessFieldExperience" class="control-label"></label>
+                                                <input asp-for="BusinessFieldExperience" class="form-control" />
+                                                <span asp-validation-for="BusinessFieldExperience" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ExistingBusinessName" class="control-label"></label>
+                                                <input asp-for="ExistingBusinessName" class="form-control" />
+                                                <span asp-validation-for="ExistingBusinessName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="RegistrationWithGOP" class="control-label"></label>
+                                                <input asp-for="RegistrationWithGOP" class="form-control" />
+                                                <span asp-validation-for="RegistrationWithGOP" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DateofRegistration" class="control-label"></label>
+                                                <input asp-for="DateofRegistration" class="form-control" />
+                                                <span asp-validation-for="DateofRegistration" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CurrentRegistrationStatus" class="control-label"></label>
+                                                <input asp-for="CurrentRegistrationStatus" class="form-control" />
+                                                <span asp-validation-for="CurrentRegistrationStatus" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Latitute" class="control-label"></label>
+                                                <input asp-for="Latitute" class="form-control" />
+                                                <span asp-validation-for="Latitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Longitute" class="control-label"></label>
+                                                <input asp-for="Longitute" class="form-control" />
+                                                <span asp-validation-for="Longitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="NatureofExistingBusiness" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="NatureofExistingBusiness" rows="2" placeholder="Enter Personal Address ..."></textarea>
+                                                <span asp-validation-for="NatureofExistingBusiness" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="alert alert-info" style="padding: .20rem 1rem" role="alert">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h6 class="mt-2 card-title">Proposed Business Information</h6>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">                                            
+                                            <div class="form-group">
+                                                <label asp-for="GeneralBusinessIdeaId" class="control-label"></label>
+                                                <select asp-for="GeneralBusinessIdeaId" class="form-control" asp-items="ViewBag.GeneralBusinessIdeaId"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DistrictName" class="control-label"></label>
+                                                <select asp-for="DistrictName" asp-items="@ViewBag.District" class="form-control"></select>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ProposedBusinessDistrict" class="control-label"></label>
+                                                <input asp-for="ProposedBusinessDistrict" class="form-control" />
+                                                <span asp-validation-for="ProposedBusinessDistrict" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ProposedBusinessName" class="control-label"></label>
+                                                <input asp-for="ProposedBusinessName" class="form-control" />
+                                                <span asp-validation-for="ProposedBusinessName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BusinessNature" class="control-label"></label>
+                                                <select asp-for="BusinessNature" asp-items="@businessNature" class="form-control"></select>
+                                                <span asp-validation-for="BusinessNature" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BusinessSector" class="control-label"></label>
+                                                <input asp-for="BusinessSector" class="form-control" />
+                                                <span asp-validation-for="BusinessSector" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="StructureofProposedBusiness" class="control-label"></label>
+                                                <select asp-for="StructureofProposedBusiness" asp-items="@structureofProposedBusiness" class="form-control"></select>
+                                                <span asp-validation-for="StructureofProposedBusiness" class="text-danger"></span>
+                                            </div>
+                                        </div>                                       
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="DetailofEmploymentJobforProposedBusiness" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="DetailofEmploymentJobforProposedBusiness" rows="2" placeholder="Enter Personal Address ..."></textarea>
+                                                <span asp-validation-for="DetailofEmploymentJobforProposedBusiness" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @*  <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="FatherName" class="control-label"></label>
+                                                <input asp-for="FatherName" class="form-control" />
+                                                <span asp-validation-for="FatherName" class="text-danger"></span>
+                                            </div>
+                                        </div>  *@
+                                        
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="TotalGrantInRupees" class="control-label"></label>
+                                                <input type="number" asp-for="TotalGrantInRupees" class="form-control" />
+                                                <span asp-validation-for="TotalGrantInRupees" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="TotalApplicantInRupees" class="control-label"></label>
+                                                <input type="number" asp-for="TotalApplicantInRupees" class="form-control" />
+                                                <span asp-validation-for="TotalApplicantInRupees" class="text-danger"></span>
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="NumberofJobBeneficiaries" class="control-label"></label>
+                                                <input asp-for="NumberofJobBeneficiaries" class="form-control" />
+                                                <span asp-validation-for="NumberofJobBeneficiaries" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="NTNAttachment" class="control-label"></label>
+                                                <input type="file" name="NTNAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="NTNAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="OtherAttachment" class="control-label"></label>
+                                                <input type="file" name="OtherAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="OtherAttachment" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Submit" class="btn btn-primary" />
+                                            </div>
+                                        </div>                                     
+                                                                                                                   
+                                       
+                                       @*  <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BankName" class="control-label"></label>
+                                                <input asp-for="BankName" class="form-control" />
+                                                <span asp-validation-for="BankName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="AccountTitle" class="control-label"></label>
+                                                <input asp-for="AccountTitle" class="form-control" />
+                                                <span asp-validation-for="AccountTitle" class="text-danger"></span>
+                                            </div>
+                                        </div>                                       
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="OrganizationNTN" class="control-label"></label>
+                                                <input asp-for="OrganizationNTN" class="form-control" />
+                                                <span asp-validation-for="OrganizationNTN" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BusinessSector" class="control-label"></label>
+                                                <input asp-for="BusinessSector" class="form-control" />
+                                                <span asp-validation-for="BusinessSector" class="text-danger"></span>
+                                            </div>
+                                        </div> *@
+                                       @*  <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="SitesupervisorName" class="control-label"></label>
+                                                <input asp-for="SitesupervisorName" class="form-control" />
+                                                <span asp-validation-for="SitesupervisorName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="SitesupervisorContactNumber" class="control-label"></label>
+                                                <input asp-for="SitesupervisorContactNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                                                <span asp-validation-for="SitesupervisorContactNumber" class="text-danger"></span>
+                                            </div>
+                                        </div> *@
+                                        @*<div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="FisibilityReportAttachment" class="control-label"></label>
+                                                <input type="file" name="FisibilityReportAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="FisibilityReportAttachment" class="text-danger"></span>
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="BusinessPlanAttachment" class="control-label"></label>
+                                                <input type="file" name="BusinessPlanAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="BusinessPlanAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div action="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ContractAwardAttachment" class="control-label"></label>
+                                                <input type="file" name="ContractAwardAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="ContractAwardAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                        @* <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label asp-for="BankAddress" class="control-label"></label>
+                                                <textarea class="input-large form-control" asp-for="BankAddress" rows="2" placeholder="Enter a description ..."></textarea>
+                                                <span asp-validation-for="BankAddress" class="text-danger"></span>
+                                            </div>                                            
+                                        </div> *@
+                                    </div>
+                                </form>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{    
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+}

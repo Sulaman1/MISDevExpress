@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Identity;
 using DAL.Models;
 using System.Diagnostics.Metrics;
+using static Constant.Constants.Permissions;
 
 namespace BLEPMIS.Controllers.Training
 {
@@ -30,8 +31,13 @@ namespace BLEPMIS.Controllers.Training
         // GET: MemberTrainings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MemberTraining.Include(m => m.Employee).Include(m => m.TrainingType);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.MemberTraining.Include(m => m.Employee).Include(m => m.TrainingType.TrainingHead).ToListAsync();
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (currentUser.DistrictId > 1)
+            {
+                applicationDbContext = applicationDbContext.Where(a => a.DistrictId == currentUser.DistrictId).ToList();
+            }
+            return View(applicationDbContext);
         }
 
         // GET: MemberTrainings/Details/5
@@ -44,7 +50,7 @@ namespace BLEPMIS.Controllers.Training
 
             var memberTraining = await _context.MemberTraining
                 .Include(m => m.Employee)      
-                .Include(a=>a.UnionCouncil.Tehsil.District)                
+                .Include(a=>a.Village.UnionCouncil.Tehsil.District)                
                 .Include(m => m.TrainingType.TrainingHead)
                 .FirstOrDefaultAsync(m => m.MemberTrainingId == id);
             if (memberTraining == null)
@@ -102,13 +108,24 @@ namespace BLEPMIS.Controllers.Training
         {
             if (ModelState.IsValid)
             {
+                var TrainingCount = _context.MemberTraining.Count(a => a.TrainingTypeId == memberTraining.TrainingTypeId) + 1;
+                var TrainingTypeInfo = _context.TrainingType.Find(memberTraining.TrainingTypeId);
+                var DistrictCode = _context.District.Find(memberTraining.DistrictId).Code;
+                string TrainingCode = DistrictCode + "-" + _context.TrainingHead.Find(TrainingTypeInfo.TrainingHeadId).TrainingHeadCode + "-" + TrainingTypeInfo.TrainingTypeCode;
+                string val = (TrainingCount).ToString("D3");
+                memberTraining.MemberTrainingCode = (TrainingCode + "-" + val);
+                while (_context.MemberTraining.Count(a => a.MemberTrainingCode == memberTraining.MemberTrainingCode) > 0)
+                {
+                    val = (++TrainingCount).ToString("D3");
+                    memberTraining.MemberTrainingCode = (TrainingCode + "-" + val);
+                }
                 if (AttendanceAttachment != null && AttendanceAttachment.Length > 0)
                 {
                     var rootPath = Path.Combine(
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training"+ memberTraining.TrainingTypeId +"\\AttendanceSheet\\");
                     string fileName = Path.GetFileName(AttendanceAttachment.FileName);                    
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "AttendanceSheet" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/AttendanceSheet/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -128,7 +145,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Report\\");
                     string fileName = Path.GetFileName(ReportAttachment.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "Report" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.ReportAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Report/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -148,7 +165,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\SessionPlan\\");
                     string fileName = Path.GetFileName(SessionPlanAttachment.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "SessionPlan" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/SessionPlan/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -159,7 +176,7 @@ namespace BLEPMIS.Controllers.Training
                     string FullPathWithFileName = Path.Combine(sPath, fileName);
                     using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
                     {
-                        await AttendanceAttachment.CopyToAsync(stream);
+                        await SessionPlanAttachment.CopyToAsync(stream);
                     }
                 }
                 if (PictureAttachment1 != null && PictureAttachment1.Length > 0)
@@ -168,7 +185,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment1.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -188,7 +205,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment2.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -208,7 +225,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment3.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -228,7 +245,7 @@ namespace BLEPMIS.Controllers.Training
                     Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                     string fileName = Path.GetFileName(PictureAttachment4.FileName);
                     Random random = new Random();
-                    int randomNumber = random.Next(1, 1000);
+                    int randomNumber = random.Next(9999, 999999);
                     fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                     memberTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                     string sPath = Path.Combine(rootPath);
@@ -242,6 +259,9 @@ namespace BLEPMIS.Controllers.Training
                         await PictureAttachment4.CopyToAsync(stream);
                     }
                 }
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                memberTraining.SubmittedForReviewBy = currentUser.UserName;
+                memberTraining.District = _context.District.Find(memberTraining.DistrictId).Name;
                 _context.Add(memberTraining);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -260,7 +280,7 @@ namespace BLEPMIS.Controllers.Training
                 return NotFound();
             }
 
-            var memberTraining = await _context.MemberTraining.Include(a=>a.UnionCouncil).Where(a=>a.MemberTrainingId == id).FirstOrDefaultAsync();
+            var memberTraining = await _context.MemberTraining.Include(a=>a.Village.UnionCouncil.Tehsil).Where(a=>a.MemberTrainingId == id).FirstOrDefaultAsync();
             if (memberTraining == null)
             {
                 return NotFound();
@@ -273,8 +293,25 @@ namespace BLEPMIS.Controllers.Training
             var districtAccess = _context.District.Where(a => a.DistrictId == memberTraining.DistrictId);
             var currentUser = await _userManager.GetUserAsync(HttpContext.User);           
             ViewData["DistrictId"] = new SelectList(districtAccess, "DistrictId", "Name");
-            ViewData["TehsilId"] = new SelectList(_context.Tehsil.Where(a => a.DistrictId == memberTraining.DistrictId), "TehsilId", "TehsilName", memberTraining.UnionCouncil.TehsilId);
-            ViewData["UnionCouncilId"] = new SelectList(_context.UnionCouncil.Where(a => a.TehsilId == memberTraining.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", memberTraining.UnionCouncilId);
+            ViewData["TehsilId"] = new SelectList(_context.Tehsil.Where(a => a.DistrictId == memberTraining.DistrictId), "TehsilId", "TehsilName", memberTraining.Village.UnionCouncil.TehsilId);
+            ViewData["UnionCouncilId"] = new SelectList(_context.UnionCouncil.Where(a => a.TehsilId == memberTraining.Village.UnionCouncil.TehsilId), "UnionCouncilId", "UnionCouncilName", memberTraining.Village.UnionCouncilId);
+            ViewData["VillageId"] = new SelectList(_context.Village.Where(a => a.UnionCouncilId == memberTraining.Village.UnionCouncilId), "VillageId", "Name", memberTraining.VillageId);
+            ViewBag.IsAllow = true;
+            var currentuser = await _userManager.GetUserAsync(User);
+            if(memberTraining.SubmittedForReviewBy != null)
+            {
+                if (currentuser.UserName != memberTraining.SubmittedForReviewBy)
+                {
+                    ViewBag.IsAllow = false;                    
+                }
+            }
+            else
+            {
+                ViewBag.IsAllow = true;
+                memberTraining.SubmittedForReviewBy = currentuser.UserName;
+            }
+            
+            
             return View(memberTraining);
         }
 
@@ -283,7 +320,7 @@ namespace BLEPMIS.Controllers.Training
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MemberTraining memberTraining, int TrainingHeadId, IFormFile AttendanceAttachment, IFormFile ReportAttachment, IFormFile SessionPlanAttachment, IFormFile PictureAttachment1, IFormFile PictureAttachment2, IFormFile PictureAttachment3, IFormFile PictureAttachment4)
+        public async Task<IActionResult> Edit(int id, MemberTraining memberTraining, int TrainingHeadId, IFormFile? AttendanceAttachment, IFormFile? ReportAttachment, IFormFile? SessionPlanAttachment, IFormFile? PictureAttachment1, IFormFile? PictureAttachment2, IFormFile? PictureAttachment3, IFormFile? PictureAttachment4)
         {
             if (id != memberTraining.MemberTrainingId)
             {
@@ -300,7 +337,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\AttendanceSheet\\");
                         string fileName = Path.GetFileName(AttendanceAttachment.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "AttendanceSheet" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.AttendanceAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/AttendanceSheet/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -320,7 +357,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Report\\");
                         string fileName = Path.GetFileName(ReportAttachment.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "Report" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.ReportAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Report/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -340,7 +377,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\SessionPlan\\");
                         string fileName = Path.GetFileName(SessionPlanAttachment.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "SessionPlan" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.SessionPlanAttachment = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/SessionPlan/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -351,7 +388,7 @@ namespace BLEPMIS.Controllers.Training
                         string FullPathWithFileName = Path.Combine(sPath, fileName);
                         using (var stream = new FileStream(FullPathWithFileName, FileMode.Create))
                         {
-                            await AttendanceAttachment.CopyToAsync(stream);
+                            await SessionPlanAttachment.CopyToAsync(stream);
                         }
                     }
                     if (PictureAttachment1 != null && PictureAttachment1.Length > 0)
@@ -360,7 +397,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment1.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.PictureAttachment1 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -380,7 +417,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment2.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.PictureAttachment2 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -400,7 +437,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment3.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.PictureAttachment3 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -420,7 +457,7 @@ namespace BLEPMIS.Controllers.Training
                         Directory.GetCurrentDirectory(), "wwwroot\\Documents\\Training" + memberTraining.TrainingTypeId + "\\Pictures\\");
                         string fileName = Path.GetFileName(PictureAttachment4.FileName);
                         Random random = new Random();
-                        int randomNumber = random.Next(1, 1000);
+                        int randomNumber = random.Next(9999, 999999);
                         fileName = "Picture" + randomNumber.ToString() + Path.GetExtension(fileName);
                         memberTraining.PictureAttachment4 = Path.Combine("/Documents/Training" + memberTraining.TrainingTypeId + "/Pictures/" + fileName);//Server Path
                         string sPath = Path.Combine(rootPath);
@@ -434,6 +471,7 @@ namespace BLEPMIS.Controllers.Training
                             await PictureAttachment4.CopyToAsync(stream);
                         }
                     }
+                    memberTraining.District = _context.District.Find(memberTraining.DistrictId).Name;
                     _context.Update(memberTraining);
                     await _context.SaveChangesAsync();
                 }
@@ -454,6 +492,7 @@ namespace BLEPMIS.Controllers.Training
             ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(a => a.SectionId == 2), "EmployeeId", "EmployeeName", memberTraining.EmployeeId);
             ViewData["TrainingHeadId"] = new SelectList(_context.TrainingHead, "TrainingHeadId", "TrainingHeadName", TrainingHeadId);
             ViewData["TrainingTypeId"] = new SelectList(_context.TrainingType.Where(a => a.TrainingHeadId == TrainingHeadId), "TrainingTypeId", "TrainingTypeName", TrainingHeadId);
+            ViewData["VillageId"] = new SelectList(_context.Village.Where(a => a.UnionCouncilId == memberTraining.Village.UnionCouncilId), "VillageId", "Name", memberTraining.VillageId);
             return View(memberTraining);
         }
         public async Task<JsonResult> GetTehsils(int districtId)
@@ -509,9 +548,9 @@ namespace BLEPMIS.Controllers.Training
             if (memberTraining != null)
             {
                 _context.MemberTraining.Remove(memberTraining);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+                        
             return RedirectToAction(nameof(Index));
         }
 

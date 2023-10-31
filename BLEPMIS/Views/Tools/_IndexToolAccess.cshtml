@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DAL.Models.Domain.ToolApp.ToolUserAccess>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tool)
+            </th>
+           
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tool.Name)
+            </td>           
+            @*<td>                
+                <a asp-action="DeleteAccess" asp-controller="Tools" asp-route-id="@item.ToolUserAccessId">Delete</a>
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>

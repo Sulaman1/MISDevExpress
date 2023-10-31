@@ -13,12 +13,12 @@
     <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
     <script src="~/assets/libs/node-waves/waves.min.js"></script>
-    <script src="~/assets/js/lang/jquery.multiLanguage.js"></script>
-   
-
-  
+    <script src="~/assets/js/lang/jquery.multiLanguage.js"></script>     
     <script src="~/assets/js/app.js"></script>
-
+    <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/thirdparty.bundle.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </head>
 
 <body data-topbar="dark">
@@ -81,6 +81,12 @@
     <script>
         $(document).ready(function () {
             $("#preloader").hide();
+            //$('#datatable-buttons').DataTable({
+            //    dom: 'Bfrtip',
+            //    buttons: [
+            //        'copy', 'csv', 'excel', 'pdf', 'print'
+            //    ]
+            //});
         });
     </script>
 </body>

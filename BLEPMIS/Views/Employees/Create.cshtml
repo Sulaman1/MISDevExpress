@@ -25,12 +25,8 @@
                     </a>
                     <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
                         <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
-                        <p class="font-weight-bold mb-4">Add New Employee</p>
-                    </a>
-                    <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
-                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
-                        <p class="font-weight-bold mb-4">Support</p>
-                    </a>
+                        <p class="font-weight-bold mb-4">Add New Resource</p>
+                    </a>                   
                 </div>
             </div>
             <div class="col-lg-10">
@@ -79,14 +75,14 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label asp-for="CNIC" class="control-label"></label>
-                                                <input asp-for="CNIC" class="form-control" required data-parsley-maxlength="3" />
+                                                <input tabindex="1" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
                                                 <span asp-validation-for="CNIC" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label asp-for="ContactNumber" class="control-label"></label>
-                                                <input asp-for="ContactNumber" class="form-control" required data-parsley-maxlength="3" />
+                                                <input tabindex="4" asp-for="ContactNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
                                                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -97,63 +93,12 @@
                                                 <span asp-validation-for="Address" class="text-danger"></span>
                                             </div>
                                             <div class="form-group">
-                                                <input type="submit" value="Add Employee" class="btn btn-primary" />
+                                                <input type="submit" value="Add Resource" class="btn btn-primary" />
                                             </div>
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-support" role="tabpanel" aria-labelledby="v-pills-support-tab">
-                                <h4 class="card-title mb-5">Support</h4>
-
-                                <div class="faq-box media mb-4">
-                                    <div class="faq-icon mr-3">
-                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="font-size-15">Where can I get some?</h5>
-                                        <p class="text-muted">To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental</p>
-                                    </div>
-                                </div>
-                                <div class="faq-box media mb-4">
-                                    <div class="faq-icon mr-3">
-                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="font-size-15">Where does it come from?</h5>
-                                        <p class="text-muted">Everyone realizes why a new common language would be desirable one could refuse to pay expensive translators.</p>
-                                    </div>
-                                </div>
-
-                                <div class="faq-box media mb-4">
-                                    <div class="faq-icon mr-3">
-                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="font-size-15">Why do we use it?</h5>
-                                        <p class="text-muted">Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary.</p>
-                                    </div>
-                                </div>
-                                <div class="faq-box media mb-4">
-                                    <div class="faq-icon mr-3">
-                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="font-size-15">Where can I get some?</h5>
-                                        <p class="text-muted">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
-                                    </div>
-                                </div>
-
-                                <div class="faq-box media">
-                                    <div class="faq-icon mr-3">
-                                        <i class="bx bx-help-circle font-size-20 text-success"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="font-size-15">What is Lorem Ipsum?</h5>
-                                        <p class="text-muted">New common language will be more simple and regular than the existing European languages. It will be as simple as occidental.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -185,4 +130,14 @@ else
             </div>
         </div>
     </div>
+}
+
+@section scripts{
+<!-- toastr plugin -->
+<script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+<!-- form mask -->
+<script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- form mask init -->
+<script src="~/assets/js/pages/form-mask.init.js"></script>
+
 }

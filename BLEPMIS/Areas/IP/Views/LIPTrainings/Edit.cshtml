@@ -1,0 +1,389 @@
+﻿@model DAL.Models.Domain.Training.LIPAssetTransfer
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "LIP";
+    ViewBag.Title = "Asset Transfer";
+    ViewBag.pTitle = "Asset Transfer";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<style>
+    .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+
+@if (true)
+{
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" asp-action="Index" asp-controller="LIPAssetTransfers" aria-selected="true">
+                        <i class="bx bxs-grid-alt check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Asset Transfer</p>
+                    </a>
+                    <a class="nav-link active" id="v-pills-privacy-tab" data-toggle="pill" href="#v-pills-privacy" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                        <i class="bx bxs-edit d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Edit Asset Transfer</p>
+                    </a>                   
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Edit Asset Transfer</h4>
+                                        </div>                                      
+                                    </div>
+                                </div>
+                                <form asp-action="Edit" enctype="multipart/form-data" class="custom-validation">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input type="hidden" asp-for="Member" />                                            
+                                            <input type="hidden" asp-for="IdentifiedById" />                                            
+                                            <input type="hidden" asp-for="LIPAssetTransferId" />                                            
+                                            <input type="hidden" asp-for="DistrictId" />                                            
+                                            <input type="hidden" asp-for="LIPPackageId" />                                            
+                                            <input type="hidden" asp-for="MemberId" />                                            
+                                            <input type="hidden" asp-for="VillageId" />                                            
+                                            <input type="hidden" asp-for="CNICAttachment" />                                            
+                                            <input type="hidden" asp-for="LIPFormAttachment" />                                            
+                                            <input type="hidden" asp-for="CreatedOn" />                                            
+                                            <input type="hidden" asp-for="DataCollectedBy" />                                            
+                                            <input type="hidden" asp-for="DataCollectorDesignation" />                                            
+                                            <input type="hidden" asp-for="IsReviewed" />                                            
+                                            <input type="hidden" asp-for="IsSubmitted" />                                            
+                                            <input type="hidden" asp-for="SubmittedBy" />                                            
+                                            <input type="hidden" asp-for="SubmittedOnDate" />                                            
+                                            <input type="hidden" asp-for="ReviewedBy" />                                            
+                                            <input type="hidden" asp-for="ReviewedOn" />                                            
+                                            <input type="hidden" asp-for="Latitute" />                                            
+                                            <input type="hidden" asp-for="Longitute" />                                            
+                                            <input type="hidden" asp-for="LIPCode" />                                            
+                                            <input type="hidden" asp-for="PSC" />                                            
+                                            <input type="hidden" asp-for="LIPPackage.Description" />                                            
+                                            <input type="hidden" asp-for="Member.Village.UnionCouncil.Tehsil.District.Code" />                                            
+                                            <div class="form-group">
+                                                <label class="control-label">Name</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.MemberName" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Father Name</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.FatherName" class="form-control" readonly="readonly"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">CNIC/Identity#</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.CNIC" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Latitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Cell No</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.CellNo" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">District</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.Village.UnionCouncil.Tehsil.District.Name" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Tehsil</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.Village.UnionCouncil.Tehsil.TehsilName" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Union Council</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.Village.UnionCouncil.UnionCouncilName" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Village</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.Village.Name" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>                                       
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="LIPPackageId" class="control-label"></label>
+                                                <input style="background-color:aliceblue" asp-for="LIPPackage.PackageName" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Latitute" class="control-label"></label>
+                                                <input asp-for="Latitute" type="number" min="-90.000000" max="90.000000" step="0.000001" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Latitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Longitute" class="control-label"></label>
+                                                <input asp-for="Longitute" type="number" min="-90.000000" max="90.000000" step="0.000001" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Longitute" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label" asp-for="IdentifiedById"></label>
+                                                <input style="background-color:aliceblue" asp-for="IdentifiedBy.Name" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="control-label">Gender</label>
+                                                <input style="background-color:aliceblue" asp-for="Member.Gender" class="form-control" readonly="readonly"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="control-label">PSC</label>
+                                                <input asp-for="PSC" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="control-label">Transfer Date</label>
+                                                <input asp-for="AssetTransferOn" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DataCollectedBy" class="control-label"></label>
+                                                <input asp-for="DataCollectedBy" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DataCollectedBy" class="text-danger"></span>
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="DataCollectorDesignation" class="control-label"></label>
+                                                <input asp-for="DataCollectorDesignation" style="background-color:aliceblue" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DataCollectorDesignation" class="text-danger"></span>
+                                            </div>
+                                        </div>                                                                             
+                                        @{
+                                            if (Model.LIPFormAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded LIP Form</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="submit" value="Save Asset Transfer" class="btn btn-primary" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="CNICAttachment" class="control-label"></label>
+                                                <input type="file" name="CNICAttachment" class="form-control" accept="application/pdf" />
+                                                <span asp-validation-for="CNICAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        @{
+                                            if (Model.CNICAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Uploaded CNIC</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="GRNAttachment" class="control-label"></label>
+                                                <input type="file" name="GRNAttachment" class="form-control" accept="application/pdf" required />
+                                                <span asp-validation-for="GRNAttachment" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="PictureAttachment1" class="control-label"></label>
+                                                <input type="file" name="PictureAttachment1" class="form-control" accept="application/pdf" required/>
+                                                <span asp-validation-for="PictureAttachment1" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                </form>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/assets/libs/parsleyjs/parsley.min.js"></script>
+    <script src="~/assets/js/pages/form-validation.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            var id = '@ViewBag.Id';
+            if (id != "") {
+                $("#txtbox").val(id);
+                fetch();
+            }
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#UnionCouncilId").change(function () {
+                $("#VillageId").empty();
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#VillageId").empty();
+                    $("#VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            UpdateRecord();
+        });
+        function UpdateRecord() {
+            $.get('@Url.Action("_Index","MemberTrainingDetails", new { id=ViewBag.MTId })', function (content) {
+                $("#dynamicContentContainer").html(content);
+            });
+        }        
+        function notificationme(message, val) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            if (val == 1) {
+                toastr.success(message);
+            } else {
+                toastr.error(message);
+            }
+        }
+        
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

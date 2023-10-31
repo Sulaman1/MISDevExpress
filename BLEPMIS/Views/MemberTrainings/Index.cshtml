@@ -12,7 +12,7 @@
 }
 
 
-@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.View).Result.Succeeded)
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.View).Result.Succeeded)
 {
     <!-- DataTables -->
     <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -29,7 +29,7 @@
                         <p class="font-weight-bold mb-4">List of Training Conducted</p>
                     </a>
                     @{
-                        if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Create).Result.Succeeded)
+                        if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Create).Result.Succeeded)
                         {
                             <a class="nav-link" role="tab" asp-action="Create" asp-controller="MemberTrainings" aria-controls="v-pills-privacy" aria-selected="false">
                                 <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
@@ -52,25 +52,29 @@
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TrainingType)
+                                                    @Html.DisplayNameFor(model => model.TrainingType.TrainingHead.TrainingHeadName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingType.TrainingTypeName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.MemberTrainingCode)
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.TrainingName)
-                                                </th>                                                                                                                                
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.Employee)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TrainingOn)
+                                                    @Html.DisplayNameFor(model => model.District)
                                                 </th>  
+
                                                  <th>
                                                     Action
                                                 </th>  
-                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded)
                                                 {
                                                     <th>Edit</th>
                                                 }
-                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Delete)).Result.Succeeded)
                                                 {
                                                     <th>Delete</th>
                                                 }
@@ -81,28 +85,31 @@
                                             {
                                                 <tr>
                                                      <td>
-                                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
+                                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingHead.TrainingHeadName)
                                                     </td>
                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.TrainingName)
-                                                    </td>                                                                                                
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Employee.EmployeeName)
+                                                        @Html.DisplayFor(modelItem => item.TrainingType.TrainingTypeName)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.TrainingOn)
+                                                        @Html.DisplayFor(modelItem => item.MemberTrainingCode)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.District)
                                                     </td>  
                                                      <td>
                                                         <a asp-action="details" asp-route-id="@item.MemberTrainingId">Detail</a>
                                                     </td>
-                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.LocalFacilitator.View)).Result.Succeeded)
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit)).Result.Succeeded)
                                                     {
                                                         <td>
                                                             <a asp-action="Edit" asp-route-id="@item.MemberTrainingId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
                                                         </td>
                                                     }
 
-                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Delete)).Result.Succeeded)
                                                     {
                                                         <td>
                                                             <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.MemberTrainingId"> <i class="mdi mdi-trash-can font-size-18"></i></a>

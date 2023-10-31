@@ -63,8 +63,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(unionCouncil.UnionCouncilName), "UC already exist!");
                     return View(unionCouncil);
                 }
-                _context.Insert(unionCouncil);
-                _context.Save();
+                _context.Insert(unionCouncil);                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a=>a.DistrictId > 1), "DistrictId", "Name", DistrictId);
@@ -110,8 +109,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                 }
                 try
                 {
-                    _context.Update(unionCouncil);
-                    _context.Save();
+                    _context.Update(unionCouncil);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -153,8 +151,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var unionCouncil = await _context.GetById(id);
-            _context.Remove(unionCouncil);
-            _context.Save();
+            _context.Remove(unionCouncil);            
             return RedirectToAction(nameof(Index));
         }
 

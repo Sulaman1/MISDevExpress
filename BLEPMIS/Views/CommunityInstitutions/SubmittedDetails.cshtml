@@ -85,8 +85,8 @@
                         <input asp-for="CICode" class="form-control" disabled="disabled" />                        
                     </div>
                      <div class="col-md-3">
-                        <label asp-for="VillageId" class="control-label"></label>
-                        <input asp-for="VillageId" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village" class="control-label"></label>
+                        <input asp-for="Village.Name" class="form-control" disabled="disabled" />                        
                     </div>
                     <div class="col-md-4">
                         <label asp-for="UnionCouncil.Tehsil.District" class="control-label"></label>
@@ -114,11 +114,11 @@
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Latitude" class="control-label"></label>
-                        <input asp-for="Latitude" class="form-control" disabled="disabled" />                        
+                        <input asp-for="Latitude" type="number" min="-90.000000" max="90.000000" step="0.000001" class="form-control" disabled="disabled" />
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Longitute" class="control-label"></label>
-                        <input asp-for="Longitute" class="form-control" disabled="disabled" />                        
+                        <input asp-for="Longitute" type="number" min="-90.000000" max="90.000000" step="0.000001" class="form-control" disabled="disabled" />
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="OfficerName" class="control-label"></label>
@@ -183,7 +183,7 @@
     </h6>
     <div id="dynamicContentContainer"></div>
     @{
-        @if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinator.View).Result.Succeeded){
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Review).Result.Succeeded){
             if(Model.IsSubmittedForReview == true && Model.IsReviewed == false)
             {
                 <div>
@@ -194,7 +194,7 @@
         }              
     }
     @{
-        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.View).Result.Succeeded){
+        @if(AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Verify).Result.Succeeded){
             if(Model.IsVerified == false && Model.IsReviewed == true)
             {
                 <div>
@@ -279,7 +279,7 @@ function rejectprofile(Id) {
             var Description = "";
             Swal.fire({
                 title: "Are you sure?",
-                html: "<h6>You Want to Reject Profile for Verifiation</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                html: "<h6>You Want to Submit Profile for Verifiation</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
                 type: "warning",
                 showCancelButton: !0, confirmButtonColor: "#34c38f",
                 cancelButtonColor: "#f46a6a",
@@ -360,7 +360,7 @@ function rejectforapprovalprofile(Id) {
     var Description = "";
             Swal.fire({
                 title: "Are you sure?",                
-                html: "<h6>You Want to Reject Profile for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                html: "<h6>You Want to Submit Profile for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
                 type: "warning",
                 showCancelButton: !0, confirmButtonColor: "#34c38f",
                 cancelButtonColor: "#f46a6a",

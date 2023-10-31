@@ -49,7 +49,8 @@ namespace BLEPMIS.Controllers.Training
             }
             if (Info == null)
             {
-                return Json(new { isValid = false});
+
+                return Json(new { isValid = false, Info, count = 0, message = "" });
             }
             var AnyOtherTraining = _context.MemberTrainingDetail.Include(a=>a.CommunityInstituteMember.CommunityInstitution.UnionCouncil.Tehsil).Include(a => a.MemberTraining.TrainingType.TrainingHead).Where(a => a.CommunityInstituteMember.MemberId == Info.MemberId).ToList();
             string abounttrainings = "";
@@ -82,10 +83,10 @@ namespace BLEPMIS.Controllers.Training
                 obj.MemberTrainingId = MTId;
                 obj.CreatedOn = DateTime.Today.Date;
                 _context.Add(obj);
-               /* var memberTrainingObj = _context.MemberTraining.Find(MTId);
+               var memberTrainingObj = _context.MemberTraining.Find(MTId);
                 memberTrainingObj.TotalMember += 1;
-                _context.Update(memberTrainingObj);*/
-                await _context.SaveChangesAsync();                
+                _context.Update(memberTrainingObj);
+                await _context.SaveChangesAsync();
             }
             return Json(new { isValid = true, message = "Member has been added successfully." });
         }
@@ -222,9 +223,9 @@ namespace BLEPMIS.Controllers.Training
             if (memberTrainingDetail != null)
             {
                 _context.MemberTrainingDetail.Remove(memberTrainingDetail);
+                await _context.SaveChangesAsync();
             }
-            
-            await _context.SaveChangesAsync();
+                        
             return RedirectToAction(nameof(Details), "MemberTrainings", new {memberTrainingDetail.MemberTrainingId});
         }
 

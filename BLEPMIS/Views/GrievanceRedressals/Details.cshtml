@@ -1,0 +1,180 @@
+﻿@model DAL.Models.Domain.GRM.GrievanceRedressal
+
+@{
+    ViewData["Title"] = "Details";
+    ViewBag.pageTitle = "GRM";
+    ViewBag.Title = "Complaint";
+    ViewBag.pTitle = "Complaint";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="alert alert-info" role="alert">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="mt-2 card-title">Complaint Detail</h4>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-right">
+                        <a asp-action="Index" type="button" class="btn btn-success btn-rounded waves-effect waves-light mr-2">Back to List</a>
+                    </div>
+                </div><!-- end col-->
+            </div>
+        </div>
+        <hr />
+    <dl class="row">
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.GRMNumber)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.GRMNumber)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ContactNumber)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ContactNumber)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.AlternateName)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.AlternateName)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.AlternateContact)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.AlternateContact)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.MethodtoContact)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.MethodtoContact)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsAlternateContact)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsAlternateContact)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsByEmail)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsByEmail)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsByPhone)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsByPhone)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsByMobile)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsByMobile)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsByMail)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsByMail)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.MailingAddress)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.MailingAddress)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.PickUpResponses)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.PickUpResponses)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.ComplaintChannel)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.ComplaintChannel)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.OnDateTime)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.OnDateTime)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.GRMDetail)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.GRMDetail)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.CanUserPersonalDetail)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.CanUserPersonalDetail)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.CanUserMyName)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.CanUserMyName)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.DoDisclose)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.DoDisclose)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Attachment1)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Attachment1)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Attachment2)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Attachment2)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Attachment3)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Attachment3)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-4">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class = "col-sm-8">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+    </dl>
+</div>    
+</div>
+

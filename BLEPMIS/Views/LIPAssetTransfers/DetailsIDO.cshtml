@@ -1,0 +1,746 @@
+﻿@model DAL.Models.ViewModels.LIPMemberAfghan
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@inject BLEPMIS.Services.Profile.ProfileManager ProfileManager
+@using Constant.Constants
+@{
+    var DCrole = User.IsInRole("District Coordinator");
+
+}
+@{
+    ViewData["Title"] = "Detail";
+    ViewBag.pageTitle = "LIP";
+    ViewBag.Title = "Asset Transfer";
+    ViewBag.pTitle = "Asset Transfer";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <!-- DataTables -->
+    <style>
+        input {
+            color: black;
+        }
+
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+
+        #link {
+            color: #FFFFFF;
+        }
+
+        .main-footer.main-footer {
+            margin: 0;
+        }
+
+        .page-title-box {
+            padding: 0;
+        }
+
+        label {
+            margin-top: 5px;
+        }
+        /* CSS link color */
+        .modal-dialog {
+            height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+        }
+
+        .modal-content {
+            height: 100%; /* = 100% of the .modal-dialog block */
+        }
+
+        #PdfModal {
+            height: 100%;
+        }
+    </style>
+}
+<link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
+<link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<section class="content mt-0">
+    <div class="card">
+        <div class="card-header ui-sortable-handle" style="cursor: move;">
+            <h4 class="card-title">
+                <b>LIP Asset Transfer Form</b>
+            </h4>
+        </div><!-- /.card-header -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.LIPCode)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.LIPCode)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.MemberName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.MemberName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.FatherName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.FatherName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.Gender)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.Gender)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Member.CellNo)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.CellNo)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.Age)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.Age)
+                        </dd>
+
+
+                        <dt class="col-sm-4">
+                            ACC/PoR #
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.CNIC)
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            Family #
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.HouseHoldNo)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.ResidingSince)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.ResidingSince)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.Disability)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.Disability)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.LivelihoodSource)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.LivelihoodSource)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MonthlyIncome)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.MonthlyIncome)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.ReasonNotGoingback)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.ReasonNotGoingback)
+                        </dd>
+                        <dt class="col-sm-4">
+                            House Hold #
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Member.HouseHoldNo)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.HHName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.HHName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.HHGender)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.HHGender)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.HHAge)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.HHAge)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.PSC)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.PSC)
+                        </dd>
+
+
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.IdentifiedBy.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.IdentifiedBy.Name)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.Village.UnionCouncil.Tehsil.District.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.Village.UnionCouncil.Tehsil.District.Name)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.Village.UnionCouncil.Tehsil.TehsilName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.Village.UnionCouncil.Tehsil.TehsilName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.Village.UnionCouncil.UnionCouncilName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.Village.UnionCouncil.UnionCouncilName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.Muhalla)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.Muhalla)
+                        </dd>
+
+                        <dt class="col-sm-12">
+                            <b>  Place of Origin in Afghansitan </b>
+                        </dt>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.District)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.District)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.Tehsil)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.Tehsil)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.UC)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.UC)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.Village)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.Village)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.AfghanMuhalla)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.AfghanMuhalla)
+                        </dd>
+
+
+
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.LIPPackage.PackageName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.LIPAssetTransfer.LIPPackage.PackageName)
+                        </dd>
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.LIPPackage.Description)
+                        </dt>
+                        <dd class="col-sm-8">
+                            <textarea class="input-large form-control" rows="10" readonly="readonly">@Model.LIPAssetTransfer.LIPPackage.Description</textarea>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <h5> Family Composition</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Persons </th>
+                            <th> 0-04</th>
+                            <th> 5-11</th>
+                            <th> 12-17</th>
+                            <th> 18-59</th>
+                            <th> 60+</th>
+                            <th> Special Person</th>
+                            @* <th> Agriculture</th>
+                            <th> LiveStock</th>
+                            <th> job (Govt/Pvt)</th>
+                            <th>Skilled Labor </th>
+                            <th>Unskilled Labor </th>
+                            <th>Business </th>*@
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th> Male</th>
+
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonM04)  </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonM511) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonM1217) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonM1859) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonM60) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonSpecialPersonM) </td>
+                        </tr>
+
+                        <tr>
+                            <th> Girls</th>
+
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonF04) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonF511) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonF1217) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonF1859) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonF60) </td>
+                            <td>  @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonSpecialPersonF) </td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <h5>Livelihood Source</h5> <br />
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonAgri)
+                    @*                    <input asp-for="MemberAfghanDetail.FamilyPersonAgri" class="form-check-input" disabled="disabled"/>
+                    *@                   Agriculture/ Farming
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonLiveStock)
+                    LiveStock / Poultry
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonJob)
+                    Job (Govt/Pvt)
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonSkilled)
+                    Skilled Labor
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonUnskilled)
+                    Unskilled Labor
+                </div>
+                <div class="col-md-2 form-group">
+                    @Html.DisplayFor(model => model.MemberAfghanDetail.FamilyPersonBusiness)
+                    Business/ Shop
+                </div>
+
+            </div>
+
+
+            <div clas="row">
+                <h5>  Current house status and livelihood Means </h5>
+            </div>
+            <div class="row">
+
+
+                <div class="col-md-6 ">
+                    <dl class=" row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.HouseStatus)
+                        </dt>
+                        <dd class="col-sm-8">  @Html.DisplayFor(model => model.MemberAfghanDetail.HouseStatus)</dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MeanIncomeSource)
+                        </dt>
+                        <dd class="col-sm-8">  @Html.DisplayFor(model => model.MemberAfghanDetail.MeanIncomeSource) </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MeanIncomeSourceOther)
+                        </dt>
+                        <dd class="col-sm-8">  @Html.DisplayFor(model => model.MemberAfghanDetail.MeanIncomeSourceOther) </dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MeanIncomeMembersInvolve)
+                        </dt>
+                        <dd class="col-sm-8"> @Html.DisplayFor(model => model.MemberAfghanDetail.MeanIncomeMembersInvolve) </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MeanIncomeMonthly)
+                        </dt>
+                        <dd class="col-sm-8">  @Html.DisplayFor(model => model.MemberAfghanDetail.MeanIncomeMonthly) </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.MeanIncomeExpenditure)
+                        </dt>
+                        <dd class="col-sm-8"> @Html.DisplayFor(model => model.MemberAfghanDetail.MeanIncomeExpenditure) </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.PreviousExperience)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.PreviousExperience)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.AssistanceType)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.MemberAfghanDetail.AssistanceType)
+                        </dd>
+                    </dl>
+                    @*                   @Html.DisplayFor(model => model.MemberAfghanDetail.AssistanceOther)
+                    *@
+                </div>
+                @* <div class="col-md-6 ">
+                <dl class="row">
+                <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.MemberAfghanDetail.TrainingInsterest)
+                </dt>
+                <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.MemberAfghanDetail.TrainingInsterest)
+                </dd>
+                </dl>
+
+                </div>*@
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.MemberAfghanDetail.SocioEconomicStatus) @*Social Status
+                            </dt>*@
+                        <dd class="col-sm-8"> @Html.DisplayFor(model => model.MemberAfghanDetail.SocioEconomicStatus)</dd>
+                    </dl>
+                </div>
+
+
+
+
+            </div> @*row end*@
+
+            <div class="row">
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            ACC/PoR # Scanned
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.LIPAssetTransfer.CNICAttachment == null)
+                            {
+                                <span>Not Uploaded</span>
+                            }
+                            else
+                            {
+                                <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-6 ">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.LIPAssetTransfer.LIPFormAttachment)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.LIPAssetTransfer.LIPFormAttachment == null)
+                            {
+                                <span>Not Uploaded</span>
+                            }
+                            else
+                            {
+                                <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.LIPFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+                @{
+                    if (Model.LIPAssetTransfer.IsAssetTransfer)
+                    {
+                        <div class="col-md-6 ">
+                            <dl class="row">
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.LIPAssetTransfer.GRNAttachment)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.LIPAssetTransfer.GRNAttachment == null)
+                                    {
+                                        <span>Not Uploaded</span>
+                                    }
+                                    else
+                                    {
+                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.GRNAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6 ">
+                            <dl class="row">
+                                <dt class="col-sm-4">
+                                    @Html.DisplayNameFor(model => model.LIPAssetTransfer.PictureAttachment1)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.LIPAssetTransfer.PictureAttachment1 == null)
+                                    {
+                                        <span>Not Uploaded</span>
+                                    }
+                                    else
+                                    {
+                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.LIPAssetTransfer.PictureAttachment1')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+    @{
+        if ((!Model.LIPAssetTransfer.IsSubmitted))
+        {
+            <div>
+                <button id="btnreviewsubmit" class="btn btn-sm btn-info" onclick="submitprofile(@Model.LIPAssetTransfer.LIPAssetTransferId)">Submit for Review</button>
+            </div>
+        }
+        if ((Model.LIPAssetTransfer.IsReviewed == true && Model.LIPAssetTransfer.IsAssetTransfer == false) && DCrole)
+        {
+            <div>
+                <a class="btn btn-sm btn-info" asp-action="EditIDO" asp-controller="LIPAssetTransfers" asp-route-id="@Model.LIPAssetTransfer.LIPAssetTransferId">Asset Transfer Request</a>
+            </div>
+        }
+        //<text> @{
+        //   //     var t = AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded;
+        //    } </text>
+        @if (AuthorizationService.AuthorizeAsync(User, Permissions.IDO.View).Result.Succeeded)
+            // @if (DCrole)
+            if ((!Model.LIPAssetTransfer.IsReviewed) && Model.LIPAssetTransfer.IsSubmitted)
+            {
+                <div>
+                    <button id="btnverifysubmit" class="btn btn-sm btn-info" onclick="submitforapproval(@Model.LIPAssetTransfer.LIPAssetTransferId)"> Approve</button>
+                    <button id="btnrejectverifiy" class="btn btn-sm btn-danger" onclick="rejectforapproval(@Model.LIPAssetTransfer.LIPAssetTransferId)">Reject</button>
+                </div>
+            }
+    }
+</section>
+
+
+
+@*<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Latitute,",",@Model.Longitute,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+*@<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    @*<div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- toastr plugin -->
+    <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+
+        function submitprofile(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit LIP Asset Transfer for Review',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $('#btnreviewsubmit').prop('disabled', true);
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/SubmitForReviewRequest",
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnreviewsubmit').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function submitforapproval(Id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You Want to Submit Asset Transfer for Approval',
+                type: "success",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!"
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/ApprovalRequest",
+                        data: { id: Id, val: 1 },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifysubmit').prop('disabled', true);
+                                    $('#btnrejectverifiy').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+        function rejectforapproval(Id) {
+            var Description = "";
+            Swal.fire({
+                title: "Are you sure?",
+                html: "<h6>You Want to Reject Asset Transfer for Approval</h6><div class='text-center'><label>Description</label><div class='text-center'><textarea id='description' class='form-control' rows='2'></textarea></div>",
+                type: "warning",
+                showCancelButton: !0, confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Yes, Submit it!",
+                preConfirm: () => {
+                    Description = document.getElementById('description').value;
+                    if (Description == "") {
+                        Swal.showValidationMessage(
+                            `Invalid Reason!`
+                        )
+                    }
+                }
+            }).then(function (t) {
+                if (t.value == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/LIPAssetTransfers/ApprovalRequest",
+                        data: { id: Id, val: 0, description: Description },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                if (response.isValid) {
+                                    Swal.fire("Back", response.message, "success");
+                                    $('#btnverifysubmit').prop('disabled', true);
+                                    $('#btnrejectverifiy').prop('disabled', true);
+                                } else {
+                                    notificationme(response.message);
+                                }
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            })
+        }
+
+        function notificationme(message) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100",
+                "positionClass": "toast-bottom-right",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "show",
+                "hideMethod": "hide"
+            };
+            toastr.info(message);
+        }
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

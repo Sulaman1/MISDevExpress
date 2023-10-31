@@ -1,0 +1,79 @@
+﻿@model IEnumerable<DAL.Models.Domain.MasterSetup.BeneficiarySummary>
+@{
+    int Index = ViewBag.Index;
+}
+
+<div class="table-responsive">
+    <table id="datatable2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <thead>
+            <tr>
+                <th style="min-width:120px">
+                    @Html.DisplayNameFor(model => model.DistrictName)
+                </th>
+               
+                        <th style="min-width:140px">
+                            @Html.DisplayNameFor(model => model.MaleBeneficiary)
+                        </th>
+                   
+                        <th style="min-width:160px">
+                            @Html.DisplayNameFor(model => model.FemaleBeneficiary)
+                        </th>
+                  
+                        <th style="min-width:200px">
+                            @Html.DisplayNameFor(model => model.MaleRefugeeBeneficiary)
+                        </th>
+                  
+
+                <th style="min-width:210px">
+                    @Html.DisplayNameFor(model => model.FemaleRefugeeBeneficiary)
+                </th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.DistrictName)
+                    </th>
+                  
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaleBeneficiary)
+                            </td>
+                      
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FemaleBeneficiary)
+                            </td>
+                       
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaleRefugeeBeneficiary)
+                            </td>
+                       
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FemaleRefugeeBeneficiary)
+                    </td>
+                     <td>
+                        <a style="cursor:pointer;color:blue" data-toggle="modal" data-target="#myModal2" onclick="loadDataLIPDetail('@item.DistrictName')">Details</a>
+                </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                
+                        <th>@Model.Sum(a=>a.MaleBeneficiary)</th>
+                    
+                        <th>@Model.Sum(a=>a.FemaleBeneficiary)</th>
+                   
+                        <th>@Model.Sum(a=>a.MaleRefugeeBeneficiary)</th>
+                   
+                <th>@Model.Sum(a=>a.FemaleRefugeeBeneficiary)</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+    </div>
+

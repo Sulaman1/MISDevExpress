@@ -11,91 +11,191 @@
     var gender = new[]
          {   new SelectListItem { Text = "Male", Value = "Male" },
               new SelectListItem { Text = "Female", Value = "Female" },
-            };
+    };
+    var MaritalStatus = new[]
+        {   new SelectListItem { Text = "Yes", Value = "Yes" },
+              new SelectListItem { Text = "No", Value = "No" },
+    };
 }
 <link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
 <h5>Add Beneficiary</h5>
 <hr />
- <form asp-action="AddBeneficiary" enctype="multipart/form-data">
-<div class="row">    
-        <div class="col-md-4">              
-                     <input type="hidden" asp-for="BeneficiaryTypeId" />                     
-                  <div class="form-group">
-                    <label asp-for="MemberName" class="control-label"></label>
-                    <input tabindex="1" asp-for="MemberName" class="form-control" />
-                    <span asp-validation-for="MemberName" class="text-danger"></span>
-                </div>                
-                <div class="form-group">
-                    <label asp-for="CellNo" class="control-label"></label>
-                    <input tabindex="4" asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
-                    <span asp-validation-for="CellNo" class="text-danger"></span>
-                </div>  
-                <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <select tabindex="6" asp-for="Gender" asp-items="@gender" class="form-control"></select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input disabled="disabled" class="form-check-input" asp-for="IsRefugee" /> @Html.DisplayNameFor(model => model.IsRefugee)
-                    </label>
-                </div>
-                 <div class="form-group">
-                    <input type="submit" tabindex="8" value="Add Beneficiary" class="btn btn-primary" />
-                </div>
-            </div>   
-            <div class="col-md-4">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
-                <div class="form-group">
-                    <label asp-for="FatherName" class="control-label"></label>
-                    <input tabindex="2" asp-for="FatherName" class="form-control" />
-                    <span asp-validation-for="FatherName" class="text-danger"></span>
-                </div>
-                  <div class="form-group">
-                    <label class="control-label">CNIC/Identity#</label>
-                    <input tabindex="3" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
-                    <span asp-validation-for="CNIC" class="text-danger"></span>
-                </div>                 
+<form asp-action="AddBeneficiary" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="hidden" asp-for="BeneficiaryTypeId" />
+            <input type="hidden" id="url" name="url" value="@ViewBag.url"/>
+            <div class="form-group">
+                <label class="control-label">District</label>
+                <select required id="DistrictId" name="DistrictId" asp-items="ViewBag.DistrictId" class="form-control">
+                    <option value=""> - - Select - -</option>
+                </select>
             </div>
-             <div class="col-md-4">                                       
-                <div class="form-group">
-                    <label asp-for="ProfilePicture" style="width: 100%;"></label>                    
-                    <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">                    
-                    <input tabindex="7" type="file"
-                            accept=".png,.jpg,.jpeg,.gif,.tif"
-                            asp-for="ProfilePicture" name="ProfilePicture"
-                            class="form-control"
-                            style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
-                            onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
-                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+            <div class="form-group">
+                <label class="control-label">Union Council</label>
+                <select required id="UnionCouncilId" asp-items="ViewBag.UnionCouncilId" class="form-control" required>
+                    <option value=""> - - Select - -</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberName" class="control-label"></label>
+                <input tabindex="1" asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CellNo" class="control-label"></label>
+                        <input asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                        <span asp-validation-for="CellNo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MaritalStatus" class="control-label"></label>
+                        <select asp-for="MaritalStatus" asp-items="@MaritalStatus" class="form-control"></select>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>                    
                 </div>
-            </div>                                                        
-    </div>     
-    </form>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>   
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsAnyDisability" /> @Html.DisplayNameFor(model => model.IsAnyDisability)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" tabindex="8" value="Add Beneficiary" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Tehsil</label>
+                <select required id="TehsilId" name="TehsilId" asp-items="ViewBag.TehsilId" class="form-control">
+                    <option value=""> - - Select - -</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Village</label>
+                <select required asp-for="VillageId" asp-items="ViewBag.VillageId" class="form-control">
+                    <option value=""> - - Select - -</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FatherName" class="control-label"></label>
+                <input tabindex="2" asp-for="FatherName" class="form-control" />
+                <span asp-validation-for="FatherName" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">CNIC/Identity#</label>
+                        <input tabindex="4" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                        <span asp-validation-for="CNIC" class="text-danger"></span>
+                    </div>                   
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Age" class="control-label"></label>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>           
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="ProfilePicture" style="width: 100%;"></label>
+                <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">
+                <input tabindex="7" type="file"
+                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                       asp-for="ProfilePicture" name="ProfilePicture"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <a href="@ViewBag.url">Back to list</a>
+</form>
 
 
 @section scripts{
-     <!-- toastr plugin -->
+    <!-- toastr plugin -->
     <script src="~/assets/libs/toastr/build/toastr.min.js"></script>
-<!-- form mask -->
-<script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
-<!-- form mask init -->
-<script src="~/assets/js/pages/form-mask.init.js"></script>
- <script type="text/javascript">
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script type="text/javascript">
         $(document).ready(function () {
-        $('#CNIC').keyup(function (event) {
-            var refLength = $("#CNIC").val();           
+            var msg = '@ViewBag.message';
+            if(msg != ""){
+                notificationme(msg);
+            }
+            $('#CNIC').keyup(function (event) {
+                var refLength = $("#CNIC").val();
                 if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
                     $('#IsRefugee').prop('checked', true);
                 } else {
                     $('#IsRefugee').prop('checked', false);
-                }                      
-});
+                }
+            });
+            $("#DistrictId").change(function () {
+                $.get("/CommunityInstitutions/GetTehsils", { districtId: $("#DistrictId").val() }, function (data) {
+                    $("#TehsilId").empty();
+                    $("#UnionCouncilId").empty();
+                    $("#VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#VillageId").append('<option>Select...</option>');
+                    $("#TehsilId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#TehsilId").change(function () {
+                $("#UnionCouncilId").empty();
+                $.get("/CommunityInstitutions/GetUCs", { tehsilId: $("#TehsilId").val() }, function (data) {
+                    $("#UnionCouncilId").empty();
+                    $("#VillageId").empty();
+                    $("#UnionCouncilId").append('<option>Select...</option>');
+                    $("#VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#UnionCouncilId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
+            $("#UnionCouncilId").change(function () {
+                $("#VillageId").empty();
+                $.get("/CommunityInstitutions/GetVillages", { ucId: $("#UnionCouncilId").val() }, function (data) {
+                    $("#VillageId").empty();
+                    $("#VillageId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#VillageId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+                return false;
+            });
         });
         function isAlphaOrParen(str) {
             return /^[a-zA-Z()]+$/.test(str);
         }
-function notificationme(message) {
+        function notificationme(message) {
             toastr.options = {
                 "closeButton": false,
                 "debug": false,
@@ -115,5 +215,5 @@ function notificationme(message) {
             };
             toastr.info(message);
         }
-</script>
+    </script>
 }

@@ -33,7 +33,7 @@
                         <p class="font-weight-bold mb-4">List of @ViewBag.Heading</p>
                     </a>
                     @{
-                        if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Create).Result.Succeeded)
+                        if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded)
                         {
                                     <a class="nav-link" role="tab" asp-action="Create" asp-route-id="@ViewBag.Id" asp-controller="CommunityInstitutions" aria-controls="v-pills-privacy" aria-selected="false">
                                         <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
@@ -68,11 +68,11 @@
                                                     Action
                                                 </th>
                                                
-                                                @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
+                                                @if((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit)).Result.Succeeded)
                                                 {
                                                     <th>Edit</th>
                                                 }
-                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
                                                 {
                                                     <th>Delete</th>
                                                 }
@@ -101,7 +101,7 @@
                                                             }
                                                         }
                                                     </td>
-                                                    @if (true)//(AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
+                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Edit)).Result.Succeeded)
                                                     {
                                                         if (item.IsSubmittedForReview)
                                                         {
@@ -115,7 +115,7 @@
                                                         }                                                      
                                                     }
 
-                                                    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Delete)).Result.Succeeded)
+                                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Delete)).Result.Succeeded)
                                                     {
                                                         <td>
                                                             <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.CommunityInstitutionId"> <i class="mdi mdi-trash-can font-size-18"></i></a>

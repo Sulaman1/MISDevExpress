@@ -14,6 +14,7 @@
   "devDependencies": {
     "browser-sync": "^2.26.7",
     "del": "4.1.1",
+    "eslint": "^8.41.0",
     "gulp": "4.0.2",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-cached": "1.1.1",
@@ -94,6 +95,9 @@
     "tui-date-picker": "^4.0.2",
     "tui-dom": "^3.0.0",
     "tui-time-picker": "^2.0.2",
-    "twitter-bootstrap-wizard": "^1.2.0"
+    "twitter-bootstrap-wizard": "^1.2.0",    
+    "devextreme-dist": "23.1.*",
+    "@devexpress/analytics-core": "23.1.*",
+    "devexpress-reporting": "23.1.*"
   }
 }

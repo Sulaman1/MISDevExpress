@@ -55,7 +55,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrainingTypeId,TrainingTypeName,TrainingHeadId")] TrainingType trainingType)
+        public async Task<IActionResult> Create( TrainingType trainingType)
         {
             if (ModelState.IsValid)
             {
@@ -65,8 +65,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(trainingType.TrainingTypeName), "Name already exist!");
                     return View(trainingType);
                 }
-                _context.Insert(trainingType);
-                _context.Save();
+                _context.Insert(trainingType);                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TrainingHeadId"] = new SelectList(_context.GetAllTrainingHead(), "TrainingHeadId", "TrainingHeadName", trainingType.TrainingHeadId);
@@ -95,7 +94,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrainingTypeId,TrainingTypeName,TrainingHeadId")] TrainingType trainingType)
+        public async Task<IActionResult> Edit(int id,  TrainingType trainingType)
         {
             if (id != trainingType.TrainingTypeId)
             {
@@ -107,13 +106,12 @@ namespace BLEPMIS.Controllers.MasterSetup
                 try
                 {
                     var result = _context.Count(trainingType.TrainingTypeName);
-                    if (result > 0)
+                    if (result > 1)
                     {
                         ModelState.AddModelError(nameof(trainingType.TrainingTypeName), "Name already exist!");
                         return View(trainingType);
                     }
-                    _context.Update(trainingType);
-                    _context.Save();
+                    _context.Update(trainingType);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -160,8 +158,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 _context.Remove(trainingType);
             }
-            
-            _context.Save();
+                        
             return RedirectToAction(nameof(Index));
         }
 

@@ -54,7 +54,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VillageId,VillageName,TehsilId")] Village village, int TehsilId)
+        public async Task<IActionResult> Create(Village village, int TehsilId)
         {
             if (ModelState.IsValid)
             {                
@@ -64,8 +64,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(village.Name), "Village already exist!");
                     return View(village);
                 }
-                _context.Insert(village);
-                _context.Save();
+                _context.Insert(village);                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TehsilId"] = new SelectList(await _context.GetAllTehsil(User), "TehsilId", "TehsilName", TehsilId);
@@ -94,7 +93,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VillageId,VillageName,TehsilId")] Village village, int TehsilId)
+        public async Task<IActionResult> Edit(int id, Village village, int TehsilId)
         {
             if (id != village.VillageId)
             {
@@ -111,8 +110,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                 }
                 try
                 {
-                    _context.Update(village);
-                    _context.Save();
+                    _context.Update(village);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,8 +152,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var village = await _context.GetById(id);
-            _context.Remove(village);
-            _context.Save();
+            _context.Remove(village);                      
             return RedirectToAction(nameof(Index));
         }
 

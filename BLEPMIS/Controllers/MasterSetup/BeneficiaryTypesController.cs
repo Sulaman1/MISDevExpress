@@ -59,8 +59,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         {
             if (ModelState.IsValid)
             {
-                _context.Insert(beneficiaryType);
-                _context.Save();
+                _context.Insert(beneficiaryType);                
                 return RedirectToAction(nameof(Index));
             }
             return View(beneficiaryType);
@@ -98,8 +97,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    _context.Update(beneficiaryType);
-                    _context.Save();
+                    _context.Update(beneficiaryType);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -147,8 +145,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             if (beneficiaryType != null)
             {
                 _context.Remove(beneficiaryType);
-            }            
-            _context.Save();
+            }                        
             return RedirectToAction(nameof(Index));
         }
 

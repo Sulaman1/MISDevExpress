@@ -1,0 +1,153 @@
+﻿@model IEnumerable<DAL.Models.Domain.ToolApp.Tool>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "M&E";
+    ViewBag.Title = "Tool";
+    ViewBag.pTitle = "Tool";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.View).Result.Succeeded)
+{
+    <!-- DataTables -->
+    <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <div class="checkout-tabs">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">List of Tools</p>
+                    </a>
+                    @{
+                        if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.View).Result.Succeeded)
+                        {
+                            <a class="nav-link" role="tab" asp-action="Create" asp-controller="Tools" aria-controls="v-pills-privacy" aria-selected="false">
+                                <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
+                                <p class="font-weight-bold mb-4">Add New Tool</p>
+                            </a>
+                        }
+                    }
+                   
+
+                    <a class="nav-link" id="v-pills-support-tab" data-toggle="pill" href="#v-pills-support" role="tab" aria-controls="v-pills-support" aria-selected="false">
+                        <i class="bx bx-support d-block check-nav-icon mt-4 mb-2"></i>
+                        <p class="font-weight-bold mb-4">Support</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <h4 class="mt-2 card-title">List of Tools</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Name)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ToolModuleName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.IsActive)
+                                                </th>
+                                                <th>Action</th>
+                                                @{                                                    
+                                                    if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.Edit).Result.Succeeded)
+                                                    {
+                                                        <th>Action</th>                                                        
+                                                        <th>Action</th>
+                                                    }
+                                                    if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.Edit).Result.Succeeded)
+                                                    {
+                                                        <th>Action</th>
+                                                    }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ToolModuleName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IsActive)
+                                                    </td>
+                                                    <td><a asp-action="Details" asp-route-id="@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">View</a></td>
+                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.Edit).Result.Succeeded)
+                                                    {
+                                                        <td><a asp-action="UserAccess" asp-route-id="@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="User Access">Access</a> | 
+                                                        <a asp-action="ViewToolAccess" asp-route-id="@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="User Access">View Access</a> |
+                                                        <a asp-action="DuplicateTool" asp-route-id="@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">Duplicate Tool</a> |
+                                                        <a asp-action = "EditToolControlOrder" asp-route-id = "@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">Change Order</a></td>                                                                                                                
+                                                        <td><a asp-action="EditTool" asp-route-id="@item.ToolId" class="mr-2 text-primary" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a></td>                                                        
+                                                    }
+                                                    @if (AuthorizationService.AuthorizeAsync(User, Permissions.MonitoringTool.Edit).Result.Succeeded)
+                                                    {
+                                                        <td>
+                                                            <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.ToolId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                        </td>
+                                                    }                                                    
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+ else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, Access denied!</h4>
+                        <h6>Contact with IT Administrator</h6>
+                        @*<div class="mt-5 text-center">
+                <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+

@@ -1,0 +1,287 @@
+﻿@model DAL.Models.Domain.GRM.GrievanceRedressal
+
+@{
+    ViewData["Title"] = "Create";
+    ViewBag.pageTitle = "GRM";
+    ViewBag.Title = "Complaint";
+    ViewBag.pTitle = "Complaint";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var status = new[]
+         {   new SelectListItem { Text = "In Process", Value = "In Process" },
+              new SelectListItem { Text = "Resolved", Value = "Resolved" },
+    };
+    var PickUpResponses = new[]
+         {   new SelectListItem { Text = "N/A", Value = "N/A" },
+              new SelectListItem { Text = "PMIU", Value = "PMIU" },
+              new SelectListItem { Text = "District", Value = "District" },
+    };
+    var ComplaintChannel = new[]
+         {   new SelectListItem { Text = "Telephone", Value = "Telephone" },
+              new SelectListItem { Text = "Mobile", Value = "Mobile" },
+              new SelectListItem { Text = "E-Mail", Value = "E-Mail" },
+              new SelectListItem { Text = "WhatsApp", Value = "WhatsApp" },
+              new SelectListItem { Text = "Complaint Box", Value = "Complaint Box" },
+              new SelectListItem { Text = "Website Grievance Portal", Value = "Website Grievance Portal" },
+              new SelectListItem { Text = "IVR", Value = "IVR" },
+              new SelectListItem { Text = "District Office", Value = "District Office" },
+              new SelectListItem { Text = "Other", Value = "Other" },
+    };
+}
+
+<hr />
+<form asp-action="Create" enctype="multipart/form-data">
+<h6 class="danger" style="background-color:red">@Html.ValidationMessage("CustomError")</h6>
+<div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="ComplaintChannel" class="control-label"></label>
+                <select asp-for="ComplaintChannel" asp-items="@ComplaintChannel" class="form-control"></select>
+                <span asp-validation-for="ComplaintChannel" class="text-danger"></span>
+            </div>
+        </div>
+    <div class="col-md-3">
+        
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GRMNumber" class="control-label"></label>
+                <input asp-for="GRMNumber" class="form-control" />
+                <span asp-validation-for="GRMNumber" class="text-danger"></span>
+            </div>
+            </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="DistrictName" class="control-label"></label>
+                <select asp-for="DistrictName" class="form-control" asp-items="ViewBag.DistrictId">
+                    <option value=""> - - Select - -</option>
+                </select>
+                <span asp-validation-for="DistrictName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="TehsilName" class="control-label"></label>
+                <select required asp-for="TehsilName" class="form-control" asp-items="ViewBag.TehsilId">
+                    <option value=""> - - Select - -</option>
+                </select>
+                <span asp-validation-for="TehsilName" class="text-danger"></span>
+            </div>
+        </div>
+            <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="ContactNumber" class="control-label"></label>
+                <input asp-for="ContactNumber" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+            </div>
+            </div>
+             <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="control-label"></label>
+                <input asp-for="MobileNumber" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" required />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+            </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+         </div>
+        <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label"><b>Method to Contact:</b></label>
+            </div>
+        </div>        
+        <div class="col-md-2">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsByEmail" /> @Html.DisplayNameFor(model => model.IsByEmail)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsByPhone" /> @Html.DisplayNameFor(model => model.IsByPhone)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsByMobile" /> @Html.DisplayNameFor(model => model.IsByMobile)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsByMail" /> @Html.DisplayNameFor(model => model.IsByMail)
+                </label>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group form-check mt-4">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsAlternateContact" /> @Html.DisplayNameFor(model => model.IsAlternateContact)
+                    </label>
+                </div>
+            </div>
+            <div id="alternatediv" style="display:none" class="col-md-6">
+                <div class="row m-0 p-0">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AlternateName" class="control-label"></label>
+                            <input asp-for="AlternateName" class="form-control" />
+                            <span asp-validation-for="AlternateName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AlternateContact" class="control-label"></label>
+                            <input asp-for="AlternateContact" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                            <span asp-validation-for="AlternateContact" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="row">
+        <div class="col-md-6">
+            <div class="form-group form-check mt-4">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPickUpResponses" /> @Html.DisplayNameFor(model => model.IsPickUpResponses)
+                </label>                
+            </div>
+        </div>
+        <div class="col-md-2">
+             <div class="form-group">
+                <label asp-for="PickUpResponses" class="control-label"></label>
+                <select asp-for="PickUpResponses" asp-items="@PickUpResponses" class="form-control"></select>
+                <span asp-validation-for="PickUpResponses" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="OnDateTime" class="control-label"></label>
+                <input asp-for="OnDateTime" class="form-control" required />
+                <span asp-validation-for="OnDateTime" class="text-danger"></span>
+            </div>
+        </div>        
+        </div>
+        <div class="row">
+        <div class="col-md-6">                                                        
+            <div class="form-group">
+                <label asp-for="MailingAddress" class="control-label"></label>
+                <textarea class="input-large form-control" asp-for="MailingAddress" rows="3" placeholder="Enter mailing address here ..."></textarea>
+                <span asp-validation-for="MailingAddress" class="text-danger"></span>
+           </div>                              
+    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="GRMDetail" class="control-label"></label>
+                <textarea required class="input-large form-control" asp-for="GRMDetail" rows="3" placeholder="Enter a description ..."></textarea>
+                <span asp-validation-for="GRMDetail" class="text-danger"></span>
+            </div>
+        </div>
+</div>
+<div class="row">
+       
+     <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Attachment1" class="control-label"></label>
+                <input type="file" name="Attachment1" class="form-control" accept="application/pdf" />                
+            </div>
+           
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Attachment2" class="control-label"></label>
+                <input type="file" name="Attachment2" class="form-control" accept="application/pdf" />                
+            </div>
+        </div>
+           <div class="col-md-3">
+                <div class="form-group">
+                <label asp-for="Attachment3" class="control-label"></label>
+                <input type="file" name="Attachment3" class="form-control"/>                
+            </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status" asp-items="@status" class="form-control"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+        <div class="col-md-8">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CanUserMyName" /> @Html.DisplayNameFor(model => model.CanUserMyName)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CanUserPersonalDetail" /> @Html.DisplayNameFor(model => model.CanUserPersonalDetail)
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DoDisclose" /> @Html.DisplayNameFor(model => model.DoDisclose)
+                </label>
+            </div>
+             <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </div>
+        </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#IsAlternateContact').click(function () {
+                if ($(this).is(':checked')) {
+                    $("#alternatediv").show();
+                } else {
+                    $("#alternatediv").hide();
+                }
+            })
+            $("#DistrictName").change(function () {
+                $.get("/CommunityInstitutions/GetTehsilsName", { districtName: $("#DistrictName").val() }, function (data) {
+                    $("#TehsilName").empty();
+                    $("#TehsilName").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#TehsilName").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,173 @@
+﻿@model DAL.Models.Domain.ToolApp.Tool
+
+@{
+    ViewBag.Title = "Monitoring";
+    ViewBag.pTitle = "Monitoring";
+    ViewBag.pageTitle = "Tool";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-success" style="padding: .30rem 1rem" role="alert">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4 class="mt-2 card-title">BLEP Monitoring System</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="media">
+                                <div class="mr-3">
+                                    <img src="~/assets/images/systemmonitoring.webp" alt="" class="avatar-md rounded-circle img-thumbnail">
+                                </div>
+                                <div class="media-body align-self-center">
+                                    <div class="text-muted">
+                                        <h6 class="mb-2">Welcome to Monitoring Tool Activity: @Model.Name</h6>
+                                        <p>Description: @Model.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div id="dynamicContentContainer"></div>
+                            @{
+                                int counter = 1;
+                                if (Model.ToolControl.Count > 0)
+                                {
+                                    @foreach (var item in Model.ToolControl)
+                                    {
+                                        if (item.Control.Name.Equals("Text Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label">
+                                            @(counter.ToString()). 
+                                            @item.Name</label>
+                                                <input class="form-control" />
+                                            </div>
+                                            <hr />
+                                            counter++;                                      
+                                        }
+                                        else if (item.Control.Name.Equals("Picture"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                                <img height="60" src="~/assets/images/capture.jpg" />
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Rick Text Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                                <textarea disabled="disabled" class="input-large form-control" asp-for="Description" rows="2" placeholder="Enter a remarks ..."></textarea>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Check Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                            </div>                                           
+                                                <div class="form-group">
+                                                <div style="margin:10px">
+                                                    @{
+                                                        if (item.ToolControlDetail.Count > 0)
+                                                        {
+                                                            @foreach (var item2 in item.ToolControlDetail)
+                                                            {                                                                
+                                                                    <label for="option1" class="checkbox-inline">
+                                                                        <input type="checkbox"> @item2.Label
+                                                                    </label>
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>                                            
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Radio Box"))
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label"> @item.Name</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="margin:10px" class="form-check">
+                                                    @{
+                                                        if(item.ToolControlDetail.Count > 0)
+                                                        {
+                                                            @foreach (var item2 in item.ToolControlDetail)
+                                                            {
+                                                                <label for="option1" class="checkbox-inline">
+                                                                    <input type="radio"> @item2.Label
+                                                                </label>
+                                                            }
+                                                        }
+                                                    }                                                    
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            counter++;
+                                        }
+                                        else if (item.Control.Name.Equals("Dropdown List"))
+                                        {
+                                            
+                                                <div class="form-group">
+                                                    <label class="control-label">@item.Name</label>
+                                                </div>
+                                                <div class="form-group">
+                                                    @{
+                                                        if (item.ToolControlDetail.Count > 0)
+                                                        {
+                                                            <select class="form-control">
+                                                                @foreach (var item2 in item.ToolControlDetail)
+                                                                {
+                                                                    <option> @item2.Label</option>
+                                                                }
+                                                            </select>
+                                                        }
+                                                    }
+                                                </div>
+                                                <hr />
+                                            
+                                            <div class="col-md-8"></div>
+                                            counter++;
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+                <div class="m-2">
+                    <a asp-action="AddControl" asp-route-id="@Model.ToolId">Add Controls</a> |
+                    <a asp-controller="DropdownenuAccesses" asp-action="Index" asp-route-id="@Model.ToolId">Add Module Dependency</a> |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+ 
+    <script>
+        $(document).ready(function () {            
+            $.get('@Url.Action("_Index", "DropdownenuAccesses")', { id: @Model.ToolId, module: '@Model.ToolModuleName' }, function (content) {                
+                $("#dynamicContentContainer").html(content);
+            });
+            
+        });
+        
+    </script>
+}

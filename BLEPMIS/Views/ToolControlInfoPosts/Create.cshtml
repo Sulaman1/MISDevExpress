@@ -1,0 +1,56 @@
+﻿@model DAL.Models.Domain.ToolApp.ToolAppPost.ToolControlInfoPost
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ToolControlInfoPost</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ControlName" class="control-label"></label>
+                <input asp-for="ControlName" class="form-control" />
+                <span asp-validation-for="ControlName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToolControlId" class="control-label"></label>
+                <input asp-for="ToolControlId" class="form-control" />
+                <span asp-validation-for="ToolControlId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToolId" class="control-label"></label>
+                <input asp-for="ToolId" class="form-control" />
+                <span asp-validation-for="ToolId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderNo" class="control-label"></label>
+                <input asp-for="OrderNo" class="form-control" />
+                <span asp-validation-for="OrderNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ControlValue" class="control-label"></label>
+                <input asp-for="ControlValue" class="form-control" />
+                <span asp-validation-for="ControlValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ControlLebel" class="control-label"></label>
+                <input asp-for="ControlLebel" class="form-control" />
+                <span asp-validation-for="ControlLebel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -67,8 +67,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(district.Name), "Already exist with same name!");
                     return View(district);
                 }
-                _context.Insert(district);
-                _context.Save();
+                _context.Insert(district);                
                 //await _context.SaveChangesAsync();                
                 //await _context.SaveChangesAsync(User?.FindFirst(ClaimTypes.NameIdentifier).Value);                
                 return RedirectToAction(nameof(Index));
@@ -117,8 +116,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                         return View(district);
                     }
                     //_context.Entry(district).CurrentValues.SetValues(district);
-                    _context.Update(district);
-                    _context.Save();
+                    _context.Update(district);                    
                     //await _context.SaveChangesAsync(User?.FindFirst(ClaimTypes.NameIdentifier).Value);
                     /*_context.Update(district);
                     await _context.SaveChangesAsync();*/
@@ -163,8 +161,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var district = await _context.GetById(id);
-            _context.Remove(district);
-            _context.Save();
+            _context.Remove(district);            
             //await _context.SaveChangesAsync();
             //await _context.SaveChangesAsync(User?.FindFirst(ClaimTypes.NameIdentifier).Value);
             return RedirectToAction(nameof(Index));

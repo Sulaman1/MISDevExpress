@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DAL.Models.Domain.ToolApp.ToolControl>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>            
+            <th>
+                @Html.DisplayNameFor(model => model.OrderNo)
+            </th>            
+            <th>
+                @Html.DisplayNameFor(model => model.Control)
+            </th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>           
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderNo)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Control.Name)
+            </td>           
+            <td>                    
+                @{
+                        if (item.Control.IsExtended)
+                    {
+                        <a asp-action="AddControlOption" asp-route-id="@item.ToolControlId">View Opion</a><span> | </span>
+                    }
+                }                
+                <a asp-controller="ToolControls" asp-action="Delete" asp-route-id="@item.ToolControlId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Details" asp-route-id="@ViewBag.Id">Back to list</a>

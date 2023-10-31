@@ -1,0 +1,150 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+    ViewBag.pageTitle = "GRM";
+    ViewBag.Title = "Complaint";
+    ViewBag.pTitle = "Complaint";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    var status = new[]
+         {   new SelectListItem { Text = "In Process", Value = "1" },
+              new SelectListItem { Text = "Resolved", Value = "2" },
+    };
+}
+@{
+    decimal TotalComplaint = ViewBag.TotalComplaint;
+    decimal TotalComplaintResolved = ViewBag.TotalComplaintResolved;
+    decimal TotalComplaintInProcess = ViewBag.TotalComplaintInProcess;    
+}
+<div class="row">
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                   @* <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                        <h4 class="mt-2 card-title">List of Complaints</h4>                        
+                    </div>*@
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="media">
+                                    <div class="mr-3">
+                                        <img src="~/assets/images/complainticon.webp" style="width:7.5rem;height:5.5rem" alt="" class="avatar-md rounded-circle img-thumbnail">
+                                    </div>
+                                   @* <div class="media-body align-self-center">
+                                        <div class="text-muted">
+                                            <p class="mb-2">Welcome to BSF Activity</p>
+                                            <h5 class="mb-1">@ViewBag.DepartmentName</h5>
+                                            <p class="mb-0">@ViewBag.TotalGrant</p>
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+
+                            <div class="col-lg-10 align-self-center">
+                                <div class="text-lg-center mt-4 mt-lg-0">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Total Complaint Register</p>
+                                                <h5 class="mb-0">@TotalComplaint</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Total Resolved</p>
+                                                <h5 class="mb-0">@TotalComplaintResolved</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">In Progress</p>
+                                                <h5 class="mb-0">@TotalComplaintInProcess</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Progress</p>
+                                                @{
+                                                    if(TotalComplaintResolved == 0)
+                                                    {
+                                                        <h5 class="mb-0">0.0%</h5>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h5 class="mb-0">@Math.Round(TotalComplaintResolved/TotalComplaint * 100,2)%</h5>
+                                                    }
+                                                }                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">District</label>
+                                    <select id="DistrictId" class="form-control" asp-items="ViewBag.DistrictId">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>                          
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Status</label>
+                                    <select id="Status" asp-items="@status" class="form-control">
+                                        <option>All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label class="control-label">Apply</label>
+                                    <button class="btn btn-sm btn-primary mt-1" onclick="UpdateTable()">Go</button>
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="padding-top:30px;Display:none" id="loading">
+                                <img src="~/assets/images/loading.gif" height="25" />
+                            </div>                            
+                        </div>
+                        <div class="table-responsive">
+                            <div id="dynamicContentContainer"></div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            var DName = $("#DistrictId").val();
+            $("#loading").show();
+            $.get('@Url.Action("_Index","GrievanceRedressals")', function (content) {
+                $("#dynamicContentContainer").html(content);
+                $("#loading").hide();
+                //notificationme('Fetch Record Successfully!');
+            });                        
+        });
+        function UpdateTable() {
+            var DName = $("#DistrictId").val();
+            var status = $("#Status").val();
+            $("#loading").show();
+            $.get('@Url.Action("_Index", "GrievanceRedressals")', { DName: DName, s: status }, function (content) {
+                $("#dynamicContentContainer").html(content);
+                $("#loading").hide();
+                //notificationme('Fetch Record Successfully!');
+            });
+        }
+    </script>
+}

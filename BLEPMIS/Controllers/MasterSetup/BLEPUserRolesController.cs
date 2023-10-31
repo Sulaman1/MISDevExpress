@@ -57,8 +57,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         {
             if (ModelState.IsValid)
             {
-                _context.Insert(userRole);
-                _context.Save();
+                _context.Insert(userRole);                
                 return RedirectToAction(nameof(Index));
             }
             return View(userRole);
@@ -96,8 +95,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    _context.Update(userRole);
-                    _context.Save();
+                    _context.Update(userRole);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -138,8 +136,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userRole = await _context.GetById(id);
-            _context.Remove(userRole);
-            _context.Save();
+            _context.Remove(userRole);            
             return RedirectToAction(nameof(Index));
         }
 

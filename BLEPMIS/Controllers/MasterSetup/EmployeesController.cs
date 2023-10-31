@@ -61,8 +61,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         {
             if (ModelState.IsValid)
             {
-                _context.Insert(employee);
-                _context.Save();
+                _context.Insert(employee);                
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SectionId"] = new SelectList(_context.GetAllSection(), "SectionId", "Name", employee.SectionId);
@@ -102,8 +101,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 try
                 {
-                    _context.Update(employee);
-                    _context.Save();
+                    _context.Update(employee);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -153,8 +151,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 _context.Remove(employee);
             }
-            
-            _context.Save();
+                        
             return RedirectToAction(nameof(Index));
         }
         private bool EmployeeExists(int id)

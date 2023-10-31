@@ -64,8 +64,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(section.Name), "Name already exist!");
                     return BadRequest(ModelState);
                 }
-                _context.Insert(section);
-                _context.Save();
+                _context.Insert(section);                
                 return RedirectToAction(nameof(Index));
             }
             return View(section);
@@ -109,8 +108,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                         ModelState.AddModelError(nameof(section.Name), "Name already exist!");
                         return BadRequest(ModelState);
                     }
-                    _context.Update(section);
-                    _context.Save();
+                    _context.Update(section);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -159,8 +157,7 @@ namespace BLEPMIS.Controllers.MasterSetup
             {
                 _context.Remove(section);
             }
-            
-            _context.Save();
+                        
             return RedirectToAction(nameof(Index));
         }
 

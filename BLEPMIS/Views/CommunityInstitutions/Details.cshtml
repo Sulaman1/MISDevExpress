@@ -97,8 +97,8 @@
                         <input asp-for="UnionCouncil.UnionCouncilName" class="form-control" disabled="disabled" />                        
                     </div> 
                      <div class="col-md-3">
-                        <label asp-for="VillageId" class="control-label"></label>
-                        <input asp-for="VillageId" class="form-control" disabled="disabled" />                        
+                        <label asp-for="Village" class="control-label"></label>
+                        <input asp-for="Village.Name" class="form-control" disabled="disabled" />                        
                     </div>                                      
                     <div class="col-md-3">
                         <label asp-for="TotalHousehold" class="control-label"></label>
@@ -118,11 +118,11 @@
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Latitude" class="control-label"></label>
-                        <input type="number" asp-for="Latitude" class="form-control" disabled="disabled" />                        
+                        <input type="number" min="-90.000000" max="90.000000" step="0.000001" asp-for="Latitude" class="form-control" disabled="disabled" />
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="Longitute" class="control-label"></label>
-                        <input type="number" asp-for="Longitute" class="form-control" disabled="disabled" />                        
+                        <input type="number" min="-90.000000" max="90.000000" step="0.000001" asp-for="Longitute" class="form-control" disabled="disabled" />
                     </div> 
                     <div class="col-md-3">
                         <label asp-for="OfficerName" class="control-label"></label>
@@ -158,7 +158,7 @@
     </div>
     <h6><b>List of Community Institute Members </b>
     @{
-            if ((!Model.IsSubmittedForReview) || AuthorizationService.AuthorizeAsync(User, Permissions.CommunityDevelopmentExpert.Create).Result.Succeeded)
+        if ((!Model.IsSubmittedForReview) || AuthorizationService.AuthorizeAsync(User, Permissions.CICIG.Create).Result.Succeeded && Model.IsVerified == false)
         {
             <a asp-action="Create" asp-controller="CommunityInstituteMembers" asp-route-id="@Model.CommunityInstitutionId"> <i class="bx bxs-user"></i><span key="t-invoices">Add Member</span></a>
         }

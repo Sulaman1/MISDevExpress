@@ -62,8 +62,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                     ModelState.AddModelError(nameof(tehsil.TehsilName), "Tehsil already exist!");
                     return View(tehsil);
                 }               
-                _context.Insert(tehsil);
-                _context.Save();                                          
+                _context.Insert(tehsil);                                                    
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DistrictId"] = new SelectList(_context.GetAllDistrict().Result.Where(a => a.DistrictId > 1), "DistrictId", "Name", tehsil.DistrictId);
@@ -109,8 +108,7 @@ namespace BLEPMIS.Controllers.MasterSetup
                 }
                 try
                 {
-                    _context.Update(tehsil);
-                    _context.Save();
+                    _context.Update(tehsil);                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,8 +150,7 @@ namespace BLEPMIS.Controllers.MasterSetup
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tehsil = await _context.GetById(id);
-            _context.Remove(tehsil);
-            _context.Save();
+            _context.Remove(tehsil);            
             return RedirectToAction(nameof(Index));
         }
         private bool TehsilExists(int id)

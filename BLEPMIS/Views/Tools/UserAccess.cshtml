@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "UserAccess";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                    <h4 class="mt-2 card-title">User Level Access</h4>
+                </div>
+                <form asp-action="UserAccess">
+            <div class="row">
+                        <div class="col-md-4">                            
+                            <input type="hidden" id="toolId" name="toolId" value="@ViewBag.ToolId" />
+                            <div class="form-group">
+                                <label class="control-label">District</label>
+                                <select id="districtId" name="districtId" class="form-control" asp-items="ViewBag.DistrictId">
+                                    <option value=""> - - Select - -</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Add" class="btn btn-primary" />
+                            </div>
+                        </div>
+                <div class="col-md-4">                    
+                    <div class="form-group">
+                        <label class="control-label">Users</label>
+                        <select id="userId" name="userId" class="form-control" asp-items="ViewBag.UserId">
+                            <option value=""> - - Select - -</option>
+                        </select>
+                    </div>                   
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+        <div id="dynamicContentContainer"></div>
+    </div>
+</div>
+
+
+@section scripts{
+  
+    <script>
+        $(document).ready(function () {
+            var UId = '@ViewBag.UId';
+            if (UId != "") {
+                $.get('@Url.Action("_IndexToolAccess", "Tools")', { UId: UId }, function (content) {
+                    $("#dynamicContentContainer").html(content);
+                });
+            }
+            $("#districtId").change(function () {
+                $.get("/Tools/GetUsers", { districtId: $("#districtId").val() }, function (data) {
+                    $("#userId").empty();                                        
+                    $("#userId").append('<option>Select...</option>');
+                    console.log(data);
+                    $.each(data, function (index, row) {
+                        console.log(row);
+                        $("#userId").append("<option value='" + row.value + "'>" + row.text + "</option>")
+                    });
+                });                
+            });
+            $("#userId").change(function () {
+                var UId = $(this).val();
+                $.get('@Url.Action("_IndexToolAccess", "Tools")', { UId: UId }, function (content) {
+                    $("#dynamicContentContainer").html(content);
+                });
+            });
+        });
+        </script>
+        }

@@ -1,0 +1,49 @@
+﻿@model List<DAL.Models.Domain.ToolApp.ToolControl>
+
+@{
+    ViewData["Title"] = "EditToolControlOrder";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<h1>EditToolControlOrder</h1>
+
+<h4>ToolControl</h4>
+<hr />
+<form asp-action="EditToolControlOrder">
+    <input type="hidden" id="id" name="id" value="@ViewBag.Id" />
+    <div class="row">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <div style="display:none">
+                @Html.TextBoxFor(model => model[i].ToolId)
+                @Html.TextBoxFor(model => model[i].ControlId)
+                @Html.TextBoxFor(model => model[i].ToolControlId)
+                @Html.TextBoxFor(model => model[i].Value)
+                @Html.TextBoxFor(model => model[i].IsActive)                
+            </div>
+           
+            <div class="col-md-6">
+                <div class="form-group">
+                    <b>@Html.TextBoxFor(model => model[i].Name, new { @readonly = true })</b>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <b>@Html.TextBoxFor(model => model[i].OrderNo, new { type = "number"})</b>
+                </div>
+            </div>            
+        }
+        @if(Model.Count > 0)
+        {
+            <div class="form-group ml-2">
+            <input type="submit" class="btn btn-success" value="Submit" />
+            </div>
+        }
+    </div>
+</form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

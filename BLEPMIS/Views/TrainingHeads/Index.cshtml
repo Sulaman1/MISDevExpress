@@ -57,8 +57,11 @@
                                         <thead>
                                             <tr>
                                                 <th>
+                                                    @Html.DisplayNameFor(model => model.TrainingHeadCode)
+                                                </th>   
+                                                <th>
                                                     @Html.DisplayNameFor(model => model.TrainingHeadName)
-                                                </th>                                               
+                                                </th>  
                                                 @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
                                                 {
                                                     <th>Edit</th>
@@ -74,8 +77,11 @@
                                             {
                                                 <tr>
                                                     <td>
+                                                        @Html.DisplayFor(modelItem => item.TrainingHeadCode)
+                                                    </td>
+                                                    <td>
                                                         @Html.DisplayFor(modelItem => item.TrainingHeadName)
-                                                    </td>                                                 
+                                                    </td>
                                                     @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Administrator.Edit)).Result.Succeeded)
                                                     {
                                                         <td>

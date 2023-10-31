@@ -9,9 +9,13 @@
 }
 @{
     var gender = new[]
-         {   new SelectListItem { Text = "Male", Value = "Male" },
-              new SelectListItem { Text = "Female", Value = "Female" },
+         {   new SelectListItem { Text = "Male", Value = "Male", Selected = ViewBag.IsMaleGender },
+              new SelectListItem { Text = "Female", Value = "Female", Selected = ViewBag.IsFemaleGender },
             };
+    var MaritalStatus = new[]
+        {   new SelectListItem { Text = "Yes", Value = "Yes" },
+              new SelectListItem { Text = "No", Value = "No" },
+    };
 }
 <link rel="stylesheet" type="text/css" href="~/assets/libs/toastr/build/toastr.min.css">
 <h5>Add Community Institute Member</h5>
@@ -20,6 +24,7 @@
 <div class="row">    
         <div class="col-md-4">       
             <input type="hidden" id="MemberId" name="MemberId" value="0" />
+            <input type="hidden" id="MemberVillageId" name="MemberVillageId" value="0" />
                  <div class="form-group">                     
                      <input type="hidden" name="CIId" value="@ViewBag.CIId" />  
                      <input type="hidden" asp-for="BeneficiaryTypeId" />  
@@ -28,20 +33,39 @@
                 </div> 
                  <div class="form-group">
                     <label asp-for="MemberName" class="control-label"></label>
-                    <input tabindex="2" asp-for="MemberName" class="form-control" />
+                    <input asp-for="MemberName" class="form-control" />
                     <span asp-validation-for="MemberName" class="text-danger"></span>
-                </div>                 
-                <div class="form-group">
-                    <label asp-for="CellNo" class="control-label"></label>
-                    <input tabindex="4" asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
-                    <span asp-validation-for="CellNo" class="text-danger"></span>
-                </div>  
-                <div class="form-group">
-                    <label asp-for="Gender" class="control-label"></label>
-                    <select tabindex="6" asp-for="Gender" asp-items="@gender" class="form-control"></select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>   
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CellNo" class="control-label"></label>
+                        <input asp-for="CellNo" class="form-control inputBox input-mask" data-inputmask="'mask': '0399-9999999'" />
+                        <span asp-validation-for="CellNo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Age" class="control-label"></label>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group form-check">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select asp-for="Gender" asp-items="@gender" class="form-control"></select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsAnyDisability" /> @Html.DisplayNameFor(model => model.IsAnyDisability)
+                        </label>
+                    </div>
+                    </div>
+                </div>                
+            <div class="form-group">
+                <input type="submit" tabindex="8" value="Add Member" class="btn btn-primary" />
+            </div>
+                <div class="form-group form-check" style="display:none">
                     <label class="form-check-label">
                         <input disabled="disabled" class="form-check-input" asp-for="IsRefugee" /> @Html.DisplayNameFor(model => model.IsRefugee)
                     </label>
@@ -51,24 +75,35 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>   
                  <div class="form-group">                      
                     <label asp-for="CNIC" class="control-label">CNIC <span id="loader" style="display:none"><img src="/assets/images/loading.gif" height="15" /></span></label>
-                    <input tabindex="1" asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
+                    <input asp-for="CNIC" class="form-control inputBox input-mask" data-inputmask="'mask': '***99-9999999-9'" />
                     <span asp-validation-for="CNIC" class="text-danger"></span>
                 </div>     
                 <div class="form-group">
                     <label asp-for="FatherName" class="control-label"></label>
-                    <input tabindex="3" asp-for="FatherName" class="form-control" />
+                    <input asp-for="FatherName" class="form-control" />
                     <span asp-validation-for="FatherName" class="text-danger"></span>
+                </div>                
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Designation</label>
+                        <select id="DesignationId" name="DesignationId" class="form-control" asp-items="ViewBag.DesignationId"></select>
+                    </div>
                 </div>
-                 <div class="form-group">
-                    <label class="control-label">Designation</label>
-                    <select id="DesignationId" name="DesignationId" tabindex="5" class ="form-control" asp-items="ViewBag.DesignationId"></select>                 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="MaritalStatus" class="control-label"></label>
+                        <select asp-for="MaritalStatus" asp-items="@MaritalStatus" class="form-control"></select>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
+        </div>
              <div class="col-md-4">                                       
                 <div class="form-group">
                     <label asp-for="ProfilePicture" style="width: 100%;"></label>                    
                     <img id="profilePicture" style="width:300px;height:300px; object-fit:cover" src="">                    
-                    <input tabindex="7" type="file"
+                    <input type="file"
                             accept=".png,.jpg,.jpeg,.gif,.tif"
                             asp-for="ProfilePicture" name="ProfilePicture"
                             class="form-control"
@@ -77,10 +112,7 @@
                     <span asp-validation-for="ProfilePicture" class="text-danger"></span>
                 </div>
             </div>                                                        
-    </div>
-      <div class="form-group">
-        <input type="submit" tabindex="8" value="Add Member" class="btn btn-primary" />
-    </div>
+    </div>     
     </form>
 <div>
     <a asp-action="Details" asp-controller="CommunityInstitutions" asp-route-id="@ViewBag.CIId">Back to Community Institute</a>    
@@ -118,28 +150,29 @@ function fetch() {
     $("#loader").show();
             $.ajax({
                 type: "POST",
-                url: "/MemberTrainingDetails/AjaxMemberInformation",
+                url: "/CommunityInstituteMembers/AjaxMemberInformation",
                 data: { id: id },
                 dataType: "json",
                 success: function (response) {
                     debugger;
-                    if (response.isValid != false) {                        
-                        $('#MemberId').val(response.memberId);                        
-                        $('#MemberName').val(response.memberName);                        
-                        $('#FatherName').val(response.fatherName);                        
-                        $('#Designation').val(response.designation);                        
-                        $('#CellNo').val(response.cellNo);
-                        $('#Gender').val(response.gender);
-                        $('#IsRefugee').prop('checked', response.isRefugee);
-                        $('#MISCode').val(response.misCode);    
-                        if(true){   
-                            var imgdata = 'data:image/png;base64,' + response.profilePicture;                            
+                    if (response.isValid != false) {
+                        $('#MemberId').val(response.info.memberId);
+                        $('#MemberVillageId').val(response.info.villageId);
+                        $('#MemberName').val(response.info.memberName);
+                        $('#FatherName').val(response.info.fatherName);
+                        $('#Designation').val(response.info.designation);
+                        $('#CellNo').val(response.info.cellNo);
+                        $('#Gender').val(response.info.gender);
+                        $('#IsRefugee').prop('checked', response.info.isRefugee);                        
+                        if(true){
+                            var imgdata = 'data:image/png;base64,' + response.info.profilePicture;
                             $('#profilePicture').attr('src', imgdata);
                         }       
                         EnableTextBoxes(true);
                         IsCleaned = true;
                         notificationme('Fetch data successfully!');
                     }else{
+                        EnableTextBoxes(false);
                         IsCleaned = false;
                         var refLength = $("#CNIC").val();                    
                         if (isAlphaOrParen(refLength.charAt(0)) || isAlphaOrParen(refLength.charAt(1))) {
@@ -166,7 +199,7 @@ function fetch() {
             $("#FatherName").attr('readonly',val);
             $("#Designation").attr('readonly',val);
             $("#CellNo").attr('readonly',val);
-            $("#Gender").attr('disabled',val);
+            //$("#Gender").attr('disabled',val);
             //$("#IsRefugee").attr('disabled',val);
             $("#MISCode").attr('readonly',val);
             if (val == false) {

@@ -1,0 +1,57 @@
+﻿@model DAL.Models.Domain.ToolApp.ToolControlDetail
+
+@{
+    ViewData["Title"] = "AddControlOption";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+
+
+<h5><b>Tool: @ViewBag.ToolName</b></h5>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">@ViewBag.Control: @ViewBag.ControlName</h5>
+
+                <form class="form-inline" asp-action="AddControlOption">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ToolControlId" />
+                    <input type="hidden" asp-for="Value" />              
+                   
+                    <div class="form-group">
+                        <label asp-for="ToolControlId" class="sr-only"></label>
+                        <input value="@ViewBag.ControlName" class="form-control mb-2 mr-sm-3" readonly="readonly" />
+                        <span asp-validation-for="ToolControlId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Label" class="sr-only"></label>
+                        <input asp-for="Label" class="form-control mb-2 mr-sm-3" placeholder="Enter Option Title" required />
+                        <span asp-validation-for="Label" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Add" class="btn btn-primary mb-2" />
+                    </div>
+                </form>
+                <div id="dynamicContentContainer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="AddControl" asp-route-id="@ViewBag.ToolId">Back to List</a>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $.get('@Url.Action("_IndexToolControlDetail","Tools", new { id=Model.ToolControlId })', function (content) {
+                $("#dynamicContentContainer").html(content);
+                //notificationme('Fetch Record Successfully!');
+            });
+        });
+    </script>
+}

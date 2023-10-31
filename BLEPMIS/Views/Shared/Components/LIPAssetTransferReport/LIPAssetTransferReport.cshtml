@@ -1,0 +1,115 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.LIPAssetTransfer>
+
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<table id="datatable-buttons1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.LIPCode)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.MemberName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.FatherName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.CNIC)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Member.CellNo)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Village)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Village.UnionCouncil)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Village.UnionCouncil.Tehsil)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.IdentifiedBy)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Latitute)
+                                                </th>   
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Longitute)
+                                                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LIPPackage)
+            </th>
+        </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LIPCode)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.MemberName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.FatherName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.CNIC)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.CellNo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.Village.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.Village.UnionCouncil.UnionCouncilName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Member.Village.UnionCouncil.Tehsil.TehsilName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IdentifiedBy.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LIPPackage.PackageName)
+                                                    </td> 
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Latitute)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Longitute)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                 </table>
+
+<!-- JAVASCRIPT -->
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+    <script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#datatable-buttons1').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>

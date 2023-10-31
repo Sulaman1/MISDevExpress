@@ -1,0 +1,436 @@
+﻿@model DAL.Models.Domain.HTSModule.HTS
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "HTS";
+    ViewBag.Title = "Detail View";
+    ViewBag.pTitle = "Detail View";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+@{
+    decimal TotalGrant = ViewBag.TotalGrant;
+    decimal ReceivedGrant = ViewBag.ReceivedGrant;        
+    decimal CompletedInstallment = ViewBag.CompletedInstallment;
+    bool IsCompleted = ViewBag.IsCompleted;
+}
+@{
+    var gender = new[]
+         {   new SelectListItem { Text = "Male", Value = "Male" },
+              new SelectListItem { Text = "Female", Value = "Female" },
+    };
+}
+@section Styles {
+    <!-- DataTables -->
+    <style>
+        input {
+            color: black;
+        }
+
+        .mapouter {
+            position: relative;
+            text-align: right;
+            height: 500px;
+            width: 100%;
+        }
+
+        .gmap_canvas {
+            overflow: hidden;
+            background: none !important;
+            height: 500px;
+            width: 100%;
+        }
+
+        #link {
+            color: #FFFFFF;
+        }
+
+        .main-footer.main-footer {
+            margin: 0;
+        }
+
+        .page-title-box {
+            padding: 0;
+        }
+
+        label {
+            margin-top: 5px;
+        }
+        /* CSS link color */
+        .modal-dialog {
+            height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+        }
+
+        .modal-content {
+            height: 100%; /* = 100% of the .modal-dialog block */
+        }
+
+        #PdfModal {
+            height: 100%;
+        }
+
+        .modal-body img {
+            object-fit: contain;
+        }
+    </style>
+}
+@if (true)
+{
+    <div class="checkout-tabs">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-success" style="padding: .40rem 1.25rem" role="alert">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4 class="mt-2 card-title">Business Support Facility Profile
+                                        @if (IsCompleted)
+                                        {
+                                            <span class="badge badge-pill badge-soft-success font-size-11">Complete</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-pill badge-soft-primary font-size-11">In Process</span>
+                                        }
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="media">
+                                    <div class="mr-3">
+                                        <img style="border-radius:5%" src="~/assets/images/hts.gif" alt="" height="100" width="280">
+                                    </div>
+                                    <div class="media-body align-self-center">
+                                        <div class="text-muted">
+                                            <p class="mb-2">Welcome to HTS Activity</p>
+                                            <h6 class="mb-1">Beneficiary Name: <b>@ViewBag.BName</b></h6>
+                                            @*<p class="mb-0">@ViewBag.TotalGrant</p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 align-self-center">
+                                <div class="text-lg-center mt-4 mt-lg-0">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Total Grant</p>
+                                                <h5 class="mb-0">@Math.Round((TotalGrant),0)</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Release Amount</p>
+                                                <h5 class="mb-0">@Math.Round((ReceivedGrant),0)</h5>
+                                            </div>
+                                        </div>
+                                        @* <div class="col-3">
+                                    <div>
+                                    <p class="text-muted text-truncate mb-2">Financial Progress</p>
+                                    <h5 class="mb-0">@Math.Round((ReceivedGrant/TotalGrant * 100),2)%</h5>
+                                    </div>
+                                    </div>*@
+                                        <div class="col-4">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Remaining Amount</p>
+                                                <h5 class="mb-0">@Math.Round((TotalGrant - ReceivedGrant),0)</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end row -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h4 class="mt-2 card-title">Personal Information</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row">                                       
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.MemberName" class="control-label"></label>
+                                                <input asp-for="Member.MemberName" class="form-control" readonly="readonly"/>
+                                                <span asp-validation-for="Member.MemberName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.FatherName" class="control-label"></label>
+                                                <input asp-for="Member.FatherName" class="form-control" />
+                                                <span asp-validation-for="Member.FatherName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Member.CNIC" class="control-label"></label>
+                                                <input asp-for="Member.CNIC" class="form-control" />
+                                                <span asp-validation-for="Member.CNIC" class="text-danger"></span>
+                                            </div>
+                                        </div>                                        
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.CellNo" class="control-label"></label>
+                                                <input asp-for="Member.CellNo" class="form-control inputBox" readonly="readonly" />
+                                                <span asp-validation-for="Member.CellNo" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Gender" class="control-label"></label>
+                                                <input asp-for="Member.Gender" class="form-control inputBox" readonly="readonly" />
+                                                <span asp-validation-for="Member.Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>                                                                                                                      
+                                        <div class="col-md-12">
+                                            <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <h4 class="mt-2 card-title">Business Information</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Village.UnionCouncil.Tehsil.District" class="control-label"></label>
+                                                <input asp-for="Member.Village.UnionCouncil.Tehsil.District.Name" class="form-control inputBox" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Village.UnionCouncil.Tehsil" class="control-label"></label>
+                                                <input asp-for="Member.Village.UnionCouncil.Tehsil.TehsilName" class="form-control inputBox" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Village.UnionCouncil" class="control-label"></label>
+                                                <input asp-for="Member.Village.UnionCouncil.UnionCouncilName" class="form-control inputBox" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="Member.Village" class="control-label"></label>
+                                                <input asp-for="Member.Village.Name" class="form-control inputBox" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Khasra" class="control-label"></label>
+                                                <input asp-for="Khasra" class="form-control" readonly="readonly" />                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="TunnelSize" class="control-label"></label>
+                                                <input asp-for="TunnelSize" class="form-control" readonly="readonly" />                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label asp-for="TotalGrant" class="control-label"></label>
+                                                <input asp-for="TotalGrant" class="form-control" readonly="readonly" />                                                
+                                            </div>
+                                        </div>
+                                        @{
+                                            if (Model.ApplicationFormAttachment != null)
+                                            {
+                                                <div class="col-md-2">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Application Form</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.ApplicationFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        @{
+                                            if (Model.CNICAttachment != null)
+                                            {
+                                                <div class="col-md-2">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">CNIC</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.CNICAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        @{
+                                            if (Model.AgricultureLandProofAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Agriculture Land Proof</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.AgricultureLandProofAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        @{
+                                            if (Model.TunnelSiteSuitabilityFormAttachment != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group" style="margin-bottom:0.5rem">
+                                                        <label class="control-label">Tunnel Site Suitability Form</label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.TunnelSiteSuitabilityFormAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                @{
+                                    if (true)//CompletedStage > 0)
+                                    {
+                                        <div class="alert alert-success" style="padding: .40rem 1.25rem" role="alert">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h4 class="mt-2 card-title">List of Financial Installment Stages</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                <div id="dynamicContentContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" style="max-width:1200px;">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img id="imageFile" src="" frameborder="0">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" frameborder="0" style="border:0" src="@String.Concat("https://www.google.com/maps/embed/v1/place?q=",@Model.Latitute,",",@Model.Longitute,"&key=AIzaSyAq8CjILSiYD9C8h6B8lnZG4drnJVx0kpY&zoom=10")"></iframe></div></div>
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get('@Url.Action("_Index","HTSStages", new { id=ViewBag.Id })', function (content) {
+                $("#dynamicContentContainer").html(content);
+                //notificationme('Fetch Record Successfully!');
+            });
+        });
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+        function createModal2(url) {
+            $("#imageFile").attr("src", url);
+        }
+    </script>
+}

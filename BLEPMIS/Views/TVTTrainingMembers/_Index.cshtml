@@ -1,0 +1,95 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.TVTTrainingMember>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+@{
+    if(Model.Count() > 0){
+        <div style="margin:5px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            S.No
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BeneficiaryMISCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Age)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.MemberName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.FatherName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.CNIC)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.CellNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.ProfilePicture)
+                        </th>                        
+                            @if (AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit).Result.Succeeded)
+                        {
+                            <th>Action</th>
+                            <th>Action</th>
+                        }                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int counter = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @(counter = counter + 1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BeneficiaryMISCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Age)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.MemberName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.FatherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.CNIC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.CellNo)
+                            </td>
+                            <td>
+                                @if (item.Member.ProfilePicture != null)
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.Member.ProfilePicture))">
+                                }
+                                else
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/BLEP.png">
+                                }
+                            </td>
+                            @if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.CICIGTraining.Edit).Result.Succeeded)
+                            {
+                                <td>
+                                    <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" asp-action="Edit" asp-route-id="@item.TVTTrainingMemberId"> <i class="mdi mdi-pencil font-size-18"></i></a>                                    
+                                </td>
+                                <td>
+                                    <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.TVTTrainingMemberId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                                </td>
+                            }                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

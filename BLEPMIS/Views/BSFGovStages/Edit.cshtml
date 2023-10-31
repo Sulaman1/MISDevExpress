@@ -1,0 +1,240 @@
+﻿@model DAL.Models.Domain.BSF.BSFGovStage
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using Constant.Constants
+
+@{
+    ViewData["Title"] = "Edit";
+    ViewBag.pageTitle = "BSF Stage";
+    ViewBag.Title = "Government";
+    ViewBag.pTitle = "Government";
+
+    Layout = "~/Views/_Shared/_Layout.cshtml";
+}
+
+<style>
+    .modal-dialog {
+        height: 90%; /* = 90% of the .modal-backdrop block = %90 of the screen */
+    }
+
+    .modal-content {
+        height: 100%; /* = 100% of the .modal-dialog block */
+    }
+
+    #PdfModal {
+        height: 100%;
+    }
+</style>
+@if (true)
+{
+    <div class="checkout-tabs">
+        
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="media">
+                            <div class="mr-3">
+                                <img src="~/assets/images/gree_tree.webp" alt="" class="avatar-md rounded-circle img-thumbnail">
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-muted">
+                                    <p class="mb-2">Welcome to BSF Activity</p>                                    
+                                    @*<p class="mb-0">@ViewBag.TotalGrant</p>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                      
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="row">            
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">                               
+                                @if (Model != null && AuthorizationService.AuthorizeAsync(User, Permissions.BSFGovt.Create).Result.Succeeded)
+                                {
+                                    <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h4 class="mt-2 card-title">Edit Stage</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form asp-action="Edit" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                <input type="hidden" asp-for="BSFGovStageId" />
+                                                <input type="hidden" asp-for="BSFGovId" />
+                                                <input type="hidden" asp-for="StageAttachment" />
+                                                <input type="hidden" asp-for="BeforeAttachment" />
+                                                <input type="hidden" asp-for="AfterAttachment" />                                               
+                                                <input type="hidden" asp-for="IsCompleted" />
+                                                <input type="hidden" asp-for="CreatedBy" />
+                                                <input type="hidden" asp-for="UserId" />                                                
+                                                <div class="form-group">
+                                                    <label asp-for="StageName" class="control-label"></label>
+                                                    <select asp-for="StageName" asp-items="@ViewBag.Stage" class="form-control"></select>
+                                                    <span asp-validation-for="StageName" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="StageNumber" class="control-label"></label>
+                                                    <input asp-for="StageNumber" class="form-control"/>
+                                                    <span asp-validation-for="StageNumber" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            @{
+                                                if (Model.StageAttachment != null)
+                                                {
+                                                    <div class="col-md-3">
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Stage</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.StageAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="StageAttachment" class="control-label"></label>
+                                                    <input type="file" name="StageAttachment" class="form-control" accept="application/pdf" />
+                                                    <span asp-validation-for="StageAttachment" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            @{
+                                                if (Model.BeforeAttachment != null)
+                                                {
+                                                    <div class="col-md-3">
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Before Pictures</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.BeforeAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="BeforeAttachment" class="control-label"></label>
+                                                    <input type="file" name="BeforeAttachment" class="form-control" accept="application/pdf" />
+                                                    <span asp-validation-for="BeforeAttachment" class="text-danger"></span>
+                                                </div>                                              
+                                            </div>
+                                            @{
+                                                if (Model.AfterAttachment != null)
+                                                {
+                                                    <div class="col-md-3">
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">After Pictures</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal" onclick="createModal('@Model.AfterAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="AfterAttachment" class="control-label"></label>
+                                                    <input type="file" name="AfterAttachment" class="form-control" accept="application/pdf" />
+                                                    <span asp-validation-for="AfterAttachment" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="OnDate" class="control-label"></label>
+                                                    <input asp-for="OnDate" class="form-control" />
+                                                    <span asp-validation-for="OnDate" class="text-danger"></span>
+                                                </div>                                               
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <input type="submit" value="Submit" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                }                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="account-pages my-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center mb-5">
+                        <h1 class="display-2 font-weight-medium">4<i class="bx bx-buoy bx-spin text-primary display-3"></i>4</h1>
+                        <h4 class="text-uppercase">Sorry, page not found</h4>
+                        @*<div class="mt-5 text-center">
+                    <a class="btn btn-primary waves-effect waves-light" href=@Url.Action("Index", "index")>Back to Dashboard</a>
+                    </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-xl-6">
+                    <div>
+                        <img src="~/assets/images/error-img.png" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfFile" src="" frameborder="0" width="100%" height="100%">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!-- form mask -->
+    <script src="~/assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+    <!-- form mask init -->
+    <script src="~/assets/js/pages/form-mask.init.js"></script>
+    <script>      
+        function createModal(url) {
+            $("#pdfFile").attr("src", url);
+        }
+    </script>
+}

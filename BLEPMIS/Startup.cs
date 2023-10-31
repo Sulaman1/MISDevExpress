@@ -21,6 +21,9 @@ using BAL.Services.MasterSetup.Training;
 using BAL.Services.MasterSetup.CD;
 using BAL.IRepository.MasterSetup.UserManagement;
 using BAL.Services.MasterSetup.UserManagement;
+using DevExpress.AspNetCore;
+using System.IO;
+using BLEPMIS.Services.Profile;
 
 namespace BLEPMIS
 {
@@ -38,7 +41,20 @@ namespace BLEPMIS
         {
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+            string database1ConnectionString = configuration.GetConnectionString("DefaultConnection");
+            string database2ConnectionString = configuration.GetConnectionString("DefaultConnectionYouth");
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Configure Database2Context
+            services.AddDbContext<ApplicationDbContextYouth>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionYouth")));
+
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));  
+
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
             {
                 opt.Password.RequiredLength = 7;
@@ -59,7 +75,8 @@ namespace BLEPMIS
 
             EmailSender emailSender = new EmailSender(smtpServer, port, password, displayName, email);
             services.AddSingleton<IEmailSender>(emailSender);
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   
             });
             services.AddTransient<IProvience, ProvienceService>();
@@ -80,7 +97,13 @@ namespace BLEPMIS
             services.AddTransient<IUser, UserService>();         
             services.AddTransient<IRole, RoleService>();         
             services.AddTransient<IUserRole, UserRoleService>();         
-            services.AddTransient<IPermission, PermissionService>();         
+            services.AddTransient<IPermission, PermissionService>();
+            services.AddTransient<ProfileManager, ProfileManager>();
+            services.ConfigureApplicationCookie(options => options.ExpireTimeSpan = TimeSpan.FromMinutes(60));            
+            services.AddSwaggerGen();
+            //services.AddDevExpressControls();
+            // Use the AddMvc (or AddMvcCore) method to add MVC services.
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,9 +122,15 @@ namespace BLEPMIS
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSwaggerUI();
             app.UseRouting();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "My API");
 
+            });
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
@@ -114,7 +143,8 @@ namespace BLEPMIS
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");               
-            });            
+            });
+            //app.UseDevExpressControls();
         }
     }
 }

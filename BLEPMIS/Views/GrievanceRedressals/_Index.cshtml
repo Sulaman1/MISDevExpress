@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DAL.Models.Domain.GRM.GrievanceRedressal>
+
+<!-- DataTables -->
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-autoFill-bs4/css/autoFill.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-keytable-bs4/css/keyTable.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<!-- Responsive datatable examples -->
+<link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DistrictName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TehsilName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GRMNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>                       
+            <th>
+                @Html.DisplayNameFor(model => model.OnDateTime)
+            </th>            
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>           
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DistrictName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TehsilName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GRMNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnDateTime)
+            </td>           
+            <td>
+                    @if (item.Status == "Resolved")
+                    {
+                        <span class="badge badge-pill badge-soft-success font-size-11">Resolved</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-pill badge-soft-primary font-size-11">In Process</span>
+                    }
+                </td>           
+            <td>                
+                    <a asp-action="Edit" asp-route-id="@item.GRMId" class="badge-soft-warning">Update</a> <span>|</span>
+                    @{
+                        if(item.Status == "Resolved")
+                        {
+                            <a asp-action="Resolved" asp-route-id="@item.GRMId" class="badge-soft-success">View</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Resolved" asp-route-id="@item.GRMId" class="badge-soft-success">Resolve</a>
+                        }
+                    }
+                    
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

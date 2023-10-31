@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DAL.Models.Domain.Training.LIPTrainingDetail>
+
+@{
+    if(Model.Count() > 0){
+        <div style="margin:5px">
+            <table class="table">
+                <thead>
+                    <tr>  
+                    <th>
+                            @Html.DisplayNameFor(model => model.LIPNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.MemberName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.FatherName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.CNIC)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.CellNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Member.ProfilePicture)
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LIPNumber)
+                            </td>                          
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.MemberName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.FatherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.CNIC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Member.CellNo)
+                            </td>
+                            <td>
+                                @if (item.Member.ProfilePicture != null)
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(item.Member.ProfilePicture))">
+                                }
+                                else
+                                {
+                                    <img style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="/assets/images/BLEP.png">
+                                }
+                            </td>
+                            <td>
+                                <a class="text-danger ml-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" asp-action="Delete" asp-route-id="@item.LIPTrainingDetailId"> <i class="mdi mdi-trash-can font-size-18"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
