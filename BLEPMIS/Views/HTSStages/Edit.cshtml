@@ -59,16 +59,16 @@
                             <div class="col-lg-5 align-self-center">
                                 <div class="text-lg-center mt-4 mt-lg-0">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-6">
                                             <div>
-                                                <p class="text-muted text-truncate mb-2">Total Grant</p>
-                                                <h5 class="mb-0">@Math.Round((TotalGrant),0)</h5>
+                                                <p class="text-muted text-truncate mb-2">BLEP Percentage (75%)</p>
+                                                <h5 class="mb-0">@Math.Round((TotalGrant),0).ToString("N0")</h5>
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-6">
                                             <div>
-                                                <p class="text-muted text-truncate mb-2">Release Amount</p>
-                                                <h5 class="mb-0">@Math.Round((ReceivedGrant),0)</h5>
+                                                <p class="text-muted text-truncate mb-2">Beneficiary Percentage (25%)</p>
+                                                <h5 class="mb-0">@Math.Round((((double)25/100)*(int)TotalGrant),0).ToString("N0")</h5>
                                             </div>
                                         </div>
                                         @* <div class="col-3">
@@ -77,12 +77,12 @@
                                     <h5 class="mb-0">@Math.Round((ReceivedGrant/TotalGrant * 100),2)%</h5>
                                     </div>
                                     </div>*@
-                                        <div class="col-4">
+                                       @*  <div class="col-4">
                                             <div>
                                                 <p class="text-muted text-truncate mb-2">Remaining Amount</p>
                                                 <h5 class="mb-0">@Math.Round((TotalGrant - ReceivedGrant),0)</h5>
                                             </div>
-                                        </div>
+                                        </div> *@
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                         <div class="alert alert-success" style="padding: .40rem 1.25rem" role="alert">
                                             <div class="row">
                                                 <div class="col-sm-6">
-                                                    <h4 class="mt-2 card-title">List of Financial Stages</h4>
+                                                    <h4 class="mt-2 card-title">List of Stages</h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@
                                                     <input type="submit" value="Save" class="btn btn-primary" />
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                           @*  <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label asp-for="AmountPaid" class="control-label"></label>
                                                     <input asp-for="AmountPaid" class="form-control" type="number" max="@ViewBag.MaxRelease" />
@@ -170,7 +170,7 @@
                                                     <input type="file" name="StageAttachment" class="form-control" accept="application/pdf" />
                                                     <span asp-validation-for="StageAttachment" class="text-danger"></span>
                                                 </div>                                                
-                                            </div>
+                                            </div> *@
                                             @{
                                                 if (Model.StageAttachment != null)
                                                 {
@@ -220,6 +220,46 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <div data-toggle="modal" data-target="#myModal2" onclick="createModal2('@Model.Picture2')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture3" class="control-label"></label>
+                                                    <input type="file" name="Picture3" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture3" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            @{
+                                                if (Model.Picture3 != null)
+                                                {
+                                                    <div class="col-md-2">
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Picture-3</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal2" onclick="createModal2('@Model.Picture3')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture4" class="control-label"></label>
+                                                    <input type="file" name="Picture4" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture4" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            @{
+                                                if (Model.Picture4 != null)
+                                                {
+                                                    <div class="col-md-2">
+                                                        <div class="form-group" style="margin-bottom:0.5rem">
+                                                            <label class="control-label">Uploaded Picture-4</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div data-toggle="modal" data-target="#myModal2" onclick="createModal2('@Model.Picture4')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>
                                                         </div>
                                                     </div>
                                                 }

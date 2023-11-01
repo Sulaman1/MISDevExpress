@@ -29,7 +29,7 @@ namespace DAL.Models.Domain.HTSModule
         [Column(TypeName = "decimal(18, 6)")]
         public decimal Longitute { get; set; }
         [Required]
-        [Display(Name = "Total Grant")]
+        [Display(Name = "BLEP Percentage")]
         public decimal TotalGrant { get; set; } = 0;               
         
         [Display(Name = "Created On")]

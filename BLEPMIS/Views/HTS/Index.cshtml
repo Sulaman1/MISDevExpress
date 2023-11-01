@@ -12,7 +12,7 @@
 }
 
 
-@if (AuthorizationService.AuthorizeAsync(User, Permissions.HTS.View).Result.Succeeded)
+@if (true)//AuthorizationService.AuthorizeAsync(User, Permissions.HTS.View).Result.Succeeded)
 {
     <!-- DataTables -->
     <link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -21,31 +21,14 @@
     <!-- Responsive datatable examples -->
     <link href="~/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <div class="checkout-tabs">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
-                        <i class="bx bxs-grid-alt d-block check-nav-icon mt-4 mb-2"></i>
-                        <p class="font-weight-bold mb-4">List of HTS</p>
-                    </a>
-                    @{
-                        if (AuthorizationService.AuthorizeAsync(User, Permissions.HTS.Create).Result.Succeeded)
-                        {
-                            <a class="nav-link" role="tab" asp-action="Create" asp-controller="HTS" aria-controls="v-pills-privacy" aria-selected="false">
-                                <i class="bx bx-list-plus d-block check-nav-icon mt-4 mb-2"></i>
-                                <p class="font-weight-bold mb-4">Add New HTS</p>
-                            </a>
-                        }
-                    }                                      
-                </div>
-            </div>
-            <div class="col-lg-10">
+        <div class="row">            
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
                                 <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
-                                    <h4 class="mt-2 card-title">List of BSF</h4>
+                                    <h4 class="mt-2 card-title">List of HTS</h4>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -67,7 +50,7 @@
                                                     @Html.DisplayNameFor(model => model.Member.CNIC)
                                                 </th>
                                                 <th>
-                                                    <span>Installments</span>
+                                                    <span>Stages</span>
                                                 </th>
                                                 <th>
                                                     <span>Profile</span>

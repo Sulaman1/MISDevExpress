@@ -35,6 +35,17 @@
     <None Include="Views\Divisions\Details.cshtml" />
     <None Include="Views\Divisions\Edit.cshtml" />
     <None Include="Views\Divisions\Index.cshtml" />
+    <None Include="Views\HTSStages\Create.cshtml" />
+    <None Include="Views\HTSStages\Delete.cshtml" />
+    <None Include="Views\HTSStages\Details.cshtml" />
+    <None Include="Views\HTSStages\Edit.cshtml" />
+    <None Include="Views\HTSStages\Index.cshtml" />
+    <None Include="Views\HTSStages\_Index.cshtml" />
+    <None Include="Views\HTS\Create.cshtml" />
+    <None Include="Views\HTS\Delete.cshtml" />
+    <None Include="Views\HTS\Details.cshtml" />
+    <None Include="Views\HTS\Edit.cshtml" />
+    <None Include="Views\HTS\Index.cshtml" />
     <None Include="Views\Members\Edit.cshtml" />
     <None Include="Views\Tools\Edit.cshtml" />
   </ItemGroup>

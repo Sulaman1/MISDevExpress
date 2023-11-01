@@ -12,21 +12,38 @@
                 <div class="card-body" style="background-color:#E5E4E2">
                     <div class="d-flex flex-wrap">
                         <div class="mr-3">
-                            <h5 class="mb-0">Installment-@item.InstallmentNo</h5>
+                            <h5 class="mb-0">Stage-@item.InstallmentNo</h5>
                             @if (item.HTS.IsCompleted == false && AuthorizationService.AuthorizeAsync(User, Permissions.HTS.Edit).Result.Succeeded)
                             {
                                 <a asp-action="Edit" asp-route-id="@item.HTSStageId"><i class="mdi mdi-pencil font-size-18"></i></a>
                             }                            
                             @*<p class="text-muted mb-2">@item.InstallmentNo</p>*@
                             @*<div data-toggle="modal" data-target="#myModal" onclick="createModal('@item.StageAttachment')" class="btn btn-info btn-sm"><i class="bx bxs-file label-icon"></i> View</div>*@
-                            <p>Release Amount: @item.AmountPaid</p>
-                            <p class="mb-0"><a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture1')" class="btn btn-info btn-sm">Picture-1 </a> &nbsp; &nbsp; &nbsp; &nbsp; <a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture2')" class="btn btn-info btn-sm">Picture-2</a></p>
+                            <p>Paid Percentage (100%): @item.HTS.TotalGrant.ToString("N0")</p>
+                            <p class="mb-0">
+                                @if(item.Picture1 != null)
+                                {
+                                    <a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture1')" class="btn btn-info btn-sm">Pic-1 </a>
+                                }
+                                @if(item.Picture2 != null)
+                                {
+                                    <a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture2')" class="btn btn-info btn-sm">Pic-2 </a>
+                                }
+                                @if (item.Picture3 != null)
+                                {
+                                    <a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture3')" class="btn btn-info btn-sm">Pic-3 </a>
+                                }
+                                @if (item.Picture4 != null)
+                                {
+                                    <a data-toggle="modal" data-target="#myModal2" onclick="createModal2('@item.Picture4')" class="btn btn-info btn-sm">Pic-4</a>
+                                }
+                            </p>
                         </div>
-                        <div class="avatar-sm ml-auto">
+                       @*  <div class="avatar-sm ml-auto">
                             <div style="cursor:pointer" data-toggle="modal" data-target="#myModal" onclick="createModal('@item.StageAttachment')" class="avatar-title bg-light rounded-circle text-primary font-size-20">
                                 <i class="mdi mdi-attachment"></i>
                             </div>
-                        </div>
+                        </div> *@
                     </div>                  
                 </div>
             </div>

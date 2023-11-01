@@ -14,7 +14,7 @@ namespace DAL.Models.Domain.HTSModule
         [Key]
         public int HTSStageId { get; set; }
         public int HTSId { get; set; }
-        [Display(Name = "Installment No")]
+        [Display(Name = "Stage No")]
         public int InstallmentNo { get; set; }
         [Display(Name = "Amount Paid")]
         public int AmountPaid { get; set; }
@@ -22,10 +22,12 @@ namespace DAL.Models.Domain.HTSModule
         public string? StageAttachment { get; set; }
         [Display(Name = "Picture-1")]
         public string? Picture1 { get; set; }
-
-
         [Display(Name = "Picture-2")]
         public string? Picture2 { get; set; }
+        [Display(Name = "Picture-3")]
+        public string? Picture3 { get; set; }
+        [Display(Name = "Picture-4")]
+        public string? Picture4 { get; set; }
         [Display(Name = "Date of Payment")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]

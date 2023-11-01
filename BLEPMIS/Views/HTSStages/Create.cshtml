@@ -38,14 +38,14 @@
         <div class="card">
             <div class="card-body" style="padding:10px">
                 <div class="row">
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="media">
                             <div class="mr-3">
                                 <img style="border-radius:5%" src="~/assets/images/hts.gif" alt="" height="100" width="300">
                             </div>
                             <div class="media-body align-self-center">
                                 <div class="text-muted">
-                                    <p class="mb-2">Welcome to HTS Activity</p>
+                                    <p class="mb-2">Welcome to HTS</p>
                                             <h6 class="mb-1">Beneficiary Name: <b>@ViewBag.BName</b></h6>
                                     @*<p class="mb-0">@ViewBag.TotalGrant</p>*@
                                 </div>
@@ -53,19 +53,19 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5 align-self-center">
+                    <div class="col-lg-6 align-self-center">
                         <div class="text-lg-center mt-4 mt-lg-0">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div>
-                                        <p class="text-muted text-truncate mb-2">Total Grant</p>
-                                                <h5 class="mb-0">@Math.Round((TotalGrant),0)</h5>
+                                        <p class="text-muted text-truncate mb-2">BLEP Percentage (75%)</p>
+                                        <h5 class="mb-0">@Math.Round((TotalGrant),0).ToString("N0")</h5>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div>
-                                        <p class="text-muted text-truncate mb-2">Release Amount</p>
-                                        <h5 class="mb-0">@Math.Round((ReceivedGrant),0)</h5>
+                                        <p class="text-muted text-truncate mb-2">Beneficiary Percentage (25%)</p>
+                                        <h5 class="mb-0">@Math.Round((((double)25/100)*(int)TotalGrant),0).ToString("N0")</h5>
                                     </div>
                                 </div>
                                @* <div class="col-3">
@@ -74,12 +74,12 @@
                                         <h5 class="mb-0">@Math.Round((ReceivedGrant/TotalGrant * 100),2)%</h5>
                                     </div>
                                 </div>*@
-                                <div class="col-4">
+                                @* <div class="col-4">
                                     <div>
                                         <p class="text-muted text-truncate mb-2">Remaining Amount</p>
                                         <h5 class="mb-0">@Math.Round((TotalGrant - ReceivedGrant),0)</h5>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                                     <div class="alert alert-info" style="padding: .40rem 1.25rem" role="alert">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <h4 class="mt-2 card-title">Upload Financial Stage</h4>
+                                                <h4 class="mt-2 card-title">Upload Stage</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -149,21 +149,21 @@
                                                     <input type="submit" value="Save" class="btn btn-primary" />
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                           @*  <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label asp-for="AmountPaid" class="control-label"></label>
                                                     <input asp-for="AmountPaid" class="form-control" type="number" max="@ViewBag.MaxRelease" />
                                                     <span asp-validation-for="AmountPaid" class="text-danger"></span>
                                                 </div>
-                                            </div>
+                                            </div> *@
 
-                                            <div class="col-md-2">
+                                           @*  <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label asp-for="StageAttachment" class="control-label"></label>
                                                     <input type="file" name="StageAttachment" class="form-control" accept="application/pdf" required />
                                                     <span asp-validation-for="StageAttachment" class="text-danger"></span>
                                                 </div>                                               
-                                            </div>      
+                                            </div>    *@   
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label asp-for="Picture1" class="control-label"></label>
@@ -177,6 +177,20 @@
                                                     <input type="file" name="Picture2" class="form-control" accept="image/png, image/gif, image/jpeg" />
                                                     <span asp-validation-for="Picture2" class="text-danger"></span>
                                                 </div>                                               
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture3" class="control-label"></label>
+                                                    <input type="file" name="Picture3" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture3" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label asp-for="Picture4" class="control-label"></label>
+                                                    <input type="file" name="Picture4" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                                                    <span asp-validation-for="Picture4" class="text-danger"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
