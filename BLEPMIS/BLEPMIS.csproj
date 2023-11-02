@@ -82,17 +82,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Constant\Constant.csproj" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\Domain\DBContext.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="BAL">
       <HintPath>Dependency\BAL.dll</HintPath>
-    </Reference>
-    <Reference Include="Constant">
-      <HintPath>Dependency\Constant.dll</HintPath>
-    </Reference>
-    <Reference Include="DAL">
-      <HintPath>Dependency\DAL.dll</HintPath>
-    </Reference>
-    <Reference Include="DBContext">
-      <HintPath>Dependency\DBContext.dll</HintPath>
     </Reference>
     <Reference Include="DefaultSeed">
       <HintPath>Dependency\DefaultSeed.dll</HintPath>
