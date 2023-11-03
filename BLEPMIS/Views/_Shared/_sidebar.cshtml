@@ -279,7 +279,7 @@
                                 {
                                     <li><a asp-action="Index" asp-area="" asp-controller="MemberTrainings" key="t-inbox">Add Training</a></li>
                                     <li><a asp-action="Index" asp-area="" asp-controller="TVTTrainings" key="t-inbox">Add TVT Training</a></li> 
-                                    <li><a asp-action="SubmittedForReviewIndex" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>                           
+                                    @* <li><a asp-action="SubmittedForReviewIndex" asp-controller="CommunityInstitutions" key="t-read-email">Submitted For Review</a></li>  *@                          
                                 }
                                 @*@if(AuthorizationService.AuthorizeAsync(User, Permissions.DistrictCoordinatorBLEP.View).Result.Succeeded){
                         <li><a asp-action="SubmittedForReviewIndex" asp-area="" asp-route-id="2" asp-controller="CommunityInstitutions" key="t-read-email">Review</a></li>
