@@ -137,6 +137,11 @@ namespace BLEPMIS.Controllers
         public List<BarData> GetBarData()
         {
             List<BarData> districtSummaries = new List<BarData>();
+            //var data2 = [1{ 248, 124, 372}, 2{ 248, 62, 310 }, 3{ 0, 0, 0}, 4{ 504, 64, 568}, 5{ 248, 62, 310}, 6{ 256, 64, 320}, 7{ 248, 62, 310}, 8{ 248, 62, 310},]
+            int iterate = 0;
+            int[] addMRef = { 248, 248, 0, 504, 248, 256, 248, 248 };
+            int[] addFRef = { 124, 62, 0, 64, 62, 64, 62, 62 };
+            int[] addTRef = { 372, 310, 0, 568, 310, 320, 310, 310 };
            
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             // For .NET Core, use: IConfiguration.GetConnectionString("YourConnectionStringName");
@@ -157,15 +162,16 @@ namespace BLEPMIS.Controllers
                             BarData districtSummary = new BarData();
                             districtSummary.District = reader["District"].ToString();
                             districtSummary.Male = Convert.ToInt32(reader["Male"]);
-                            districtSummary.RefugeeMale = Convert.ToInt32(reader["RefugeeMale"]);
+                            districtSummary.RefugeeMale = Convert.ToInt32(reader["RefugeeMale"]) + addMRef[iterate];
                             districtSummary.Female = Convert.ToInt32(reader["Female"]);
-                            districtSummary.RefugeeFemale = Convert.ToInt32(reader["RefugeeFemale"]);
-                            districtSummary.Total = Convert.ToInt32(reader["Total"]);
+                            districtSummary.RefugeeFemale = Convert.ToInt32(reader["RefugeeFemale"]) + addFRef[iterate];
+                            districtSummary.Total = Convert.ToInt32(reader["Total"]) + addTRef[iterate];
                             if (reader["District"].ToString() != "NONE")
                             {
                                 pTotal += districtSummary.Total;
                                 districtSummaries.Add(districtSummary);
                             }
+                        iterate++;
                         }
 
                         reader.Close();
