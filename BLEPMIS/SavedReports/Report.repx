@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.1.6.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.1, Version=23.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" DisplayName="Report" PageWidth="850" PageHeight="1100" Version="23.1" DataSource="#Ref-0">
+  <Extensions>
+    <Item1 Ref="2" Key="DataSerializationExtension" Value="DevExpress.XtraReports.Web.ReportDesigner.DefaultDataSerializer" />
+  </Extensions>
+  <Bands>
+    <Item1 Ref="3" ControlType="TopMarginBand" Name="TopMargin1" />
+    <Item2 Ref="4" ControlType="DetailBand" Name="Detail1">
+      <Controls>
+        <Item1 Ref="5" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" SizeF="100,23" LocationFloat="127.083,28.125" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="6" EventName="BeforePrint" PropertyName="Text" Expression="[master_District.Code]" />
+          </ExpressionBindings>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="7" ControlType="BottomMarginBand" Name="BottomMargin1" />
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.1" Name="ReportingLive1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0iUmVwb3J0aW5nTGl2ZTEiPjxDb25uZWN0aW9uIE5hbWU9IlJlcG9ydGluZ0xpdmUiIEZyb21BcHBDb25maWc9InRydWUiIC8+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJtYXN0ZXJfRGlzdHJpY3QiPjxUYWJsZXM+PFRhYmxlIE5hbWU9Im1hc3Rlci5EaXN0cmljdCIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJtYXN0ZXIuRGlzdHJpY3QiIE5hbWU9IkRpc3RyaWN0SWQiIC8+PENvbHVtbiBUYWJsZT0ibWFzdGVyLkRpc3RyaWN0IiBOYW1lPSJOYW1lIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5EaXN0cmljdCIgTmFtZT0iQ29kZSIgLz48Q29sdW1uIFRhYmxlPSJtYXN0ZXIuRGlzdHJpY3QiIE5hbWU9IkRlc2NyaXB0aW9uIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5EaXN0cmljdCIgTmFtZT0iRGl2aXNpb25JZCIgLz48L0NvbHVtbnM+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9IlJlcG9ydGluZ0xpdmUxIj48VmlldyBOYW1lPSJtYXN0ZXJfRGlzdHJpY3QiPjxGaWVsZCBOYW1lPSJEaXN0cmljdElkIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb2RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkRlc2NyaXB0aW9uIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkRpdmlzaW9uSWQiIFR5cGU9IkludDMyIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

@@ -25,6 +25,17 @@ using DevExpress.AspNetCore;
 using System.IO;
 using BLEPMIS.Services.Profile;
 
+using DevExpress.AspNetCore.Reporting;
+using DevExpress.Security.Resources;
+using DevExpress.XtraReports.Web.Extensions;
+using Microsoft.Extensions.Logging;
+using BLEPMIS.Data;
+
+//using WebDashboardDataSources;
+//using DBContext.Data;
+using DevExpress.AspNetCore.Internal;
+
+
 namespace BLEPMIS
 {
     public class Startup
@@ -39,6 +50,42 @@ namespace BLEPMIS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDevExpressControls();
+            services.AddRazorPages();
+
+            /**
+               *Service for saving in file
+             */
+            services.AddScoped<ReportStorageWebExtension, CustomReportStorageFileWebExtension>();
+            /**
+               *Service for saving in database
+             */
+            //services.AddScoped<ReportStorageWebExtension, CustomReportStorageWebExtension>();
+
+            services
+            .AddMvc()
+            .AddNewtonsoftJson();
+
+            services.ConfigureReportingServices(configurator => {
+                configurator.ConfigureReportDesigner(designerConfigurator => {
+                    designerConfigurator.RegisterDataSourceWizardConfigFileConnectionStringsProvider();
+
+                    // designerConfigurator.RegisterObjectDataSourceWizardTypeProvider<ObjectDataSourceWizardCustomTypeProvider>();
+                    // designerConfigurator.RegisterObjectDataSourceConstructorFilterService<CustomObjectDataSourceConstructorFilterService>();
+                });
+                configurator.ConfigureWebDocumentViewer(viewerConfigurator => {
+                    viewerConfigurator.UseCachedReportSourceBuilder();
+                    viewerConfigurator.RegisterConnectionProviderFactory<CustomSqlDataConnectionProviderFactory>();
+                    viewerConfigurator.RegisterEFContextProviderFactory<CustomEFContextProviderFactory>();
+                });
+                configurator.UseAsyncEngine();
+            });
+            services.AddDbContext<ReportDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("ReportsDataConnectionString")));
+            //services.AddDbContext<OrdersContext>(options => options.UseSqlite(Configuration.GetConnectionString("NWindConnectionString")), ServiceLifetime.Transient);
+            //services.AddDbContext<ReportDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Reporting")));
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             var configuration = new ConfigurationBuilder()
@@ -54,6 +101,9 @@ namespace BLEPMIS
             services.AddDbContext<ApplicationDbContextYouth>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionYouth")));
 
             //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));  
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReportingLive")), ServiceLifetime.Transient);
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
             {
@@ -107,8 +157,14 @@ namespace BLEPMIS
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ReportDbContext db)
         {
+            db.InitializeDatabase();
+            var contentDirectoryAllowRule = DirectoryAccessRule.Allow(new DirectoryInfo(Path.Combine(env.ContentRootPath, "..", "Content")).FullName);
+            AccessSettings.ReportingSpecificResources.TrySetRules(contentDirectoryAllowRule, UrlAccessRule.Allow());
+            app.UseDevExpressControls();
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

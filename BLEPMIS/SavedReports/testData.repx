@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.1.6.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.1, Version=23.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" DisplayName="testData" PageWidth="850" PageHeight="1100" Version="23.1" DataSource="#Ref-0">
+  <Extensions>
+    <Item1 Ref="2" Key="DataSerializationExtension" Value="DevExpress.XtraReports.Web.ReportDesigner.DefaultDataSerializer" />
+  </Extensions>
+  <Bands>
+    <Item1 Ref="3" ControlType="TopMarginBand" Name="TopMargin1">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="100,23" LocationFloat="46.875,61.458" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="5" EventName="BeforePrint" PropertyName="Text" Expression="[master_Member.CellNo]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="6" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" SizeF="100,23" LocationFloat="419.792,61.458" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="7" EventName="BeforePrint" PropertyName="Text" Expression="[master_Member.BeneficiaryTypeId]" />
+          </ExpressionBindings>
+        </Item2>
+      </Controls>
+    </Item1>
+    <Item2 Ref="8" ControlType="DetailBand" Name="Detail1">
+      <Controls>
+        <Item1 Ref="9" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="100,23" LocationFloat="146.875,15.625" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="10" EventName="BeforePrint" PropertyName="Text" Expression="[master_Member.HouseHoldNo]" />
+          </ExpressionBindings>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="11" ControlType="BottomMarginBand" Name="BottomMargin1" />
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.1" Name="ReportingLive1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0iUmVwb3J0aW5nTGl2ZTEiPjxDb25uZWN0aW9uIE5hbWU9IlJlcG9ydGluZ0xpdmUiIEZyb21BcHBDb25maWc9InRydWUiIC8+PFF1ZXJ5IFR5cGU9IlNlbGVjdFF1ZXJ5IiBOYW1lPSJtYXN0ZXJfTWVtYmVyIj48VGFibGVzPjxUYWJsZSBOYW1lPSJtYXN0ZXIuTWVtYmVyIiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9Ik1lbWJlcklkIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9Ik1lbWJlck5hbWUiIC8+PENvbHVtbiBUYWJsZT0ibWFzdGVyLk1lbWJlciIgTmFtZT0iRmF0aGVyTmFtZSIgLz48Q29sdW1uIFRhYmxlPSJtYXN0ZXIuTWVtYmVyIiBOYW1lPSJDTklDIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IkNlbGxObyIgLz48Q29sdW1uIFRhYmxlPSJtYXN0ZXIuTWVtYmVyIiBOYW1lPSJHZW5kZXIiIC8+PENvbHVtbiBUYWJsZT0ibWFzdGVyLk1lbWJlciIgTmFtZT0iSXNSZWZ1Z2VlIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IkJlbmVmaWNpYXJ5VHlwZUlkIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IlByb2ZpbGVQaWN0dXJlIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IkFjY291bnROdW1iZXIiIC8+PENvbHVtbiBUYWJsZT0ibWFzdGVyLk1lbWJlciIgTmFtZT0iVmlsbGFnZUlkIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IkhvdXNlSG9sZE5vIiAvPjxDb2x1bW4gVGFibGU9Im1hc3Rlci5NZW1iZXIiIE5hbWU9IkFnZSIgLz48Q29sdW1uIFRhYmxlPSJtYXN0ZXIuTWVtYmVyIiBOYW1lPSJJc0FueURpc2FiaWxpdHkiIC8+PENvbHVtbiBUYWJsZT0ibWFzdGVyLk1lbWJlciIgTmFtZT0iTWFyaXRhbFN0YXR1cyIgLz48L0NvbHVtbnM+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9IlJlcG9ydGluZ0xpdmUxIj48VmlldyBOYW1lPSJtYXN0ZXJfTWVtYmVyIj48RmllbGQgTmFtZT0iTWVtYmVySWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJNZW1iZXJOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkZhdGhlck5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ05JQyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDZWxsTm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR2VuZGVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklzUmVmdWdlZSIgVHlwZT0iQm9vbGVhbiIgLz48RmllbGQgTmFtZT0iQmVuZWZpY2lhcnlUeXBlSWQiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJQcm9maWxlUGljdHVyZSIgVHlwZT0iQnl0ZUFycmF5IiAvPjxGaWVsZCBOYW1lPSJBY2NvdW50TnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlZpbGxhZ2VJZCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IkhvdXNlSG9sZE5vIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFnZSIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IklzQW55RGlzYWJpbGl0eSIgVHlwZT0iQm9vbGVhbiIgLz48RmllbGQgTmFtZT0iTWFyaXRhbFN0YXR1cyIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>
